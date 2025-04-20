@@ -13,7 +13,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="50dp">
+            android:paddingTop="80dp">
 
             <ImageView
                 android:id="@+id/imageView"
@@ -37,7 +37,7 @@
             <EditText
                 android:id="@+id/et_username"
                 android:layout_width="250dp"
-                android:layout_height="48dp"
+                android:layout_height="60dp"
                 android:layout_marginVertical="8dp"
                 android:hint="Tài khoản"
                 android:background="@drawable/login_edt"
@@ -50,7 +50,7 @@
             <EditText
                 android:id="@+id/et_password"
                 android:layout_width="250dp"
-                android:layout_height="48dp"
+                android:layout_height="60dp"
                 android:hint="Password"
                 android:textColorHint="#DDFFFFFF"
                 android:textColor="#FFFFFF"
@@ -68,14 +68,14 @@
                 android:layout_height="wrap_content"
                 android:text="Ghi nhớ đăng nhập"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:layout_marginTop="12dp"/>
 
             <!-- Nút đăng nhập -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_login"
                 android:layout_width="250dp"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 android:layout_marginTop="24dp"
                 android:text="ĐĂNG NHẬP"
                 android:textStyle="bold"
@@ -89,9 +89,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Quên mật khẩu / Đăng kí"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textColor="#F59E0B"
                 android:layout_marginTop="20dp"
+                android:textStyle="bold"
                 android:layout_gravity="center"/>
 
         </LinearLayout>
