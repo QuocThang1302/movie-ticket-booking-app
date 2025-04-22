@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_centerHorizontal="true">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/image_movie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/movie0"
+            app:riv_corner_radius="10dp" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên phim"
+            android:textSize="15dp"
+            android:layout_below="@id/image_movie"/>
+
+        <TextView
+            android:id="@+id/note_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Suất chiếu sớm"
+            android:textSize="10dp"
+
+            android:layout_below="@id/title">
+        </TextView>
+    </RelativeLayout>
+
+</RelativeLayout>
