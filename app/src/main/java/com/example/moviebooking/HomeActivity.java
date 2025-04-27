@@ -26,7 +26,10 @@ import com.example.moviebooking.dto.Movie;
 import com.example.moviebooking.dto.UserInfo;
 import com.example.moviebooking.home.DrawerListAdapter;
 import com.example.moviebooking.home.MovieScrollerAdapter;
+import com.example.moviebooking.home.MovieSliderAdapter;
 import com.example.moviebooking.home.OnLogoutClickListener;
+import com.example.moviebooking.home.SliderTranformer;
+import com.google.android.material.slider.BaseOnSliderTouchListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +46,11 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        setupUserInfo();
+        setOnClickViewAll();
+        setDataForDrawer();
+        setDataForMoviesBar(this);
+        setDataForMoviesSlider(this);
     }
 
     @Override
@@ -105,7 +113,7 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
    private void setDataForMoviesBar(Context context) {
         fireBaseManager.fetchNowShowingMoviesData(new FireBaseManager.OnMoviesDataLoadedListener() {
             @Override
-            public void onMoviesDataLoaded(List<Movie> allMovieList) {
+            public void onMoviesDataLoaded(List<Movie> nowShowingMoviesList) {
                 initializeMoviesBar(context, nowShowingMoviesList);
             }
 
@@ -123,5 +131,37 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
 
         moviesBarView.setAdapter(new MovieScrollerAdapter(context, userInfo, nowShowingMoviesList));
    }
+
+    private void setDataForMoviesSlider(Context context) {
+        fireBaseManager.fetchNowShowingMoviesData(new FireBaseManager.OnMoviesDataLoadedListener() {
+            @Override
+            public void onMoviesDataLoaded(List<Movie> nowShowingMoviesList) {
+                initializeMoviesSlider(context, nowShowingMoviesList);
+            }
+
+            @Override
+            public void onMoviesDataError(String errorMessage) {
+                Log.d("HomeActivity", "onMoviesDataError: " + errorMessage);
+            }
+        });
+    }
+
+    private void initializeMoviesSlider(Context context, List<Movie> nowShowingMoviesList) {
+        viewPager2 = findViewById(R.id.vp_images_slider);
+        viewPager2.setOrientation(viewPager2.ORIENTATION_HORIZONTAL);
+        viewPager2.setOffscreenPageLimit(4);
+        viewPager2.setPageTransformer(new SliderTranformer(viewPager2));
+        viewPager2.setAdapter(new MovieSliderAdapter(context, userInfo, nowShowingMoviesList, viewPager2));
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                sliderHandler.removeCallbacks(sliderRunnable);
+                sliderHandler.postDelayed(sliderRunnable, SLIDER_DALAY_MS);
+            }
+        });
+    }
+
+    private Runnable sliderRunnable = () -> viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1);
 
 }
