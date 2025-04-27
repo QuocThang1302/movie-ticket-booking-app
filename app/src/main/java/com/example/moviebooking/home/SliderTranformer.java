@@ -8,7 +8,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 public class SliderTranformer implements ViewPager2.PageTransformer{
 
-    private static  final float DEFAULT_TRANSLATION_X = 0f;
+    private static final float DEFAULT_TRANSLATION_X = 0f;
     private static final float DEFAULT_TRANSLATION_FACTOR = 1.2f;
     private static final float SCALE_FACTOR = 0.14f;
     private static final float DEFAULT_SCALE = 1f;
