@@ -24,6 +24,15 @@ public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText, passwordEditText;
     private Button loginButton;
     private TextView registerTextView;
+
+    /*
+    // TEST HOME ACTIVITY
+    private boolean isTest = true;
+    UserInfo userTest = new UserInfo("Minh", "123", "123456");
+
+    //
+     */
+
     FireBaseManager firebaseManager = FireBaseManager.getInstance();
     @SuppressLint("MissingInflatedId")
     @Override
@@ -87,6 +96,19 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
+
+                /*
+                // TEST HOME ACTIVITY
+
+                if (isTest) {
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    intent.putExtra("userinfoIntent", UserInfo.class.cast(userTest));
+                    startActivity(intent);
+                    finish();
+                }
+
+                //
+                 */
             }
         });
     }
