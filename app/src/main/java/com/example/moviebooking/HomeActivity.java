@@ -51,6 +51,7 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
         setDataForDrawer();
         setDataForMoviesBar(this);
         setDataForMoviesSlider(this);
+
     }
 
     @Override
@@ -115,6 +116,7 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
             @Override
             public void onMoviesDataLoaded(List<Movie> nowShowingMoviesList) {
                 initializeMoviesBar(context, nowShowingMoviesList);
+
             }
 
             @Override
@@ -122,6 +124,7 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
                 Log.d("HomeActivity", "onMoviesDataError: " + errorMessage);
             }
         });
+
    }
 
    private void initializeMoviesBar(Context context, List<Movie> nowShowingMoviesList) {
@@ -130,6 +133,9 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
         moviesBarView.setLayoutManager(linearLayoutManager);
 
         moviesBarView.setAdapter(new MovieScrollerAdapter(context, userInfo, nowShowingMoviesList));
+
+
+
    }
 
     private void setDataForMoviesSlider(Context context) {
@@ -137,6 +143,7 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
             @Override
             public void onMoviesDataLoaded(List<Movie> nowShowingMoviesList) {
                 initializeMoviesSlider(context, nowShowingMoviesList);
+
             }
 
             @Override
@@ -144,6 +151,7 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
                 Log.d("HomeActivity", "onMoviesDataError: " + errorMessage);
             }
         });
+
     }
 
     private void initializeMoviesSlider(Context context, List<Movie> nowShowingMoviesList) {
@@ -160,6 +168,9 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
                 sliderHandler.postDelayed(sliderRunnable, SLIDER_DALAY_MS);
             }
         });
+
+
+
     }
 
     private Runnable sliderRunnable = () -> viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1);
