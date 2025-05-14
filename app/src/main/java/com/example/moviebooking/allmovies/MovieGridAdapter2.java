@@ -2,6 +2,7 @@ package com.example.moviebooking.allmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +22,13 @@ import com.example.moviebooking.moviepage.MoviePageActivity;
 
 import java.util.List;
 
-public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieViewHolder> implements Filterable {
+public class MovieGridAdapter2 extends RecyclerView.Adapter<MovieGridAdapter2.MovieViewHolder> implements Filterable {
 
     private Context mContext;
     private UserInfo userInfo;
     private List<Movie> mListMovie;
 
-    public MovieGridAdapter(Context context, UserInfo userInfo, List<Movie> mListMovie) {
+    public MovieGridAdapter2(Context context, UserInfo userInfo, List<Movie> mListMovie) {
         this.mContext = context;
         this.mListMovie = mListMovie;
         this.userInfo = userInfo;
@@ -41,13 +42,14 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_all_movies, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_all_movies2, parent, false);
         return new MovieViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        Movie movie = mListMovie.get(position);
+        Movie movie = mListMovie.get(position );
         if (movie == null) {
             return;
         }
@@ -62,6 +64,8 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
             intent.putExtra("userinfoIntent", userInfo);
             mContext.startActivity(intent);
         });
+        Log.d("DEBUG_CHECK", "Title: " + movie.getTitle() + ", Duration: " + movie.getDetailDuration());
+
     }
 
     @Override

@@ -1,0 +1,30 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Gradient nền tím hồng -->
+    <item>
+        <shape>
+            <gradient
+                android:angle="270"
+                android:startColor="#FF0080"
+                android:endColor="#8000FF"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <!-- Các chấm sáng hoặc ô sáng -->
+    <!-- Thêm các shape nhỏ giả hiệu ứng -->
+    <item android:right="120dp" android:top="40dp">
+        <shape android:shape="oval">
+            <size android:width="10dp" android:height="10dp" />
+            <solid android:color="#80FFFFFF" />
+        </shape>
+    </item>
+
+    <item android:right="120dp" android:top="80dp">
+        <shape android:shape="oval">
+            <size android:width="6dp" android:height="6dp" />
+            <solid android:color="#60FFFFFF" />
+        </shape>
+    </item>
+
+    <!-- Bạn có thể thêm nhiều `item` theo chiều dọc như vậy -->
+</layer-list>

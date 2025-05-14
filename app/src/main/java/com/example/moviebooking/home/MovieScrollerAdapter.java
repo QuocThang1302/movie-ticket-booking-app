@@ -1,6 +1,5 @@
 package com.example.moviebooking.home;
 
-import android.adservices.adselection.UpdateAdCounterHistogramRequest;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;

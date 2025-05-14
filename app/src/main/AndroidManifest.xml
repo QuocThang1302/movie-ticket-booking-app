@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Moviebooking"
         tools:targetApi="31">
         <activity
+            android:name=".moviepage.MoviePageActivity"
+            android:exported="false" />
+        <activity
             android:name=".BookingStatusActivity"
             android:exported="false" />
         <activity

@@ -11,9 +11,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviebooking.allmovies.MovieGridAdapter;
+import com.example.moviebooking.allmovies.MovieGridAdapter2;
 import com.example.moviebooking.data.FireBaseManager;
 import com.example.moviebooking.dto.Movie;
 import com.example.moviebooking.dto.UserInfo;
@@ -27,7 +29,7 @@ public class AllMovieActivity extends AppCompatActivity {
     private List<Movie> moviesList = null;
     private RecyclerView allMoviesView;
     private SearchView searchView;
-    private MovieGridAdapter movieGridAdapter;
+    private MovieGridAdapter2 movieGridAdapter;
     private FireBaseManager fireBaseManager = FireBaseManager.getInstance();
 
     @Override
@@ -93,10 +95,11 @@ public class AllMovieActivity extends AppCompatActivity {
     }
 
     private  void setupMoviesRecyclerView() {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-        allMoviesView.setLayoutManager(gridLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        allMoviesView.setLayoutManager(linearLayoutManager);
 
-        movieGridAdapter = new MovieGridAdapter(this, userInfo, moviesList);
+
+        movieGridAdapter = new MovieGridAdapter2(this, userInfo, moviesList);
         allMoviesView.setAdapter(movieGridAdapter);
     }
 }
