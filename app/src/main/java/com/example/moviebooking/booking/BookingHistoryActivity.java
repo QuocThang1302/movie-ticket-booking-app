@@ -1,18 +1,17 @@
-package com.example.moviebooking;
+package com.example.moviebooking.booking;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviebooking.R;
 import com.example.moviebooking.data.FireBaseManager;
-import com.example.moviebooking.dto.*;
+import com.example.moviebooking.dto.UserInfo;
+import com.example.moviebooking.dto.Ticket;
 
 import java.util.List;
 import com.example.moviebooking.home.TicketListAdapter;

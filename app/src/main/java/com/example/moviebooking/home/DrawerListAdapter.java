@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.moviebooking.BookingHistoryActivity;
+import com.example.moviebooking.booking.BookingHistoryActivity;
 import com.example.moviebooking.R;
 import com.example.moviebooking.dto.UserInfo;
 
