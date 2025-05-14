@@ -13,7 +13,7 @@ public class Ticket implements Serializable {
     private String dateTime;
     private String seatId;
     private Boolean isPaid = false;
-    private String cost = "$10";
+    private String cost = "100000VNĐ";
 
     public Ticket() {
     }
@@ -163,7 +163,7 @@ public class Ticket implements Serializable {
     }
 
     public String getPayment() {
-        return "$10";
+        return "100000VNĐ";
     }
 
     public String getTicketDateTime() {

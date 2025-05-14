@@ -1,10 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BookingHistoryActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
+    android:background="@color/white"
+    android:scrollbars="none"
+    android:overScrollMode="never"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Frame layout from res/layout/fragment_heading.xml -->
+            <RelativeLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@color/white"
+                android:layout_above="@+id/homeHeading">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Booking History 🎟️"
+                        android:textSize="30dp"
+                        android:textColor="@color/black"
+                        android:id="@+id/heading"
+                        android:layout_gravity="left">
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="haodepzai"
+                        android:textSize="20dp"
+                        android:textColor="@color/black"
+                        android:id="@+id/tv_user_name"
+                        android:layout_gravity="left"
+                        android:layout_below="@+id/heading">
+                    </TextView>
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/ava">
+                    </ImageView>
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_ticket_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    tools:listitem="@layout/item_booking_history">
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
