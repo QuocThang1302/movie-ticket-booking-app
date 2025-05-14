@@ -17,10 +17,9 @@ import com.example.moviebooking.data.HardcodingData;
 import com.example.moviebooking.dto.DateTime;
 import com.example.moviebooking.dto.Movie;
 import com.example.moviebooking.dto.UserInfo;
-import com.example.moviebooking.BookingActivity;
+import com.example.moviebooking.booking.BookingActivity;
 import com.makeramen.roundedimageview.RoundedImageView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MoviePageActivity extends AppCompatActivity {

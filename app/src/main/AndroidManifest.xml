@@ -21,13 +21,13 @@
             android:exported="false" />
         <activity
             android:name=".moviepage.MoviePageActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".BookingHistoryActivity"
             android:exported="false" />
         <activity
-            android:name=".BookingActivity"
+            android:name=".booking.BookingActivity"
             android:exported="false" />
         <activity
             android:name=".AllMovieActivity"
