@@ -29,11 +29,10 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
     private List<Movie> mListMovie;
 
     public MovieGridAdapter(Context context, UserInfo userInfo, List<Movie> mListMovie) {
-        this.mContext = mContext;
+        this.mContext = context;
         this.mListMovie = mListMovie;
         this.userInfo = userInfo;
     }
-
     public void setData(List<Movie> list) {
         this.mListMovie = list;
         notifyDataSetChanged();
