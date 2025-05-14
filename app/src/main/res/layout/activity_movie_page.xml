@@ -1,10 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".moviepage.MoviePageActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:scrollbars="none"
+        tools:context=".ui.app.moviepage.MoviePageActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!-- Frame layout from res/layout/fragment_heading.xml -->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="450dp">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/riv_movie_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp"
+                    android:layout_marginTop="-30dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/movie0"
+                    app:riv_corner_radius="20dip"></com.makeramen.roundedimageview.RoundedImageView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/iv_back_btn"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/white"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="15dip"
+                    tools:ignore="NotSibling">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_movie_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:text="Ant Man and the Wasp"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="25dp"></TextView>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_movie_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tv_movie_title"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="20dp">
+
+                            <ImageView
+                                android:id="@+id/icon_star"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/icon_star"></ImageView>
+
+                            <TextView
+                                android:id="@+id/tv_movie_rate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@+id/icon_star"
+                                android:paddingEnd="10dp"
+                                android:text="4.8"
+                                android:textColor="@color/black"
+                                android:textSize="18dp"></TextView>
+
+                            <ImageView
+                                android:id="@+id/icon_duration"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_centerVertical="true"
+                                android:layout_toEndOf="@+id/tv_movie_rate"
+                                android:src="@drawable/icon_time"></ImageView>
+
+                            <TextView
+                                android:id="@+id/tv_movie_duration"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@+id/icon_duration"
+                                android:paddingEnd="10dp"
+                                android:text="120mins"
+                                android:textColor="@color/black"
+                                android:textSize="18dp"></TextView>
+
+                            <ImageView
+                                android:id="@+id/icon_movie_genre"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_centerVertical="true"
+                                android:layout_toEndOf="@+id/tv_movie_duration"
+                                android:src="@drawable/icon_genre"></ImageView>
+
+                            <TextView
+                                android:id="@+id/tv_movie_genre"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@+id/icon_movie_genre"
+                                android:text="Siêu anh hùng"
+                                android:textColor="@color/black"
+                                android:textSize="18dp"></TextView>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/rl_movie_info"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="20dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp">
+
+                            <TextView
+                                android:id="@+id/tv_title_synopsis"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/icon_star"
+                                android:text="Synopsis"
+                                android:textColor="@color/black"
+                                android:textSize="18dp"></TextView>
+
+                            <TextView
+                                android:id="@+id/tv_movie_description"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxHeight="130dp"
+                                android:layout_below="@id/tv_title_synopsis"
+                                android:text="Scott Lang is grappling with the consequences of his choices as both a superhero and a father. Approached by Hope van Dyne and Dr. Hank Pym, Lang must once again don …"
+                                android:textColor="@color/gray"
+                                android:textSize="15dp">
+                            </TextView>
+
+                            <ImageView
+                                android:id="@+id/iv_expand"
+                                android:layout_width="200dp"
+                                android:layout_height="24dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_alignParentBottom="true"
+                                android:background="@drawable/button_expand"
+                                android:layout_centerHorizontal="true">
+                            </ImageView>
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_dates"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                tools:listitem="@layout/item_calendar"></androidx.recyclerview.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/tv_cinema_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Sathyam Cinemas: Royapettah"
+                android:textSize="20dp" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_hours1"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginStart="10dp"
+                android:orientation="horizontal"
+                tools:listitem="@layout/item_hours_button"></androidx.recyclerview.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/tv_cinema_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Escape Cinemas"
+                android:textSize="20dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_hours2"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginStart="10dp"
+                android:orientation="horizontal"
+                tools:listitem="@layout/item_hours_button"></androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/next"
+        app:backgroundTint="@color/blue"
+        app:layout_anchorGravity="bottom|right|end" />
+
+    <ImageView
+        android:id="@+id/iv_back_btn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/back">
+    </ImageView>
+
+</RelativeLayout>
