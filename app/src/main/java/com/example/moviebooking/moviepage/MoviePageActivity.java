@@ -1,4 +1,5 @@
 package com.example.moviebooking.moviepage;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,10 @@ public class MoviePageActivity extends AppCompatActivity {
     private HoursAdapter hours1Adapter;
     private HoursAdapter hours2Adapter;
 
+    private boolean isExpanded = false;
+    private TextView movieDescription;
+    private ImageView expandButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +47,7 @@ public class MoviePageActivity extends AppCompatActivity {
 
         extractIntentData();
         if (receivedMovie == null || userInfo == null) {
-            return; // not found
+            return;
         }
 
         initializeUI();
@@ -65,6 +70,26 @@ public class MoviePageActivity extends AppCompatActivity {
         com.google.android.material.floatingactionbutton.FloatingActionButton fab =
                 findViewById(R.id.fab);
         fab.setOnClickListener(this::onFabClick);
+
+        movieDescription = findViewById(R.id.tv_movie_description);
+        expandButton = findViewById(R.id.iv_expand);
+
+        expandButton.setOnClickListener(v -> {
+            Log.d("MoviePageActivity", "iv_expand clicked, isExpanded: " + isExpanded); // Debug
+            toggleDescription();
+        });
+    }
+
+    private void toggleDescription() {
+        if (isExpanded) {
+            movieDescription.setMaxHeight((int) (130 * getResources().getDisplayMetrics().density));
+            expandButton.setBackgroundResource(R.drawable.button_expand);
+            isExpanded = false;
+        } else {
+            movieDescription.setMaxHeight(Integer.MAX_VALUE);
+            expandButton.setBackgroundResource(R.drawable.button_collapse); // Cần drawable này
+            isExpanded = true;
+        }
     }
 
     private void onFabClick(View v) {
@@ -124,7 +149,7 @@ public class MoviePageActivity extends AppCompatActivity {
     private void bindDataToMovieInfo() {
         RoundedImageView movieImage = findViewById(R.id.riv_movie_image);
         TextView movieTitle = findViewById(R.id.tv_movie_title);
-        TextView movieDescription = findViewById(R.id.tv_movie_description);
+        movieDescription = findViewById(R.id.tv_movie_description);
         TextView movieDuration = findViewById(R.id.tv_movie_duration);
         TextView movieRating = findViewById(R.id.tv_movie_rate);
         TextView movieGenre = findViewById(R.id.tv_movie_genre);
@@ -159,8 +184,6 @@ public class MoviePageActivity extends AppCompatActivity {
         hours1Adapter.setData(hours1);
         Log.d("", ": " + hours1Adapter.getItemCount());
         hourRCV1.setAdapter(hours1Adapter);
-
-        //
 
         RecyclerView hourRCV2 = (RecyclerView) findViewById(R.id.rcv_hours2);
         hours2 = HardcodingData.getHours();
