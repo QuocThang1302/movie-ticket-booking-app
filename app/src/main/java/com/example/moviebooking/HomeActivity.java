@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
 import com.example.moviebooking.data.FireBaseManager;
 import com.example.moviebooking.dto.Movie;
 import com.example.moviebooking.dto.UserInfo;
@@ -156,21 +157,53 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
 
     private void initializeMoviesSlider(Context context, List<Movie> nowShowingMoviesList) {
         viewPager2 = findViewById(R.id.vp_images_slider);
+
+        ImageView ivBackground = findViewById(R.id.blur_background_image);
+
         viewPager2.setOrientation(viewPager2.ORIENTATION_HORIZONTAL);
         viewPager2.setOffscreenPageLimit(4);
         viewPager2.setPageTransformer(new SliderTranformer(viewPager2));
-        viewPager2.setAdapter(new MovieSliderAdapter(context, userInfo, nowShowingMoviesList, viewPager2));
+
+        MovieSliderAdapter adapter = new MovieSliderAdapter(context, userInfo, nowShowingMoviesList, viewPager2);
+
+        viewPager2.setAdapter(adapter);
+
+        adapter.setOnMovieChangeListener(movie -> {
+            Glide.with(context)
+                    .load(movie.getThumbnail())
+                    .transform(new jp.wasabeef.glide.transformations.BlurTransformation(25, 3)) // làm mờ
+                    .into(ivBackground);
+        });
+
+        // Gọi lần đầu để hiển thị background cho phim đầu tiên
+        if (!nowShowingMoviesList.isEmpty()) {
+            adapter.movieChangeListener.onMovieChanged(nowShowingMoviesList.get(0));
+        }
+
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 sliderHandler.removeCallbacks(sliderRunnable);
                 sliderHandler.postDelayed(sliderRunnable, SLIDER_DALAY_MS);
+
+                //
+                Movie currentMovie = nowShowingMoviesList.get(position);
+                updateBackgroundImage(currentMovie.getThumbnail());
+                //
             }
         });
 
 
 
+    }
+    private void updateBackgroundImage(String imageUrl) {
+        ImageView backgroundImage = findViewById(R.id.blur_background_image);
+
+        Glide.with(this)
+                .load(imageUrl)
+                .transform(new jp.wasabeef.glide.transformations.BlurTransformation(25, 3))
+                .into(backgroundImage);
     }
 
     private Runnable sliderRunnable = () -> viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1);

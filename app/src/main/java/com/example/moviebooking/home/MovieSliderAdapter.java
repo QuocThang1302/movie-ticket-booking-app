@@ -65,6 +65,19 @@ public class MovieSliderAdapter extends RecyclerView.Adapter<MovieSliderAdapter.
         return mListMovie.size();
     }
 
+    //
+    public interface OnMovieChangeListener {
+        void onMovieChanged(Movie movie);
+    }
+
+    public OnMovieChangeListener movieChangeListener;
+
+    public void setOnMovieChangeListener(OnMovieChangeListener listener) {
+        this.movieChangeListener = listener;
+    }
+
+    //
+
     class SliderViewHolder extends RecyclerView.ViewHolder {
         RoundedImageView imageView;
         public SliderViewHolder(@NonNull View itemView) {
