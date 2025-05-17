@@ -1,43 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginEnd="10dp"
-    android:layout_marginTop="10dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="10dp">
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="10dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@android:color/transparent"> <!-- Màu nền tím đậm -->
 
     <RelativeLayout
         android:id="@+id/rl_calendar"
-        android:layout_width="70dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:background="@drawable/bg_disabled_date"> <!-- Viền tím -->
 
+        <!-- TextView: Thứ hoặc Chủ Nhật -->
         <TextView
             android:id="@+id/tv_dayOfWeek"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:textSize="15dp"
-            android:textColor="@color/black"
-            android:text="THU">
-        </TextView>
+            android:text="Saturday"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
 
+        <!-- TextView: Ngày -->
         <TextView
             android:id="@+id/tv_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_below="@+id/tv_dayOfWeek"
+            android:layout_below="@id/tv_dayOfWeek"
             android:layout_centerHorizontal="true"
-            android:textSize="30dp"
-            android:textColor="@color/black"
-            android:text="12">
-        </TextView>
-
+            android:layout_marginTop="8dp"
+            android:text="18"
+            android:textSize="30sp"
+            android:textColor="#FFB300"
+            android:textStyle="bold"/>
 
     </RelativeLayout>
-
-</androidx.cardview.widget.CardView >
+</androidx.cardview.widget.CardView>

@@ -23,6 +23,7 @@ import java.util.List;
 public class HoursAdapter extends RecyclerView.Adapter<HoursAdapter.HoursViewHolder> {
     private Context mContext;
     private List<DateTime> mHoursTime;
+
     public HoursAdapter(Context mContext) {
         this.mContext = mContext;
     }
@@ -75,13 +76,13 @@ public class HoursAdapter extends RecyclerView.Adapter<HoursAdapter.HoursViewHol
                 return;
             }
             if (dateTime.isSelected()) {
-                holder.btnHours.setBackground(mContext.getResources().getDrawable(R.drawable.button_hours_style_selected));
+                holder.btnHours.setBackground(mContext.getResources().getDrawable(R.drawable.bg_glow_orange));
                 //holder.btnHours.setBackgroundColor(mContext.getResources().getColor(R.color.gray));
                 mHoursTime.get(position).setSelected(false);
                 notifyDataSetChanged();
             }
             else {
-                holder.btnHours.setBackground(mContext.getResources().getDrawable(R.drawable.button_hours_style_unselected));
+                holder.btnHours.setBackground(mContext.getResources().getDrawable(R.drawable.bg_disabled_date));
                 //holder.btnHours.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                 mHoursTime.get(position).setSelected(true);
                 for (int i = 0; i < mHoursTime.size(); i++) {
@@ -129,10 +130,12 @@ public class HoursAdapter extends RecyclerView.Adapter<HoursAdapter.HoursViewHol
                 tvHours.setTextColor(mContext.getResources().getColor(R.color.disable_text));
             } else
             if (dateTime.isSelected()) {
-                btnHours.setBackground(mContext.getResources().getDrawable(R.drawable.button_hours_style_selected));
+                btnHours.setBackground(mContext.getResources().getDrawable(R.drawable.bg_glow_orange));
+                tvHours.setTextColor(mContext.getResources().getColor(R.color.black));
                 //btnHours.setBackgroundColor(mContext.getResources().getColor(R.color.gray));
             } else {
-                btnHours.setBackground(mContext.getResources().getDrawable(R.drawable.button_hours_style_unselected));
+                btnHours.setBackground(mContext.getResources().getDrawable(R.drawable.bg_disabled_hours));
+                tvHours.setTextColor(mContext.getResources().getColor(R.color.white));
                 //btnHours.setBackgroundColor(mContext.getResources().getColor(R.color.white));
             }
         }

@@ -24,6 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tên phim"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:textSize="15dp"
             android:layout_below="@id/image_movie"/>
 
@@ -32,6 +34,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Suất chiếu sớm"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:textSize="10dp"
 
             android:layout_below="@id/title">

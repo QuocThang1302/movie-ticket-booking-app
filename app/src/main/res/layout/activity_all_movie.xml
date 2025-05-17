@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1A1124">
+    android:background="@color/violet">
 
     <!-- Header -->
     <RelativeLayout
@@ -14,30 +14,44 @@
         android:layout_marginEnd="20dp"
         android:layout_marginTop="30dp">
 
-        <TextView
-            android:id="@+id/heading"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Browse"
-            android:textSize="30dp"
-            android:textColor="@color/white" />
+            android:background="@drawable/gradient_background"
+            android:orientation="vertical"
+            android:padding="6dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="80dp"> <!-- tránh đè ImageView -->
 
-        <TextView
-            android:id="@+id/choices"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/heading"
-            android:text="Movies in CineStar"
-            android:textSize="20dp"
-            android:textColor="@color/white" />
+            <TextView
+                android:id="@+id/heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="Browse"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/choices"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="Movies in CineStar"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+        </LinearLayout>
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:src="@drawable/ava"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp" />
+            android:layout_marginEnd="10dp" />
     </RelativeLayout>
 
     <!-- SearchView -->
@@ -46,9 +60,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/container"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/searchview_background"
         app:queryBackground="@android:color/transparent"
         android:iconifiedByDefault="false" />
@@ -62,24 +75,28 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp">
 
-        <TextView
-            android:id="@+id/allMovies"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="All Movies"
-            android:textSize="25dp"
-            android:textColor="@color/white" />
+
+
+            <TextView
+                android:id="@+id/allMovies"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="All Movies"
+                android:layout_marginStart="20dp"
+                android:textSize="25sp"
+                android:textColor="@color/yellow" />
+
 
         <TextView
             android:id="@+id/viewAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:text="Filter"
-            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
             android:textColor="@color/gradient_blue" />
     </RelativeLayout>
 
@@ -91,8 +108,8 @@
         android:layout_below="@id/tv_view_all"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:clipToPadding="false"
         tools:itemCount="5"
         tools:listitem="@layout/item_all_movies" />

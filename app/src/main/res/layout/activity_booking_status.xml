@@ -3,12 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/gradient_blue">
+    android:background="@drawable/gradient_background2">
 
-    <com.example.moviebooking.customView.DiagonalView
-        android:layout_width="match_parent"
-        android:layout_height="200dp">
-    </com.example.moviebooking.customView.DiagonalView>
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
@@ -216,17 +213,19 @@
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_save_to_gallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_back_home"
         android:layout_centerHorizontal="true"
+        android:padding="10dp"
         android:layout_marginBottom="10dp"
         android:text="Save to Gallery"
-        android:textColor="@color/gray"
+        android:textColor="@color/white"
+        android:background="@drawable/login_btn"
         android:textSize="15dp">
-    </Button>
+    </androidx.appcompat.widget.AppCompatButton>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_back_home"

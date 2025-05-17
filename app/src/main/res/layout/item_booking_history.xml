@@ -39,7 +39,7 @@
                 android:text="Tên phim"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="@color/black" />
+                android:textColor="	#FF1493" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

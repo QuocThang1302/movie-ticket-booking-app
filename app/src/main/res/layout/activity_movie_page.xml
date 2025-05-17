@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/violet"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
@@ -21,7 +22,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="450dp">
+                android:layout_height="450dp"
+                >
 
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/riv_movie_image"
@@ -50,7 +52,8 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:background="@color/light_violet">
 
                         <TextView
                             android:id="@+id/tv_movie_title"
@@ -59,7 +62,7 @@
                             android:layout_marginTop="30dp"
                             android:text="Ant Man and the Wasp"
                             android:textAlignment="center"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="25dp"></TextView>
 
                         <RelativeLayout
@@ -77,7 +80,8 @@
                                 android:layout_width="15dp"
                                 android:layout_height="15dp"
                                 android:layout_centerVertical="true"
-                                android:src="@drawable/icon_star"></ImageView>
+                                android:src="@drawable/icon_star"
+                                ></ImageView>
 
                             <TextView
                                 android:id="@+id/tv_movie_rate"
@@ -86,7 +90,7 @@
                                 android:layout_toEndOf="@+id/icon_star"
                                 android:paddingEnd="10dp"
                                 android:text="4.8"
-                                android:textColor="@color/black"
+                                android:textColor="@color/white"
                                 android:textSize="18dp"></TextView>
 
                             <ImageView
@@ -104,7 +108,7 @@
                                 android:layout_toEndOf="@+id/icon_duration"
                                 android:paddingEnd="10dp"
                                 android:text="120mins"
-                                android:textColor="@color/black"
+                                android:textColor="@color/white"
                                 android:textSize="18dp"></TextView>
 
                             <ImageView
@@ -121,7 +125,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_toEndOf="@+id/icon_movie_genre"
                                 android:text="Siêu anh hùng"
-                                android:textColor="@color/black"
+                                android:textColor="@color/white"
                                 android:textSize="18dp"></TextView>
                         </RelativeLayout>
 
@@ -140,29 +144,27 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/icon_star"
                                 android:text="Synopsis"
-                                android:textColor="@color/black"
+                                android:textColor="@color/white"
                                 android:textSize="18dp"></TextView>
 
                             <TextView
                                 android:id="@+id/tv_movie_description"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:maxHeight="130dp"
                                 android:layout_below="@id/tv_title_synopsis"
+                                android:maxHeight="130dp"
                                 android:text="Scott Lang is grappling with the consequences of his choices as both a superhero and a father. Approached by Hope van Dyne and Dr. Hank Pym, Lang must once again don …"
-                                android:textColor="@color/gray"
-                                android:textSize="15dp">
-                            </TextView>
+                                android:textColor="@color/white"
+                                android:textSize="15dp"></TextView>
 
                             <ImageView
                                 android:id="@+id/iv_expand"
                                 android:layout_width="200dp"
                                 android:layout_height="24dp"
-                                android:layout_marginTop="20dp"
                                 android:layout_alignParentBottom="true"
-                                android:background="@drawable/button_expand"
-                                android:layout_centerHorizontal="true">
-                            </ImageView>
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="20dp"
+                                android:background="@drawable/button_expand"></ImageView>
 
                         </RelativeLayout>
 
@@ -175,6 +177,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="10dp"
+                android:baselineAligned="false"
                 android:orientation="horizontal"
                 tools:listitem="@layout/item_calendar"></androidx.recyclerview.widget.RecyclerView>
 
@@ -184,6 +187,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:text="Sathyam Cinemas: Royapettah"
+                android:textColor="@color/white"
                 android:textSize="20dp" />
 
 
@@ -200,6 +204,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                android:textColor="@color/white"
                 android:text="Escape Cinemas"
                 android:textSize="20dp" />
 
@@ -225,7 +230,8 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:src="@drawable/next"
-        app:backgroundTint="@color/blue"
+        app:backgroundTint="#4A154B"
+        app:tint="@android:color/white"
         app:layout_anchorGravity="bottom|right|end" />
 
     <ImageView

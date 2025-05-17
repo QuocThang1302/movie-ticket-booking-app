@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/violet"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
@@ -46,7 +47,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="@color/light_violet">
 
                     <TextView
                         android:id="@+id/tv_movie_title"
@@ -55,7 +57,7 @@
                         android:layout_marginTop="30dp"
                         android:text="Ant Man and the Wasp"
                         android:textAlignment="center"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="25dp">
                     </TextView>
 
@@ -89,7 +91,7 @@
                                 android:paddingLeft="20dp"
                                 android:paddingRight="20dp"
                                 android:text="12:30 PM"
-                                android:textColor="@color/black"
+                                android:textColor="@color/white"
                                 android:textSize="15dp"></TextView>
                         </RelativeLayout>
 
@@ -110,7 +112,7 @@
                                 android:paddingLeft="20dp"
                                 android:paddingRight="20dp"
                                 android:text="12:31 PM"
-                                android:textColor="@color/black"
+                                android:textColor="@color/white"
                                 android:textSize="15dp"></TextView>
 
                         </RelativeLayout>
@@ -136,7 +138,7 @@
                             android:layout_centerHorizontal="true"
                             android:padding="5dp"
                             android:text="12:30 PM"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="15dp"></TextView>
                     </RelativeLayout>
 
@@ -182,7 +184,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/light_violet">
 
                 <RelativeLayout
                     android:id="@+id/rl_ticket"
@@ -190,13 +193,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="40dp"
                     android:layout_centerVertical="true">
-                    <ImageView
-                        android:id="@+id/iv_ticket"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_genre"
-                        android:layout_centerVertical="true">
-                    </ImageView>
+<!--                    <ImageView-->
+<!--                        android:id="@+id/iv_ticket"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:src="@drawable/icon_genre"-->
+<!--                        android:layout_centerVertical="true">-->
+<!--                    </ImageView>-->
 
                     <TextView
                         android:id="@+id/tv_ticket_count"
@@ -204,10 +207,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_centerVertical="true"
-                        android:layout_toEndOf="@+id/iv_ticket"
-                        android:layout_toRightOf="@+id/iv_ticket"
+
                         android:text="x2"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="20dp">
                     </TextView>
                 </RelativeLayout>
@@ -227,7 +229,7 @@
                         android:layout_marginEnd="10dp"
                         android:text="Total Payable:"
                         android:gravity="end"
-                        android:textColor="@color/gray"
+                        android:textColor="@color/white"
                         android:textSize="15dp">
                     </TextView>
 
@@ -239,7 +241,7 @@
                         android:layout_toEndOf="@+id/tv_total_price_note"
                         android:layout_toRightOf="@+id/tv_total_price_note"
                         android:text="$25"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="30dp">
                     </TextView>
                 </RelativeLayout>
@@ -258,7 +260,8 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:src="@drawable/next"
-        app:backgroundTint="@color/blue"
+        app:backgroundTint="#4A154B"
+        app:tint="@android:color/white"
         app:layout_anchorGravity="bottom|right|end" />
 
     <ImageView

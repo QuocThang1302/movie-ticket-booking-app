@@ -2,6 +2,7 @@ package com.example.moviebooking.moviepage;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,12 +106,18 @@ public class DateOfWeekAdapter extends RecyclerView.Adapter<DateOfWeekAdapter.Da
             dayOfWeek.setText(dateTime.getDayOfWeek().toUpperCase().substring(0, 3));
 
             if (dateTime.isDisable()) {
-                relativeLayout.setBackgroundColor(mContext.getResources().getColor(R.color.black));
+                relativeLayout.setBackgroundResource(R.drawable.bg_disabled_date);
+                day.setTextColor(mContext.getResources().getColor(R.color.yellow));
+                dayOfWeek.setTextColor(mContext.getResources().getColor(R.color.white));
             } else
             if (dateTime.isSelected()) {
-                relativeLayout.setBackgroundColor(mContext.getResources().getColor(R.color.gray));
+                relativeLayout.setBackgroundResource(R.drawable.bg_glow_orange);
+                day.setTextColor(mContext.getResources().getColor(android.R.color.black));
+                dayOfWeek.setTextColor(mContext.getResources().getColor(android.R.color.black));
             } else {
-                relativeLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                relativeLayout.setBackgroundResource(R.drawable.bg_disabled_date);
+                day.setTextColor(mContext.getResources().getColor(R.color.yellow));
+                dayOfWeek.setTextColor(mContext.getResources().getColor(R.color.white));
             }
         }
     }

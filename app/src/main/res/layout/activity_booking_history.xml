@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:fillViewport="true"
-    android:background="@color/white"
+    android:background="@drawable/gradient_background2"
     android:scrollbars="none"
     android:overScrollMode="never"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -22,7 +22,6 @@
                 android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:background="@color/white"
                 android:layout_above="@+id/homeHeading">
 
                 <RelativeLayout
@@ -36,7 +35,7 @@
                         android:layout_height="wrap_content"
                         android:text="Booking History 🎟️"
                         android:textSize="30dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:id="@+id/heading"
                         android:layout_gravity="left">
                     </TextView>
@@ -46,7 +45,7 @@
                         android:layout_height="wrap_content"
                         android:text="haodepzai"
                         android:textSize="20dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:id="@+id/tv_user_name"
                         android:layout_gravity="left"
                         android:layout_below="@+id/heading">
