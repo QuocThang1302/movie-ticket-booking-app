@@ -1,6 +1,8 @@
 package com.example.moviebooking.moviepage;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -38,6 +40,7 @@ public class MoviePageActivity extends AppCompatActivity {
 
     private boolean isExpanded = false;
     private TextView movieDescription;
+    private TextView trailerTextView;
     private ImageView expandButton;
 
     @Override
@@ -49,12 +52,31 @@ public class MoviePageActivity extends AppCompatActivity {
         if (receivedMovie == null || userInfo == null) {
             return;
         }
-
+        trailerTextView = findViewById(R.id.tv_trailer);
+        trailerTextView.setOnClickListener(v -> openYoutubeTrailer());
         initializeUI();
         setOnClickForFABButtonAndBackButton();
         bindDataToMovieInfo();
         bindDataToDateList();
         bindDataToHourList1List2();
+    }
+    private void openYoutubeTrailer() {
+        if (receivedMovie == null || receivedMovie.getTrailerYoutube() == null) {
+            showToast("Trailer is not available");
+            return;
+        }
+
+        String trailerUrl = receivedMovie.getTrailerYoutube();
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(trailerUrl));
+        intent.setPackage("com.google.android.youtube");
+
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+
+            intent.setPackage(null);
+            startActivity(intent);
+        }
     }
 
     private void extractIntentData() {
@@ -153,7 +175,6 @@ public class MoviePageActivity extends AppCompatActivity {
         TextView movieDuration = findViewById(R.id.tv_movie_duration);
         TextView movieRating = findViewById(R.id.tv_movie_rate);
         TextView movieGenre = findViewById(R.id.tv_movie_genre);
-
         Glide.with(this).load(receivedMovie.getThumbnail()).into(movieImage);
         movieTitle.setText(receivedMovie.getTitle());
         movieDescription.setText(receivedMovie.getDescription());
