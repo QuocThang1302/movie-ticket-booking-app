@@ -37,7 +37,7 @@ public class FireBaseManager {
 
     private FireBaseManager() {
         // Private constructor to prevent instantiation outside of this class
-        firebaseDatabase = FirebaseDatabase.getInstance("https://moviebooking-65416-default-rtdb.asia-southeast1.firebasedatabase.app");
+        firebaseDatabase = FirebaseDatabase.getInstance("https://moviebooking-59c69-default-rtdb.asia-southeast1.firebasedatabase.app/");
     }
     public static synchronized FireBaseManager getInstance() {
         if (instance == null) {
