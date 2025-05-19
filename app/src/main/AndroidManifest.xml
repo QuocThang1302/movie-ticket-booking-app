@@ -19,6 +19,10 @@
         <activity
             android:name=".booking.BookingStatusActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ui.app.booking.SnackSelectionActivity"
+            android:exported="false" />
         <activity
             android:name=".moviepage.MoviePageActivity"
             android:exported="false"
