@@ -28,31 +28,36 @@ public class HoursAdapter extends RecyclerView.Adapter<HoursAdapter.HoursViewHol
         this.mContext = mContext;
     }
     public void setData(List<DateTime> list) {
-        mHoursTime = new ArrayList<>();
-
-        mHoursTime.add(new DateTime("", 0, 0, 0, 9, 30));
-        mHoursTime.add(new DateTime("", 0, 0, 0, 12, 30));
-        mHoursTime.add(new DateTime("", 0, 0, 0, 15, 00));
-        mHoursTime.add(new DateTime("", 0, 0, 0, 18, 30));
-        mHoursTime.add(new DateTime("", 0, 0, 0, 21, 00));
-
-        for (DateTime hours : mHoursTime) {
-            Boolean isExist = false;
-            for (DateTime item : list) {
-                if (hours.toString().equals(item.toString())) {
-                    isExist = true;
-                    break;
-                }
-            }
-            if (!isExist) {
-                hours.setDisable(true);
-            } else {
-                hours.setDisable(false);
-            }
-        }
-
+        mHoursTime = new ArrayList<>(list);
         notifyDataSetChanged();
     }
+
+//    public void setData(List<DateTime> list) {
+//        mHoursTime = new ArrayList<>();
+//
+//        mHoursTime.add(new DateTime("", 0, 0, 0, 9, 30));
+//        mHoursTime.add(new DateTime("", 0, 0, 0, 12, 30));
+//        mHoursTime.add(new DateTime("", 0, 0, 0, 15, 00));
+//        mHoursTime.add(new DateTime("", 0, 0, 0, 18, 30));
+//        mHoursTime.add(new DateTime("", 0, 0, 0, 21, 00));
+//
+//        for (DateTime hours : mHoursTime) {
+//            Boolean isExist = false;
+//            for (DateTime item : list) {
+//                if (hours.toString().equals(item.toString())) {
+//                    isExist = true;
+//                    break;
+//                }
+//            }
+//            if (!isExist) {
+//                hours.setDisable(true);
+//            } else {
+//                hours.setDisable(false);
+//            }
+//        }
+//
+//        notifyDataSetChanged();
+//    }
 
     @NonNull
     @Override

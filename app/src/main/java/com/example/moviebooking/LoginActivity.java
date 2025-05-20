@@ -24,17 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText, passwordEditText;
     private Button loginButton;
     private TextView registerTextView;
-
-
-    // TEST HOME ACTIVITY
-    private boolean isTest = true;
-    UserInfo userTest = new UserInfo("Minh", "123", "123456");
-
-    //
-    
-
-
-
+    private TextView forgotPasswordTextView;
     FireBaseManager firebaseManager = FireBaseManager.getInstance();
     @SuppressLint("MissingInflatedId")
     @Override
@@ -46,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         usernameEditText = findViewById(com.example.moviebooking.R.id.et_username);
         passwordEditText = findViewById(com.example.moviebooking.R.id.et_password);
         registerTextView = findViewById(com.example.moviebooking.R.id.tv_next_to_register);
+        forgotPasswordTextView = findViewById(R.id.txtForgotPassword);
         loginButton= findViewById(R.id.btn_login);
 
         setOnCLickListenerForThoseViews();
@@ -83,6 +74,14 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loginUser() {
@@ -98,21 +97,6 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
-
-
-                // TEST HOME ACTIVITY
-
-                if (isTest) {
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    intent.putExtra("userinfoIntent", UserInfo.class.cast(userTest));
-                    startActivity(intent);
-                    finish();
-                }
-
-                //
-
-
-
             }
         });
     }

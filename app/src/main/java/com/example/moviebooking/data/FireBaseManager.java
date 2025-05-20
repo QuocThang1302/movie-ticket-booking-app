@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.example.moviebooking.dto.DateTime;
 import com.example.moviebooking.dto.Movie;
+import com.example.moviebooking.dto.Schedule;
 import com.example.moviebooking.dto.Seat;
 import com.example.moviebooking.dto.Ticket;
 import com.example.moviebooking.dto.UserInfo;
@@ -22,8 +23,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class FireBaseManager {
     private static FireBaseManager instance;
@@ -313,4 +316,501 @@ public class FireBaseManager {
         void onBookedSeatsLoaded(List<Ticket> tickets);
         void onBookedSeatsError(String errorMessage);
     }
+    public static void verifyUserForPasswordReset(Context context, String username, String name, RegistrationCallback callback) {
+        DatabaseReference usersReference = firebaseDatabase.getReference(USERS_TABLE);
+
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(name)) {
+            Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            callback.onRegistrationResult(false, "Please fill in all fields", null);
+            return;
+        }
+
+        usersReference.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String nameFromDB = dataSnapshot.child("name").getValue(String.class);
+
+                    if (nameFromDB != null && nameFromDB.equals(name)) {
+                        // Username and name match, allow password reset
+                        callback.onRegistrationResult(true, "Verification successful", username);
+                    } else {
+                        Toast.makeText(context, "Name does not match for this username", Toast.LENGTH_SHORT).show();
+                        callback.onRegistrationResult(false, "Name does not match for this username", null);
+                    }
+                } else {
+                    Toast.makeText(context, "Username does not exist", Toast.LENGTH_SHORT).show();
+                    callback.onRegistrationResult(false, "Username does not exist", null);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("TAG", "Error: " + databaseError.getMessage());
+                callback.onRegistrationResult(false, "Error: " + databaseError.getMessage(), null);
+            }
+        });
+    }
+
+    public static void resetPassword(Context context, String username, String newPassword, String confirmPassword, RegistrationCallback callback) {
+        DatabaseReference usersReference = firebaseDatabase.getReference(USERS_TABLE);
+
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(newPassword) || TextUtils.isEmpty(confirmPassword)) {
+            Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            callback.onRegistrationResult(false, "Please fill in all fields", null);
+            return;
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            Toast.makeText(context, "Password and confirm password are not the same", Toast.LENGTH_SHORT).show();
+            callback.onRegistrationResult(false, "Password and confirm password are not the same", null);
+            return;
+        }
+
+        if (newPassword.length() < 6) {
+            Toast.makeText(context, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show();
+            callback.onRegistrationResult(false, "Password must be at least 6 characters", null);
+            return;
+        }
+
+        usersReference.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Update password
+                    usersReference.child(username).child("password").setValue(newPassword)
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(context, "Password reset successfully", Toast.LENGTH_SHORT).show();
+                                callback.onRegistrationResult(true, "Password reset successfully", null);
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(context, "Failed to reset password: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                callback.onRegistrationResult(false, "Failed to reset password: " + e.getMessage(), null);
+                            });
+                } else {
+                    Toast.makeText(context, "Username does not exist", Toast.LENGTH_SHORT).show();
+                    callback.onRegistrationResult(false, "Username does not exist", null);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("TAG", "Error: " + databaseError.getMessage());
+                callback.onRegistrationResult(false, "Error: " + databaseError.getMessage(), null);
+            }
+        });
+    }
+
+    // Schedules Schedules Schedules Schedules Schedules Schedules Schedules Schedules Schedules
+
+// Check if a specific showtime is available (not fully booked)
+public static void checkShowtimeAvailability(String movieId, String cinemaId, DateTime dateTime, int maxSeats, RegistrationCallback callback) {
+    DatabaseReference ticketsReference = firebaseDatabase.getReference(TICKETS_TABLE);
+    String dateTimeStr = dateTime.toString();
+
+    ticketsReference.orderByChild("movieId").equalTo(movieId).addListenerForSingleValueEvent(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            int bookedSeats = 0;
+
+            for (DataSnapshot ticketSnapshot : snapshot.getChildren()) {
+                String ticketCinemaId = ticketSnapshot.child("cinemaId").getValue(String.class);
+                String ticketDateTime = ticketSnapshot.child("dateTime").getValue(String.class);
+                Boolean isBooked = ticketSnapshot.child("isBooked").getValue(Boolean.class);
+
+                // So sánh đúng lịch chiếu và rạp
+                if (cinemaId.equals(ticketCinemaId) &&
+                        dateTimeStr.equals(ticketDateTime) &&
+                        Boolean.TRUE.equals(isBooked)) {
+                    bookedSeats++;
+                }
+            }
+
+            if (bookedSeats < maxSeats) {
+                callback.onRegistrationResult(true, "Còn chỗ", null);
+            } else {
+                callback.onRegistrationResult(false, "Hết chỗ", null);
+            }
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+            callback.onRegistrationResult(false, "Lỗi khi kiểm tra dữ liệu: " + error.getMessage(), null);
+        }
+    });
+}
+
+
+
+
+    //if (cinemaId.equals(ticketCinemaId) && dateTimeStr.)// Add these to your FireBaseManager class
+
+                    private static final String SCHEDULES_TABLE = "SCHEDULES";
+
+                    public interface OnSchedulesDataLoadedListener {
+                        void onSchedulesDataLoaded(List<Schedule> schedulesList);
+                        void onSchedulesDataError(String errorMessage);
+                    }
+
+// Add a schedule to the database
+                    public static void addSchedule(Context context, Schedule schedule, RegistrationCallback callback) {
+                        DatabaseReference schedulesReference = firebaseDatabase.getReference(SCHEDULES_TABLE);
+
+                        // First check if the movie exists
+                        DatabaseReference moviesReference = firebaseDatabase.getReference("MOVIES");
+                        moviesReference.child(schedule.getMovieId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (!dataSnapshot.exists()) {
+                                    callback.onRegistrationResult(false, "Movie with ID " + schedule.getMovieId() + " does not exist", null);
+                                    return;
+                                }
+
+                                // Generate a new key for the schedule
+                                String scheduleId = schedulesReference.push().getKey();
+                                if (scheduleId == null) {
+                                    callback.onRegistrationResult(false, "Failed to generate schedule ID", null);
+                                    return;
+                                }
+
+                                schedule.setScheduleId(scheduleId);
+
+                                // Create a map with the schedule data
+                                Map<String, Object> scheduleValues = new HashMap<>();
+                                scheduleValues.put("scheduleId", schedule.getScheduleId());
+                                scheduleValues.put("movieId", schedule.getMovieId());
+                                scheduleValues.put("cinemaId", schedule.getCinemaId());
+                                scheduleValues.put("active", schedule.isActive());
+
+                                // Convert DateTime objects to strings for Firebase
+                                List<String> showTimeStrings = schedule.getShowTimesAsStrings();
+                                scheduleValues.put("showTimes", showTimeStrings);
+
+                                // Add the schedule to the database
+                                schedulesReference.child(scheduleId).setValue(scheduleValues)
+                                        .addOnSuccessListener(aVoid -> {
+                                            callback.onRegistrationResult(true, "Schedule added successfully", scheduleId);
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            callback.onRegistrationResult(false, "Failed to add schedule: " + e.getMessage(), null);
+                                        });
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Log.e("TAG", "Error checking movie: " + databaseError.getMessage());
+                                callback.onRegistrationResult(false, "Error checking movie: " + databaseError.getMessage(), null);
+                            }
+                        });
+                    }
+
+// Update an existing schedule
+                    public static void updateSchedule(Context context, Schedule schedule, RegistrationCallback callback) {
+                        if (schedule.getScheduleId() == null || schedule.getScheduleId().isEmpty()) {
+                            callback.onRegistrationResult(false, "Schedule ID is required for updates", null);
+                            return;
+                        }
+
+                        DatabaseReference scheduleRef = firebaseDatabase.getReference(SCHEDULES_TABLE).child(schedule.getScheduleId());
+
+                        // Check if the schedule exists
+                        scheduleRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (!dataSnapshot.exists()) {
+                                    callback.onRegistrationResult(false, "Schedule with ID " + schedule.getScheduleId() + " does not exist", null);
+                                    return;
+                                }
+
+                                // Update the schedule
+                                Map<String, Object> updates = new HashMap<>();
+                                updates.put("movieId", schedule.getMovieId());
+                                updates.put("cinemaId", schedule.getCinemaId());
+                                updates.put("active", schedule.isActive());
+
+                                // Convert DateTime objects to strings for Firebase
+                                updates.put("showTimes", schedule.getShowTimesAsStrings());
+
+                                scheduleRef.updateChildren(updates)
+                                        .addOnSuccessListener(aVoid -> {
+                                            callback.onRegistrationResult(true, "Schedule updated successfully", schedule.getScheduleId());
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            callback.onRegistrationResult(false, "Failed to update schedule: " + e.getMessage(), null);
+                                        });
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Log.e("TAG", "Error checking schedule: " + databaseError.getMessage());
+                                callback.onRegistrationResult(false, "Error checking schedule: " + databaseError.getMessage(), null);
+                            }
+                        });
+                    }
+
+// Delete a schedule
+                    public static void deleteSchedule(Context context, String scheduleId, RegistrationCallback callback) {
+                        DatabaseReference scheduleRef = firebaseDatabase.getReference(SCHEDULES_TABLE).child(scheduleId);
+
+                        scheduleRef.removeValue()
+                                .addOnSuccessListener(aVoid -> {
+                                    callback.onRegistrationResult(true, "Schedule deleted successfully", null);
+                                })
+                                .addOnFailureListener(e -> {
+                                    callback.onRegistrationResult(false, "Failed to delete schedule: " + e.getMessage(), null);
+                                });
+                    }
+
+// Fetch all schedules
+                    public static void fetchAllSchedules(OnSchedulesDataLoadedListener listener) {
+                        DatabaseReference schedulesReference = firebaseDatabase.getReference(SCHEDULES_TABLE);
+
+                        schedulesReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                List<Schedule> schedules = new ArrayList<>();
+
+                                for (DataSnapshot scheduleSnapshot : snapshot.getChildren()) {
+                                    try {
+                                        String scheduleId = scheduleSnapshot.getKey();
+                                        String movieId = scheduleSnapshot.child("movieId").getValue(String.class);
+                                        String cinemaId = scheduleSnapshot.child("cinemaId").getValue(String.class);
+                                        Boolean isActive = scheduleSnapshot.child("active").getValue(Boolean.class);
+
+                                        if (isActive == null) {
+                                            isActive = true; // Default value if not set
+                                        }
+
+                                        // Create a schedule object
+                                        Schedule schedule = new Schedule();
+                                        schedule.setScheduleId(scheduleId);
+                                        schedule.setMovieId(movieId);
+                                        schedule.setCinemaId(cinemaId);
+                                        schedule.setActive(isActive);
+
+                                        // Parse showTimes from strings to DateTime objects
+                                        List<String> showTimeStrings = new ArrayList<>();
+                                        for (DataSnapshot timeSnapshot : scheduleSnapshot.child("showTimes").getChildren()) {
+                                            String time = timeSnapshot.getValue(String.class);
+                                            if (time != null) {
+                                                showTimeStrings.add(time);
+                                            }
+                                        }
+                                        schedule.setShowTimesFromStrings(showTimeStrings);
+
+                                        schedules.add(schedule);
+                                    } catch (Exception e) {
+                                        Log.e("TAG", "Error parsing schedule: " + e.getMessage());
+                                    }
+                                }
+
+                                listener.onSchedulesDataLoaded(schedules);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                listener.onSchedulesDataError("Error: " + error.getMessage());
+                            }
+                        });
+                    }
+
+// Fetch schedules for a specific movie
+                    public static void fetchSchedulesByMovie(String movieId, OnSchedulesDataLoadedListener listener) {
+                        DatabaseReference schedulesReference = firebaseDatabase.getReference(SCHEDULES_TABLE);
+
+                        schedulesReference.orderByChild("movieId").equalTo(movieId).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                List<Schedule> schedules = new ArrayList<>();
+
+                                for (DataSnapshot scheduleSnapshot : snapshot.getChildren()) {
+                                    try {
+                                        String scheduleId = scheduleSnapshot.getKey();
+                                        String cinemaId = scheduleSnapshot.child("cinemaId").getValue(String.class);
+                                        Boolean isActive = scheduleSnapshot.child("active").getValue(Boolean.class);
+
+                                        if (isActive == null) {
+                                            isActive = true; // Default value if not set
+                                        }
+
+                                        // Create a schedule object
+                                        Schedule schedule = new Schedule();
+                                        schedule.setScheduleId(scheduleId);
+                                        schedule.setMovieId(movieId);
+                                        schedule.setCinemaId(cinemaId);
+                                        schedule.setActive(isActive);
+
+                                        // Parse showTimes from strings to DateTime objects
+                                        List<String> showTimeStrings = new ArrayList<>();
+                                        for (DataSnapshot timeSnapshot : scheduleSnapshot.child("showTimes").getChildren()) {
+                                            String time = timeSnapshot.getValue(String.class);
+                                            if (time != null) {
+                                                showTimeStrings.add(time);
+                                            }
+                                        }
+                                        schedule.setShowTimesFromStrings(showTimeStrings);
+
+                                        schedules.add(schedule);
+                                    } catch (Exception e) {
+                                        Log.e("TAG", "Error parsing schedule: " + e.getMessage());
+                                    }
+                                }
+
+                                listener.onSchedulesDataLoaded(schedules);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                listener.onSchedulesDataError("Error: " + error.getMessage());
+                            }
+                        });
+                    }
+
+// Fetch schedules for a specific cinema
+                    public static void fetchSchedulesByCinema(String cinemaId, OnSchedulesDataLoadedListener listener) {
+                        DatabaseReference schedulesReference = firebaseDatabase.getReference(SCHEDULES_TABLE);
+
+                        schedulesReference.orderByChild("cinemaId").equalTo(cinemaId).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                List<Schedule> schedules = new ArrayList<>();
+
+                                for (DataSnapshot scheduleSnapshot : snapshot.getChildren()) {
+                                    try {
+                                        String scheduleId = scheduleSnapshot.getKey();
+                                        String movieId = scheduleSnapshot.child("movieId").getValue(String.class);
+                                        Boolean isActive = scheduleSnapshot.child("active").getValue(Boolean.class);
+
+                                        if (isActive == null) {
+                                            isActive = true; // Default value if not set
+                                        }
+
+                                        // Create a schedule object
+                                        Schedule schedule = new Schedule();
+                                        schedule.setScheduleId(scheduleId);
+                                        schedule.setMovieId(movieId);
+                                        schedule.setCinemaId(cinemaId);
+                                        schedule.setActive(isActive);
+
+                                        // Parse showTimes from strings to DateTime objects
+                                        List<String> showTimeStrings = new ArrayList<>();
+                                        for (DataSnapshot timeSnapshot : scheduleSnapshot.child("showTimes").getChildren()) {
+                                            String time = timeSnapshot.getValue(String.class);
+                                            if (time != null) {
+                                                showTimeStrings.add(time);
+                                            }
+                                        }
+                                        schedule.setShowTimesFromStrings(showTimeStrings);
+
+                                        schedules.add(schedule);
+                                    } catch (Exception e) {
+                                        Log.e("TAG", "Error parsing schedule: " + e.getMessage());
+                                    }
+                                }
+
+                                listener.onSchedulesDataLoaded(schedules);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                listener.onSchedulesDataError("Error: " + error.getMessage());
+                            }
+                        });
+                    }
+
+// Fetch schedules for a specific movie and cinema
+                    public static void fetchSchedulesByMovieAndCinema(String movieId, String cinemaId, OnSchedulesDataLoadedListener listener) {
+                        DatabaseReference schedulesReference = firebaseDatabase.getReference(SCHEDULES_TABLE);
+
+                        schedulesReference.orderByChild("movieId").equalTo(movieId).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                List<Schedule> schedules = new ArrayList<>();
+
+                                for (DataSnapshot scheduleSnapshot : snapshot.getChildren()) {
+                                    try {
+                                        String scheduleId = scheduleSnapshot.getKey();
+                                        String scheduleCinemaId = scheduleSnapshot.child("cinemaId").getValue(String.class);
+                                        Boolean isActive = scheduleSnapshot.child("active").getValue(Boolean.class);
+
+                                        // Only include schedules for the specified cinema
+                                        if (cinemaId.equals(scheduleCinemaId)) {
+                                            if (isActive == null) {
+                                                isActive = true; // Default value if not set
+                                            }
+
+                                            // Create a schedule object
+                                            Schedule schedule = new Schedule();
+                                            schedule.setScheduleId(scheduleId);
+                                            schedule.setMovieId(movieId);
+                                            schedule.setCinemaId(cinemaId);
+                                            schedule.setActive(isActive);
+
+                                            // Parse showTimes from strings to DateTime objects
+                                            List<String> showTimeStrings = new ArrayList<>();
+                                            for (DataSnapshot timeSnapshot : scheduleSnapshot.child("showTimes").getChildren()) {
+                                                String time = timeSnapshot.getValue(String.class);
+                                                if (time != null) {
+                                                    showTimeStrings.add(time);
+                                                }
+                                            }
+                                            schedule.setShowTimesFromStrings(showTimeStrings);
+
+                                            schedules.add(schedule);
+                                        }
+                                    } catch (Exception e) {
+                                        Log.e("TAG", "Error parsing schedule: " + e.getMessage());
+                                    }
+                                }
+
+                                listener.onSchedulesDataLoaded(schedules);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                listener.onSchedulesDataError("Error: " + error.getMessage());
+                            }
+                        });
+                    }
+
+// Check if a specific showtime is available (not fully booked)
+                    public static void checkShowtimeAvailability(String movieId, String cinemaId, String dateTime, int maxSeats, RegistrationCallback callback) {
+                        DatabaseReference ticketsReference = firebaseDatabase.getReference(TICKETS_TABLE);
+
+                        ticketsReference.orderByChild("movieId").equalTo(movieId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                int bookedSeats = 0;
+
+                                for (DataSnapshot ticketSnapshot : snapshot.getChildren()) {
+                                    String ticketCinemaId = ticketSnapshot.child("cinemaId").getValue(String.class);
+                                    String ticketDateTime = ticketSnapshot.child("dateTime").getValue(String.class);
+                                    Boolean isBooked = ticketSnapshot.child("isBooked").getValue(Boolean.class);
+
+                                    if (cinemaId.equals(ticketCinemaId) && dateTime.equals(ticketDateTime) && isBooked != null && isBooked) {
+                                        bookedSeats++;
+                                    }
+                                }
+
+                                boolean isAvailable = bookedSeats < maxSeats;
+                                int remainingSeats = maxSeats - bookedSeats;
+
+                                Map<String, Object> data = new HashMap<>();
+                                data.put("isAvailable", isAvailable);
+                                data.put("bookedSeats", bookedSeats);
+                                data.put("remainingSeats", remainingSeats);
+                                data.put("maxSeats", maxSeats);
+
+                                callback.onRegistrationResult(true, isAvailable ?
+                                        "Showtime is available with " + remainingSeats + " seats remaining" :
+                                        "Showtime is fully booked", data);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                callback.onRegistrationResult(false, "Error checking availability: " + error.getMessage(), null);
+                            }
+                        });
+                    }
+    // Schedules Schedules Schedules Schedules Schedules Schedules Schedules Schedules Schedules
 }

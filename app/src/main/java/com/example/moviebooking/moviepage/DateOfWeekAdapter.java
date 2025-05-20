@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviebooking.R;
 import com.example.moviebooking.dto.DateTime;
+import com.example.moviebooking.dto.Schedule;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DateOfWeekAdapter extends RecyclerView.Adapter<DateOfWeekAdapter.DateTimeViewHolder> {
@@ -121,4 +123,7 @@ public class DateOfWeekAdapter extends RecyclerView.Adapter<DateOfWeekAdapter.Da
             }
         }
     }
+    //Thử nghiệm
+
+    //Thử nghiệm
 }

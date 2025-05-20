@@ -1,7 +1,10 @@
 package com.example.moviebooking.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class DateTime implements Serializable {
     String dayOfWeek;
@@ -101,5 +104,61 @@ public class DateTime implements Serializable {
 
         return this;
     }
+    // input: "MONDAY-13/5/2025-14:30"
+    public DateTime(String dateTimeString) {
+        try {
+            String[] parts = dateTimeString.split("-");
+            this.dayOfWeek = parts[0];
+
+            String[] dateParts = parts[1].split("/");
+            this.day = Integer.parseInt(dateParts[0]);
+            this.month = Integer.parseInt(dateParts[1]);
+            this.year = Integer.parseInt(dateParts[2]);
+
+            String[] timeParts = parts[2].split(":");
+            this.hour = Integer.parseInt(timeParts[0]);
+            this.minute = Integer.parseInt(timeParts[1]);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public LocalDate toLocalDate() {
+        return LocalDate.of(year, month, day);
+    }
+    public DateTime(LocalDate date) {
+        this.day = date.getDayOfMonth();
+        this.month = date.getMonthValue();
+        this.year = date.getYear();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, day);
+        String[] daysOfWeek = new String[]{"SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"};
+        this.dayOfWeek = daysOfWeek[calendar.get(Calendar.DAY_OF_WEEK) - 1];
+
+        // Giờ và phút mặc định là 0
+        this.hour = 0;
+        this.minute = 0;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        DateTime that = (DateTime) obj;
+        return this.day == that.day &&
+                this.month == that.month &&
+                this.year == that.year &&
+                this.hour == that.hour &&
+                this.minute == that.minute;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(day, month, year, hour, minute);
+    }
+    public LocalTime toLocalTime() {
+        return LocalTime.of(hour, minute);
+    }
+
 }
 

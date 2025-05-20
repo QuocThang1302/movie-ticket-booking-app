@@ -16,19 +16,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.moviebooking.R;
+import com.example.moviebooking.data.FireBaseManager;
 import com.example.moviebooking.data.HardcodingData;
 import com.example.moviebooking.dto.DateTime;
 import com.example.moviebooking.dto.Movie;
+import com.example.moviebooking.dto.Schedule;
 import com.example.moviebooking.dto.UserInfo;
 import com.example.moviebooking.booking.BookingActivity;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class MoviePageActivity extends AppCompatActivity {
     private static final String USER_INFO_INTENT_KEY = "userinfoIntent";
     private static final String MOVIE_INTENT_KEY = "movie";
-
+    private List<Schedule> schedules = new ArrayList<>();
+    private Map<String, List<String>> dateToHoursMap = new LinkedHashMap<>(); // Map ngày → danh sách giờ
+    private String selectedDate = null;
     private Movie receivedMovie;
     private UserInfo userInfo;
     private List<DateTime> dates;
@@ -52,13 +62,14 @@ public class MoviePageActivity extends AppCompatActivity {
         if (receivedMovie == null || userInfo == null) {
             return;
         }
+        String movieId = receivedMovie.getMovieID();
         trailerTextView = findViewById(R.id.tv_trailer);
         trailerTextView.setOnClickListener(v -> openYoutubeTrailer());
         initializeUI();
         setOnClickForFABButtonAndBackButton();
         bindDataToMovieInfo();
-        bindDataToDateList();
-        bindDataToHourList1List2();
+        bindDataToDateList(movieId);
+        //bindDataToHourList1List2();
     }
     private void openYoutubeTrailer() {
         if (receivedMovie == null || receivedMovie.getTrailerYoutube() == null) {
@@ -183,37 +194,89 @@ public class MoviePageActivity extends AppCompatActivity {
         movieGenre.setText(receivedMovie.getMainGenre());
     }
 
-    private void bindDataToDateList() {
+    private void bindDataToDateList(String movieId) {
         RecyclerView dateRCV = findViewById(R.id.rcv_dates);
-        dates = HardcodingData.getNextDates();
         dateOfWeekAdapter = new DateOfWeekAdapter(this);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        dateRCV.setLayoutManager(linearLayoutManager);
-
-        dateOfWeekAdapter.setData(dates);
+        dateRCV.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         dateRCV.setAdapter(dateOfWeekAdapter);
+
+        FireBaseManager.fetchSchedulesByMovie(movieId, new FireBaseManager.OnSchedulesDataLoadedListener() {
+            @Override
+            public void onSchedulesDataLoaded(List<Schedule> schedules) {
+                Set<LocalDate> uniqueDates = new TreeSet<>();
+                for (Schedule schedule : schedules) {
+                    for (DateTime dateTime : schedule.getShowTimes()) {
+                        uniqueDates.add(dateTime.toLocalDate());
+                    }
+                }
+
+                List<DateTime> dateList = new ArrayList<>();
+                for (LocalDate date : uniqueDates) {
+                    dateList.add(new DateTime(date));
+                }
+
+                dateOfWeekAdapter.setData(dateList);
+
+                // Auto-select the first date and bind hours
+                if (!dateList.isEmpty()) {
+                    dateList.get(0).setSelected(true);
+                    dateOfWeekAdapter.notifyDataSetChanged();
+                    bindDataToHourList1List2(schedules, dateList.get(0));
+                }
+
+                // Lắng nghe khi chọn ngày mới
+                dateOfWeekAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                    @Override
+                    public void onChanged() {
+                        DateTime selectedDate = dateOfWeekAdapter.getSelectedDate();
+                        if (selectedDate != null) {
+                            bindDataToHourList1List2(schedules, selectedDate);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onSchedulesDataError(String errorMessage) {
+                Log.e("Firebase", "Error loading schedules: " + errorMessage);
+            }
+        });
     }
 
-    private void bindDataToHourList1List2() {
-        RecyclerView hourRCV1 = (RecyclerView) findViewById(R.id.rcv_hours1);
-        hours1 = HardcodingData.getHours();
+
+
+    private void bindDataToHourList1List2(List<Schedule> schedules, DateTime selectedDate) {
+        RecyclerView hourRCV1 = findViewById(R.id.rcv_hours1);
+        RecyclerView hourRCV2 = findViewById(R.id.rcv_hours2);
 
         hours1Adapter = new HoursAdapter(this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        hourRCV1.setLayoutManager(linearLayoutManager);
-        hours1Adapter.setData(hours1);
-        Log.d("", ": " + hours1Adapter.getItemCount());
-        hourRCV1.setAdapter(hours1Adapter);
-
-        RecyclerView hourRCV2 = (RecyclerView) findViewById(R.id.rcv_hours2);
-        hours2 = HardcodingData.getHours();
-
         hours2Adapter = new HoursAdapter(this);
-        linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        hourRCV2.setLayoutManager(linearLayoutManager);
-        hours2Adapter.setData(hours2);
-        Log.d("", ": " + hours2Adapter.getItemCount());
+
+        hourRCV1.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        hourRCV2.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+
+        hourRCV1.setAdapter(hours1Adapter);
         hourRCV2.setAdapter(hours2Adapter);
+
+        List<DateTime> matchingTimes = new ArrayList<>();
+        for (Schedule schedule : schedules) {
+            for (DateTime dateTime : schedule.getShowTimes()) {
+                if (dateTime.toLocalDate().equals(selectedDate.toLocalDate())) {
+                    matchingTimes.add(dateTime);
+                }
+            }
+        }
+
+        // Chia đều danh sách giờ chiếu giữa hai RecyclerView
+        int mid = matchingTimes.size() / 2;
+        List<DateTime> part1 = matchingTimes.subList(0, mid);
+        List<DateTime> part2 = matchingTimes.subList(mid, matchingTimes.size());
+
+        hours1Adapter.setData(part1);
+        hours2Adapter.setData(part2);
     }
+
+    //Thử nghiệm
+
+    // Thử nghiệm
 }
