@@ -211,7 +211,6 @@ public class BookingActivity extends AppCompatActivity {
         intent.putExtra("datetime", selectedDateTime);
         intent.putExtra("cinema", cinemaName);
         startActivity(intent);
-        finish();
     }
 
     private void fetchBookedSeat() {
