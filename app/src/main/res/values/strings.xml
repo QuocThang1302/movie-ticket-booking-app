@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">moviebooking</string>
+    <string name="back_arrow">\u2190</string>
 </resources>
