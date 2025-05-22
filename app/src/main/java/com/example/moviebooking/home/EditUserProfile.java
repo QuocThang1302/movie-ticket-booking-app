@@ -15,6 +15,11 @@ import com.example.moviebooking.dto.UserInfo;
 public class EditUserProfile extends AppCompatActivity {
 
     private UserInfo userInfo = null;
+    private boolean isUpdate = false;
+    EditText editDisplayname;
+    ImageView editProfileImage;
+    Button saveChangedButton;
+    Button editprofileBackButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,19 +36,35 @@ public class EditUserProfile extends AppCompatActivity {
     }
 
     private void setUserInfo(){
-        ImageView editProfileImage = findViewById(R.id.edit_user_profile_picture);
-        EditText editDisplayname = findViewById(R.id.et_display_name);
+        editProfileImage = findViewById(R.id.edit_user_profile_picture);
+        editDisplayname = findViewById(R.id.et_display_name);
 
         editDisplayname.setText(userInfo.getName());
         editProfileImage.setImageResource(R.drawable.icon_user_ava);
     }
 
     private void allViewClickListener(){
-        Button editprofileBackButton = findViewById(R.id.edit_user_profile_back_button);
+        editprofileBackButton = findViewById(R.id.edit_user_profile_back_button);
         editprofileBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        saveChangedButton = findViewById(R.id.edit_save_button);
+        saveChangedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userInfo.setName(editDisplayname.getText().toString());
+                isUpdate = true;
+
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("UpdateStat", isUpdate);
+                resultIntent.putExtra("UserInfoIntent", userInfo);
+                setResult(RESULT_OK, resultIntent);
+                finish();
+
             }
         });
     }

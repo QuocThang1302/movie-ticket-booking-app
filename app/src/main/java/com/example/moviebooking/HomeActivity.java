@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
@@ -41,6 +43,7 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
     private UserInfo userInfo;
     private ViewPager2 viewPager2;
     private Handler sliderHandler = new Handler();
+    private ActivityResultLauncher<Intent> editProfileLauncher;
     private FireBaseManager fireBaseManager = FireBaseManager.getInstance();
 
     @Override
@@ -48,11 +51,11 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         setupUserInfo();
+        launcherRegister();
         setOnClickViewAll();
         setDataForDrawer();
         setDataForMoviesBar(this);
         setDataForMoviesSlider(this);
-
     }
 
     @Override
@@ -60,6 +63,28 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
         finish();
         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    private void launcherRegister(){
+        editProfileLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        boolean isUpdate = result.getData().getBooleanExtra("UpdateStat", false);
+                        if(isUpdate) {
+                            UserInfo updatedUser = (UserInfo) result.getData().getSerializableExtra("UserInfoIntent");
+                            if (updatedUser != null) {
+                                this.userInfo = updatedUser;
+                                setOnClickViewAll();
+                                setDataForDrawer();
+                                setDataForMoviesBar(this);
+                                setDataForMoviesSlider(this);
+                            }
+                        }
+                    }
+                }
+        );
+
     }
 
     private void setupUserInfo() {
@@ -103,7 +128,7 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
         drawerItems.add("Booking History");
         drawerItems.add("Logout");
 
-        drawerList.setAdapter(new DrawerListAdapter(this, userInfo, this));
+        drawerList.setAdapter(new DrawerListAdapter(this, userInfo, this, editProfileLauncher));
         drawerList.setLayoutManager(new LinearLayoutManager(this));
 
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -169,10 +194,12 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
         viewPager2.setAdapter(adapter);
 
         adapter.setOnMovieChangeListener(movie -> {
-            Glide.with(context)
-                    .load(movie.getThumbnail())
-                    .transform(new jp.wasabeef.glide.transformations.BlurTransformation(25, 3)) // làm mờ
-                    .into(ivBackground);
+            if (!(isDestroyed() || isFinishing())){
+                Glide.with(context)
+                        .load(movie.getThumbnail())
+                        .transform(new jp.wasabeef.glide.transformations.BlurTransformation(25, 3)) // làm mờ
+                        .into(ivBackground);
+            }
         });
 
         // Gọi lần đầu để hiển thị background cho phim đầu tiên

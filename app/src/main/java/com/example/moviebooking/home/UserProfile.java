@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.moviebooking.R;
@@ -15,6 +17,7 @@ import com.example.moviebooking.dto.UserInfo;
 public class UserProfile extends AppCompatActivity {
 
     private UserInfo userInfo = null;
+    private boolean isUpdate =false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +28,23 @@ public class UserProfile extends AppCompatActivity {
         allViewClickListener();
     }
 
+    private ActivityResultLauncher<Intent> launcher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    isUpdate = result.getData().getBooleanExtra("UpdateStat", false);
+                    if(isUpdate){
+                        userInfo = (UserInfo) result.getData().getSerializableExtra("UserInfoIntent");
+                    }
+                    setUserData();
+                }
+            });
+
     private void getIntentData() {
         Intent intent = getIntent();
         userInfo = (UserInfo) intent.getSerializableExtra("userinfoIntent");
+
+
     }
 
     private void setUserData(){
@@ -45,6 +62,13 @@ public class UserProfile extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isUpdate){
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("UpdateStat", isUpdate);
+                    resultIntent.putExtra("UserInfoIntent", userInfo);
+                    setResult(RESULT_OK, resultIntent);
+                    finish();
+                }
                 finish();
             }
         });
@@ -55,7 +79,7 @@ public class UserProfile extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(UserProfile.this, EditUserProfile.class);
                 intent.putExtra("userInfoIntent",userInfo);
-                startActivity(intent);
+                launcher.launch(intent);
             }
         });
     }

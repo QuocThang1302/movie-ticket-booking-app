@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,14 +27,16 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private Context context;
     private OnLogoutClickListener logoutClickListener;
     private int viewType;
+    private ActivityResultLauncher<Intent> launcher;
     private static final int HEADER_VIEW = 0;
     private static final int SETTING_VIEW = 1;
 
-    public DrawerListAdapter(Context context, UserInfo userInfo, OnLogoutClickListener listener) {
+    public DrawerListAdapter(Context context, UserInfo userInfo, OnLogoutClickListener listener, ActivityResultLauncher<Intent> launcher) {
         this.context = context;
         this.userInfo = userInfo;
         this.drawerItems = Arrays.asList("Username", "Booking History", "Logout");
         this.logoutClickListener = listener;
+        this.launcher = launcher;
     }
     @Override
     public int getItemViewType(int position){
@@ -73,7 +77,7 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 public void onClick(View v) {
                     Intent intent = new Intent(context, UserProfile.class);
                     intent.putExtra("userinfoIntent", userInfo);
-                    context.startActivity(intent);
+                    launcher.launch(intent);
                 }
             });
 
