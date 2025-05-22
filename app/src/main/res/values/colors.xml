@@ -12,4 +12,8 @@
     <color name="violet">#19112a</color>
     <color name="dark_violet">#0C0918</color>
     <color name="light_violet">#8358b2</color>
+    <color name="dark_blue">#202024</color>
+    <color name="alpha">#00FFFFFF</color>
+    <color name="border_gray">#424242</color>
+    <color name="silver_light_gray">#C0C0C0</color>
 </resources>
