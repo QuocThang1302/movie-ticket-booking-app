@@ -117,6 +117,7 @@ public class SnackSelectionActivity extends AppCompatActivity {
         intent.putExtra("date", selectedDateTime.getShortDate());
         intent.putExtra("time", selectedDateTime.getTimeAMPM());
         intent.putExtra("totalPrice", ticketPrice + snackPrice);
+        intent.putExtra("userinfoIntent", userInfo);
         startActivity(intent);
         finish();
     }

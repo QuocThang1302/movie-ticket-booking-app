@@ -16,19 +16,20 @@
         android:theme="@style/Theme.Moviebooking"
         tools:targetApi="31">
         <activity
+            android:name=".TrailerActivity"
+            android:exported="false" />
+        <activity
             android:name=".ForgotPasswordActivity"
             android:exported="false" />
         <activity
             android:name=".booking.BookingStatusActivity"
             android:exported="false" />
-
         <activity
             android:name=".booking.SnackSelectionActivity"
             android:exported="false" />
         <activity
             android:name=".booking.PaymentActivity"
             android:exported="false" />
-
         <activity
             android:name=".moviepage.MoviePageActivity"
             android:exported="false"
@@ -48,10 +49,12 @@
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
-        <activity android:name=".home.UserProfile"
-            android:exported="false"/>
-        <activity android:name=".home.EditUserProfile"
-            android:exported="false"/>
+        <activity
+            android:name=".home.UserProfile"
+            android:exported="false" />
+        <activity
+            android:name=".home.EditUserProfile"
+            android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="true">

@@ -1,8 +1,6 @@
 package com.example.moviebooking.moviepage;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.moviebooking.R;
+import com.example.moviebooking.Trailer.TrailerDialogFragment;
 import com.example.moviebooking.data.FireBaseManager;
-import com.example.moviebooking.data.HardcodingData;
 import com.example.moviebooking.dto.DateTime;
 import com.example.moviebooking.dto.Movie;
 import com.example.moviebooking.dto.Schedule;
@@ -72,22 +70,8 @@ public class MoviePageActivity extends AppCompatActivity {
         //bindDataToHourList1List2();
     }
     private void openYoutubeTrailer() {
-        if (receivedMovie == null || receivedMovie.getTrailerYoutube() == null) {
-            showToast("Trailer is not available");
-            return;
-        }
+        new TrailerDialogFragment(receivedMovie.getTrailerYoutube()).show(getSupportFragmentManager(), "TrailerDialog");
 
-        String trailerUrl = receivedMovie.getTrailerYoutube();
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(trailerUrl));
-        intent.setPackage("com.google.android.youtube");
-
-        try {
-            startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-
-            intent.setPackage(null);
-            startActivity(intent);
-        }
     }
 
     private void extractIntentData() {

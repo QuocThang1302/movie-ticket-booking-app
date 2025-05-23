@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.moviebooking.R;
+import com.example.moviebooking.dto.UserInfo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
@@ -22,6 +23,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private String movieTitle, cinema, date, time;
     private double totalPrice;
+    private UserInfo userInfo;
     private ImageView qrCodeImage;
 
     @Override
@@ -36,10 +38,12 @@ public class PaymentActivity extends AppCompatActivity {
 
     private void extractIntentData() {
         Intent intent = getIntent();
+
         movieTitle = intent.getStringExtra("movieTitle");
         cinema = intent.getStringExtra("cinema");
         date = intent.getStringExtra("date");
         time = intent.getStringExtra("time");
+        userInfo = (UserInfo) intent.getSerializableExtra("userinfoIntent");
         totalPrice = intent.getDoubleExtra("totalPrice", 0.0);
     }
 
@@ -85,6 +89,7 @@ public class PaymentActivity extends AppCompatActivity {
         intent.putExtra("cinema", cinema);
         intent.putExtra("date", date);
         intent.putExtra("time", time);
+        intent.putExtra("userinfoIntent", userInfo);
         startActivity(intent);
         finish();
     }

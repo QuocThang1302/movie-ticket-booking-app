@@ -34,6 +34,7 @@ import java.util.List;
 public class BookingStatusActivity extends AppCompatActivity {
     private static final int REQUEST_WRITE_STORAGE = 1;
     private String movieTitle, cinema, date, time;
+    private UserInfo userInfo;
     public void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.example.moviebooking.R.layout.activity_booking_status);
@@ -47,6 +48,7 @@ public class BookingStatusActivity extends AppCompatActivity {
         cinema = intent.getStringExtra("cinema");
         date = intent.getStringExtra("date");
         time = intent.getStringExtra("time");
+        userInfo = (UserInfo) intent.getSerializableExtra("userinfoIntent");
     }
 
     private void initUI() {
