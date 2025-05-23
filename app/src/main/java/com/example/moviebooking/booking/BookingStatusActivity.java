@@ -81,13 +81,15 @@ public class BookingStatusActivity extends AppCompatActivity {
             intent.putExtra("userinfoIntent", (UserInfo) getIntent().getSerializableExtra("userinfoIntent"));
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
-            finish();
+
         });
+
 
         findViewById(com.example.moviebooking.R.id.tv_history).setOnClickListener(v -> {
             Intent intent = new Intent(this, BookingHistoryActivity.class);
             intent.putExtra("userinfoIntent", (UserInfo) getIntent().getSerializableExtra("userinfoIntent"));
             startActivity(intent);
+
         });
 
         findViewById(com.example.moviebooking.R.id.btn_save_to_gallery).setOnClickListener(v -> {
@@ -124,7 +126,7 @@ public class BookingStatusActivity extends AppCompatActivity {
         List<Ticket> ticketList = bookedTicketList.getBookedTicketList();
 
         ImageView movieImg = findViewById(com.example.moviebooking.R.id.movie_img);
-        TextView movie_name = findViewById(R.id.tv_movie_name);
+        TextView movie_name = findViewById(R.id.tv_movie_title);
         TextView ticket_cinema = findViewById(R.id.tv_cinema_name);
         TextView ticket_date_value = findViewById(R.id.tv_date);
         TextView ticket_hour_value = findViewById(R.id.tv_hours);
