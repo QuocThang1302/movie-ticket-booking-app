@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.moviebooking.booking.BookingHistoryActivity;
 import com.example.moviebooking.R;
 import com.example.moviebooking.dto.UserInfo;
@@ -18,11 +19,14 @@ import com.example.moviebooking.dto.UserInfo;
 import java.util.Arrays;
 import java.util.List;
 
-public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListAdapter.ViewHolder> {
+public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<String> drawerItems;
     private UserInfo userInfo;
     private Context context;
     private OnLogoutClickListener logoutClickListener;
+    private int viewType;
+    private static final int HEADER_VIEW = 0;
+    private static final int SETTING_VIEW = 1;
 
     public DrawerListAdapter(Context context, UserInfo userInfo, OnLogoutClickListener listener) {
         this.context = context;
@@ -30,49 +34,80 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListAdapter.Vi
         this.drawerItems = Arrays.asList("Username", "Booking History", "Logout");
         this.logoutClickListener = listener;
     }
+    @Override
+    public int getItemViewType(int position){
+        return position == 0 ? HEADER_VIEW : SETTING_VIEW;
+    }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_drawer, parent, false);
-        return new ViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if(viewType == HEADER_VIEW)
+        {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_header_drawer, parent, false);
+            return new HeaderViewHolder(view);
+        }
+        else{
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_drawer, parent, false);
+            return new ViewHolder(view);
+        }
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         String item = drawerItems.get(position);
 
-        if(position == 0) {
-            holder.textViewItem.setText(userInfo.getUsername());
-            holder.imageViewItem.setImageResource(R.drawable.icon_user_ava);
-        } else if(position == 1) {
-            holder.textViewItem.setText("Booking History");
-            holder.imageViewItem.setImageResource(R.drawable.icon_history);
+        if(getItemViewType(position) == HEADER_VIEW) {
+            HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
+            headerViewHolder.textViewHeaderItem.setText(userInfo.getName());
+            headerViewHolder.imageViewHeaderItem.setImageResource(R.drawable.icon_user_ava);
 
-            holder.textViewItem.setOnClickListener(new View.OnClickListener() {
+            Glide.with(context)
+                    .load(R.drawable.icon_user_ava)
+                    .circleCrop()
+                    .into(headerViewHolder.imageViewHeaderItem);
+
+            headerViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, BookingHistoryActivity.class);
+                    Intent intent = new Intent(context, UserProfile.class);
                     intent.putExtra("userinfoIntent", userInfo);
                     context.startActivity(intent);
                 }
             });
 
-        } else if (position == 2) {
-            holder.textViewItem.setText("Logout");
-            holder.imageViewItem.setImageResource(R.drawable.icon_logout);
+        } else{
+            ViewHolder viewHolder = (ViewHolder) holder;
+            if(position == 1) {
+                viewHolder.textViewItem.setText("Booking History");
+                viewHolder.imageViewItem.setImageResource(R.drawable.icon_history);
 
-            holder.textViewItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(logoutClickListener != null) {
-                        logoutClickListener.onLogoutClick();
+                viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, BookingHistoryActivity.class);
+                        intent.putExtra("userinfoIntent", userInfo);
+                        context.startActivity(intent);
                     }
-                }
-            });
+                });
+
+            } else if (position == 2) {
+                viewHolder.textViewItem.setText("Logout");
+                viewHolder.imageViewItem.setImageResource(R.drawable.icon_logout);
+
+                viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(logoutClickListener != null) {
+                            logoutClickListener.onLogoutClick();
+                        }
+                    }
+                });
+            }
         }
 
-        customizeTextViewItem(position, holder.textViewItem);
+        //customizeTextViewItem(position, holder.textViewItem);
     }
 
     @Override
@@ -92,6 +127,16 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListAdapter.Vi
             super(itemView);
             textViewItem = itemView.findViewById(R.id.username);
             imageViewItem = itemView.findViewById(R.id.imgUserDrawer);
+        }
+    }
+    static class HeaderViewHolder extends RecyclerView.ViewHolder {
+        TextView textViewHeaderItem;
+        ImageView imageViewHeaderItem;
+
+        HeaderViewHolder(View itemView) {
+            super(itemView);
+            textViewHeaderItem = itemView.findViewById(R.id.usernameHeader);
+            imageViewHeaderItem = itemView.findViewById(R.id.imgUserDrawerHeader);
         }
     }
 }

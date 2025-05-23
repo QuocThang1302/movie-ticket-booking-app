@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.example.moviebooking.R;
 import com.example.moviebooking.data.FireBaseManager;
 import com.example.moviebooking.dto.BookedTicketList;
 import com.example.moviebooking.dto.DateTime;
@@ -21,26 +24,47 @@ import com.example.moviebooking.dto.Movie;
 import com.example.moviebooking.dto.Seat;
 import com.example.moviebooking.dto.Ticket;
 import com.example.moviebooking.dto.UserInfo;
-import com.example.moviebooking.home.SaveViewAsImage;
 import com.example.moviebooking.HomeActivity;
+import com.example.moviebooking.home.SaveViewAsImage;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookingStatusActivity extends AppCompatActivity {
     private static final int REQUEST_WRITE_STORAGE = 1;
+    private String movieTitle, cinema, date, time;
     public void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.example.moviebooking.R.layout.activity_booking_status);
 
-        Intent intent = getIntent();
-        BookedTicketList bookedTicketList = (BookedTicketList) intent.getSerializableExtra("bookedTicketList");
-        if (bookedTicketList == null) {
-            return;
-        }
-        Movie movie = intent.getSerializableExtra("movie") != null ? (Movie) intent.getSerializableExtra("movie") : null;
+        extractIntentData();
+        initUI();
 
-        createTicketsCard(bookedTicketList, movie);
-        setOnClickListeners();
+
+
+    }
+    private void extractIntentData() {
+        Intent intent = getIntent();
+        movieTitle = intent.getStringExtra("movieTitle");
+        cinema = intent.getStringExtra("cinema");
+        date = intent.getStringExtra("date");
+        time = intent.getStringExtra("time");
+    }
+
+    private void initUI() {
+        TextView tvMovieTitle = findViewById(R.id.tv_movie_title);
+        TextView tvCinemaName = findViewById(R.id.tv_cinema_name);
+        TextView tvDate = findViewById(R.id.tv_date);
+        TextView tvHours = findViewById(R.id.tv_hours);
+
+        tvMovieTitle.setText(movieTitle);
+        tvCinemaName.setText(cinema);
+        tvDate.setText(date);
+        tvHours.setText(time);
+
+
+
     }
 
     @Override
@@ -103,11 +127,11 @@ public class BookingStatusActivity extends AppCompatActivity {
         List<Ticket> ticketList = bookedTicketList.getBookedTicketList();
 
         ImageView movieImg = findViewById(com.example.moviebooking.R.id.movie_img);
-        TextView movie_name = findViewById(com.example.moviebooking.R.id.movie_name);
-        TextView ticket_cinema = findViewById(com.example.moviebooking.R.id.ticket_cinema);
-        TextView ticket_date_value = findViewById(com.example.moviebooking.R.id.ticket_date_value);
-        TextView ticket_hour_value = findViewById(com.example.moviebooking.R.id.ticket_hour_value);
-        TextView ticket_seat_value = findViewById(com.example.moviebooking.R.id.ticket_seat_value);
+        TextView movie_name = findViewById(R.id.tv_movie_name);
+        TextView ticket_cinema = findViewById(R.id.tv_cinema_name);
+        TextView ticket_date_value = findViewById(R.id.tv_date);
+        TextView ticket_hour_value = findViewById(R.id.tv_hours);
+        TextView ticket_seat_value = findViewById(R.id.tv_seats);
         TextView booking_code_value = findViewById(com.example.moviebooking.R.id.booking_code_value);
         ImageView qr_code = findViewById(com.example.moviebooking.R.id.qr_code);
 
