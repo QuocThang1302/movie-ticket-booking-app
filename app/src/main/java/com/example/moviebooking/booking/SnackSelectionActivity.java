@@ -1,4 +1,4 @@
-package com.example.moviebooking.ui.app.booking;
+package com.example.moviebooking.booking;
 
 
 import android.content.Intent;
@@ -17,6 +17,7 @@ import com.example.moviebooking.dto.DateTime;
 import com.example.moviebooking.dto.Movie;
 import com.example.moviebooking.dto.UserInfo;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.example.moviebooking.booking.PaymentActivity;
 
 
 public class SnackSelectionActivity extends AppCompatActivity {
@@ -110,7 +111,7 @@ public class SnackSelectionActivity extends AppCompatActivity {
     }
 
     private void handleFabButtonClick(View v) {
-        Intent intent = new Intent(this, com.example.moviebooking.ui.app.booking.PaymentActivity.class);
+        Intent intent = new Intent(this, com.example.moviebooking.booking.PaymentActivity.class);
         intent.putExtra("movieTitle", receivedMovie.getTitle());
         intent.putExtra("cinema", cinemaName);
         intent.putExtra("date", selectedDateTime.getShortDate());

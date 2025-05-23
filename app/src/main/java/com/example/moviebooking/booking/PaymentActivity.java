@@ -1,4 +1,4 @@
-package com.example.moviebooking.ui.app.booking;
+package com.example.moviebooking.booking;
 
 import android.content.Intent;
 import android.os.Bundle;

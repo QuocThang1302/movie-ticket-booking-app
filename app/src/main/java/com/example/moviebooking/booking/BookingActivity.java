@@ -204,7 +204,7 @@ public class BookingActivity extends AppCompatActivity {
     }
 
     private void navigateToBookingStatusActivity(BookedTicketList bookedTicketList) {
-        Intent intent = new Intent(this, com.example.moviebooking.ui.app.booking.SnackSelectionActivity.class); // Chuyển sang SnackSelectionActivity
+        Intent intent = new Intent(this, com.example.moviebooking.booking.SnackSelectionActivity.class); // Chuyển sang SnackSelectionActivity
         intent.putExtra("movie", receivedMovie);
         intent.putExtra("bookedTicketList", bookedTicketList);
         intent.putExtra("userinfoIntent", userInfo);

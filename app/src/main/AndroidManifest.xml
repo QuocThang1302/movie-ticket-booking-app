@@ -23,10 +23,10 @@
             android:exported="false" />
 
         <activity
-            android:name=".ui.app.booking.SnackSelectionActivity"
+            android:name=".booking.SnackSelectionActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.app.booking.PaymentActivity"
+            android:name=".booking.PaymentActivity"
             android:exported="false" />
 
         <activity
