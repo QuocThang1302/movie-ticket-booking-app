@@ -37,12 +37,9 @@ public class BookingStatusActivity extends AppCompatActivity {
     public void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.example.moviebooking.R.layout.activity_booking_status);
-
         extractIntentData();
         initUI();
-
-
-
+        setOnClickListeners();
     }
     private void extractIntentData() {
         Intent intent = getIntent();
