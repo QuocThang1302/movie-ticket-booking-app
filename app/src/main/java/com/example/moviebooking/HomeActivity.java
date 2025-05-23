@@ -226,11 +226,12 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
     }
     private void updateBackgroundImage(String imageUrl) {
         ImageView backgroundImage = findViewById(R.id.blur_background_image);
-
-        Glide.with(this)
-                .load(imageUrl)
-                .transform(new jp.wasabeef.glide.transformations.BlurTransformation(25, 3))
-                .into(backgroundImage);
+        if (!isFinishing() && !isDestroyed()) {
+            Glide.with(this)
+                    .load(imageUrl)
+                    .transform(new jp.wasabeef.glide.transformations.BlurTransformation(25, 3))
+                    .into(backgroundImage);
+        }
     }
 
     private Runnable sliderRunnable = () -> viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1);

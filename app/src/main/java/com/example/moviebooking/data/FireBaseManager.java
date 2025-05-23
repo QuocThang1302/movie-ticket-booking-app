@@ -813,4 +813,24 @@ public static void checkShowtimeAvailability(String movieId, String cinemaId, Da
                         });
                     }
     // Schedules Schedules Schedules Schedules Schedules Schedules Schedules Schedules Schedules
+
+    //Add profile picture Uri in Database
+    public void updateProfilePicture(String username, String imageUrl, UpdateCallback callback) {
+        DatabaseReference userRef = firebaseDatabase.getReference("USERS_INFO").child(username);
+        Map<String, Object> updateData = new HashMap<>();
+        updateData.put("profilePic", imageUrl);
+
+        userRef.updateChildren(updateData)
+                .addOnSuccessListener(aVoid -> callback.onUpdateResult(true))
+                .addOnFailureListener(e -> callback.onUpdateResult(false));
+    }
+
+    public interface UpdateCallback {
+        void onUpdateResult(boolean success);
+    }
+
+    public static DatabaseReference getDatabaseReference() {
+        return firebaseDatabase.getReference();
+    }
+
 }

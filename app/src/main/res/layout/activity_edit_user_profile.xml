@@ -82,13 +82,14 @@
 
         <EditText
             android:id="@+id/et_display_name"
-            android:layout_width="350dp"
+            android:layout_width="400dp"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/edit_user_profile_picture"
             android:layout_marginTop="30dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
+            android:maxLength="26"
             android:text="Display name"
             android:textColor="@color/white"
             android:background="@drawable/edittext_border_background"
