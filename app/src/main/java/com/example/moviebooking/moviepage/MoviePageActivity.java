@@ -128,37 +128,32 @@ public class MoviePageActivity extends AppCompatActivity {
     private void onFabClick(View v) {
         DateTime selectedDate = dateOfWeekAdapter.getSelectedDate();
         DateTime selectedHour1 = hours1Adapter.getSelectedHour();
-        DateTime selectedHour2 = hours2Adapter.getSelectedHour();
+
 
         if (selectedDate == null) {
             showToast("Please select date");
             return;
         }
 
-        if (selectedHour1 == null && selectedHour2 == null) {
+        if (selectedHour1 == null ) {
             showToast("Please select hour");
             return;
         }
 
-        if (selectedHour1 != null && selectedHour2 != null) {
-            showToast("Only 1 cinema per ticket");
-            return;
-        }
-
-        startBookingActivity(selectedDate, selectedHour1, selectedHour2);
+        startBookingActivity(selectedDate, selectedHour1);
     }
 
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void startBookingActivity(DateTime selectedDate, DateTime selectedHour1, DateTime selectedHour2) {
+    private void startBookingActivity(DateTime selectedDate, DateTime selectedHour1) {
         Intent intent = new Intent(MoviePageActivity.this, BookingActivity.class);
         intent.putExtra(USER_INFO_INTENT_KEY, userInfo);
         intent.putExtra(MOVIE_INTENT_KEY, receivedMovie);
 
-        DateTime selectedHour = (selectedHour1 != null) ? selectedHour1 : selectedHour2;
-        String selectedCinema = (selectedHour1 != null) ? getCinema1Text() : getCinema2Text();
+        DateTime selectedHour = selectedHour1;
+        String selectedCinema = getCinema1Text();
 
         intent.putExtra("cinema", selectedCinema);
         intent.putExtra("datetime", selectedDate.setHoursFromDateTime(selectedHour));
@@ -247,16 +242,9 @@ public class MoviePageActivity extends AppCompatActivity {
 
     private void bindDataToHourList1List2(List<Schedule> schedules, DateTime selectedDate) {
         RecyclerView hourRCV1 = findViewById(R.id.rcv_hours1);
-        RecyclerView hourRCV2 = findViewById(R.id.rcv_hours2);
-
         hours1Adapter = new HoursAdapter(this);
-        hours2Adapter = new HoursAdapter(this);
-
         hourRCV1.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        hourRCV2.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-
         hourRCV1.setAdapter(hours1Adapter);
-        hourRCV2.setAdapter(hours2Adapter);
 
         List<DateTime> matchingTimes = new ArrayList<>();
         for (Schedule schedule : schedules) {
@@ -267,13 +255,8 @@ public class MoviePageActivity extends AppCompatActivity {
             }
         }
 
-        // Chia đều danh sách giờ chiếu giữa hai RecyclerView
-        int mid = matchingTimes.size() / 2;
-        List<DateTime> part1 = matchingTimes.subList(0, mid);
-        List<DateTime> part2 = matchingTimes.subList(mid, matchingTimes.size());
-
-        hours1Adapter.setData(part1);
-        hours2Adapter.setData(part2);
+        // Gán toàn bộ danh sách giờ chiếu vào RecyclerView 1
+        hours1Adapter.setData(matchingTimes);
     }
 
     //Thử nghiệm
