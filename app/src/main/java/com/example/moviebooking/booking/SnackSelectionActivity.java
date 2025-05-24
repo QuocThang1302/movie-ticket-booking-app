@@ -1,4 +1,5 @@
-package com.example.moviebooking.ui.app.booking;
+package com.example.moviebooking.booking;
+
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +12,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.moviebooking.R;
-import com.example.moviebooking.booking.BookingStatusActivity;
 import com.example.moviebooking.dto.BookedTicketList;
 import com.example.moviebooking.dto.DateTime;
 import com.example.moviebooking.dto.Movie;
 import com.example.moviebooking.dto.UserInfo;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.example.moviebooking.booking.PaymentActivity;
+
 
 public class SnackSelectionActivity extends AppCompatActivity {
 
@@ -109,12 +111,13 @@ public class SnackSelectionActivity extends AppCompatActivity {
     }
 
     private void handleFabButtonClick(View v) {
-        // Chuyển hướng sang BookingStatusActivity
-        Intent intent = new Intent(this, BookingStatusActivity.class);
-        intent.putExtra("movie", receivedMovie);
-        intent.putExtra("bookedTicketList", bookedTicketList);
+        Intent intent = new Intent(this, com.example.moviebooking.booking.PaymentActivity.class);
+        intent.putExtra("movieTitle", receivedMovie.getTitle());
+        intent.putExtra("cinema", cinemaName);
+        intent.putExtra("date", selectedDateTime.getShortDate());
+        intent.putExtra("time", selectedDateTime.getTimeAMPM());
+        intent.putExtra("totalPrice", ticketPrice + snackPrice);
         intent.putExtra("userinfoIntent", userInfo);
-        intent.putExtra("totalPrice", ticketPrice + snackPrice); // Truyền tổng giá
         startActivity(intent);
         finish();
     }

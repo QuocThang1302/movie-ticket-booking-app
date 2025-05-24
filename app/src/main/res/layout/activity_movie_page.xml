@@ -187,6 +187,17 @@
                 </androidx.cardview.widget.CardView>
             </RelativeLayout>
 
+            <TextView
+                android:id="@+id/txt_select_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="20dp"
+                android:textSize="20dp"
+                android:text="Select date"
+                android:textColor="@android:color/white" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_dates"
                 android:layout_width="match_parent"
@@ -200,6 +211,7 @@
                 android:id="@+id/tv_cinema_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
                 android:text="Sathyam Cinemas: Royapettah"
                 android:textColor="@color/white"
@@ -211,6 +223,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 tools:listitem="@layout/item_hours_button"></androidx.recyclerview.widget.RecyclerView>
 
