@@ -18,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.moviebooking.R;
@@ -76,7 +77,9 @@ public class EditUserProfile extends AppCompatActivity {
 
         editDisplayname.setText(userInfo.getName());
         if (userInfo.getProfilePic() != null && !userInfo.getProfilePic().isEmpty()) {
-            Glide.with(this).load(userInfo.getProfilePic()).into(editProfileImage);
+            Glide.with(this).load(userInfo.getProfilePic()).apply(new RequestOptions()
+                    .centerCrop()
+                    .circleCrop()).into(editProfileImage);
         } else {
             editProfileImage.setImageResource(R.drawable.icon_user_ava);
         }

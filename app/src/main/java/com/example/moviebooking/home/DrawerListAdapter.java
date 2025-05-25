@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.moviebooking.booking.BookingHistoryActivity;
 import com.example.moviebooking.R;
 import com.example.moviebooking.dto.UserInfo;
@@ -67,10 +68,16 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             headerViewHolder.textViewHeaderItem.setText(userInfo.getName());
             headerViewHolder.imageViewHeaderItem.setImageResource(R.drawable.icon_user_ava);
 
-            Glide.with(context)
-                    .load(R.drawable.icon_user_ava)
-                    .circleCrop()
-                    .into(headerViewHolder.imageViewHeaderItem);
+            if (userInfo.getProfilePic() != null && !userInfo.getProfilePic().isEmpty()) {
+                Glide.with(context)
+                        .load(userInfo.getProfilePic())
+                        .apply(new RequestOptions()
+                                .centerCrop()
+                                .circleCrop())
+                        .into(headerViewHolder.imageViewHeaderItem);
+            } else {
+                headerViewHolder.imageViewHeaderItem.setImageResource(R.drawable.icon_user_ava);
+            }
 
             headerViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
