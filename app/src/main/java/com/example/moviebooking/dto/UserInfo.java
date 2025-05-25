@@ -8,6 +8,7 @@ public class UserInfo implements Serializable {
     private String password;
     private String name;
     private String email;
+    private String profilePic;
 
     private static final String wrongPassword = "WP";
     private static final String wrongID = "WI";
@@ -27,6 +28,13 @@ public class UserInfo implements Serializable {
         this.password = password;
     }
 
+    public UserInfo(String name, String username, String password, String profilePic) {
+        this.name = name;
+        this.username = username;
+        this.email = username;
+        this.password = password;
+        this.profilePic = profilePic;
+    }
     public String isValidLogin(String UserInfoID, String password) {
         if (!this.username.equals(UserInfoID)) {
             return wrongID;
@@ -42,7 +50,11 @@ public class UserInfo implements Serializable {
         this.password = data.get(1);
         this.name = data.get(2);
         this.email = data.get(3);
+        if (data.size() > 4) {
+            this.profilePic = data.get(4);
+        }
     }
+
 
     public void setName(String name) {
         this.name = name;
@@ -63,4 +75,12 @@ public class UserInfo implements Serializable {
     public String getName() {
         return this.name;
     }
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
 }
