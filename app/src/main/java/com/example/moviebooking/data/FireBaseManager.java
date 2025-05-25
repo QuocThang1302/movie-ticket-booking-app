@@ -122,6 +122,12 @@ public class FireBaseManager {
                     userInfoReference.child(username).child("name").setValue(name);
                     userInfoReference.child(username).child("username").setValue(username);
                     userInfoReference.child(username).child("password").setValue(password);
+                    // ✅ Thêm ảnh mặc định
+                    userInfoReference.child(username).child("profilePic")
+                            .setValue("https://res.cloudinary.com/deagejli9/image/upload/v1748143032/rvsejnd0o74qrsbtegbv.jpg");
+
+                    callback.onRegistrationResult(true, "Register successfully", null);
+                    Log.d("TAG", "Data added successfully.");
 
                     callback.onRegistrationResult(true, "Register successfully", null);
                     Log.d("TAG", "Data added successfully.");
@@ -156,10 +162,13 @@ public class FireBaseManager {
                     String passwordFromDB = dataSnapshot.child("password").getValue(String.class);
                     String name = dataSnapshot.child("name").getValue(String.class);
                     String user = dataSnapshot.child("username").getValue(String.class);
+                    String profilePicture = dataSnapshot.child("profilePic").getValue(String.class);
 
                     if (passwordFromDB.equals(password)) {
                         Log.d("TAG", "Login successfully");
-                        callback.onRegistrationResult(true, "Login successfully", new UserInfo(name, user, passwordFromDB));
+                        Log.d("TAG", "Profile picture URL: " + profilePicture);
+                        callback.onRegistrationResult(true, "Login successfully", new UserInfo(name, user, passwordFromDB, profilePicture));
+
                     } else {
                         Toast.makeText(context, "Wrong password", Toast.LENGTH_SHORT).show();
                         callback.onRegistrationResult(false, "Wrong password", null);

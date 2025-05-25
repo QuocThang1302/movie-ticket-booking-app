@@ -215,8 +215,12 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
                 sliderHandler.postDelayed(sliderRunnable, SLIDER_DALAY_MS);
 
                 //
-                Movie currentMovie = nowShowingMoviesList.get(position);
-                updateBackgroundImage(currentMovie.getThumbnail());
+                if (position >= 0 && position < nowShowingMoviesList.size()) {
+                    Movie currentMovie = nowShowingMoviesList.get(position);
+                    updateBackgroundImage(currentMovie.getThumbnail());
+                } else {
+                    Log.e("onPageSelected", "Position out of bounds: " + position + " / Size: " + nowShowingMoviesList.size());
+                }
                 //
             }
         });

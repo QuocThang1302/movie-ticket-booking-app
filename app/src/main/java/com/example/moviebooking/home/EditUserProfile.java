@@ -17,6 +17,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.moviebooking.R;
 import com.example.moviebooking.data.FireBaseManager;
 import com.example.moviebooking.dto.UserInfo;
@@ -24,12 +27,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EditUserProfile extends AppCompatActivity {
 
     private UserInfo userInfo = null;
     private boolean isUpdate = false;
+    private Cloudinary cloudinary;
     private EditText editDisplayname;
     private ImageView editProfileImage;
     private Button saveChangedButton;
@@ -45,11 +52,18 @@ public class EditUserProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_profile);
         getIntentData();
+        setupCloudinary();
         launcherResgister();
         setUserInfo();
         allViewClickListener();
     }
-
+    private void setupCloudinary() {
+        Map config = new HashMap();
+        config.put("cloud_name", "deagejli9");
+        config.put("api_key", "121824264332777");
+        config.put("api_secret", "ZLnXUrTDXDPyBSCWUdmUWmQgDOc");
+        cloudinary = new Cloudinary(config);
+    }
     private void getIntentData(){
         Intent intent = getIntent();
         userInfo = (UserInfo) intent.getSerializableExtra("userInfoIntent");
@@ -61,7 +75,12 @@ public class EditUserProfile extends AppCompatActivity {
         editDisplayname = findViewById(R.id.et_display_name);
 
         editDisplayname.setText(userInfo.getName());
-        editProfileImage.setImageResource(R.drawable.icon_user_ava);
+        if (userInfo.getProfilePic() != null && !userInfo.getProfilePic().isEmpty()) {
+            Glide.with(this).load(userInfo.getProfilePic()).into(editProfileImage);
+        } else {
+            editProfileImage.setImageResource(R.drawable.icon_user_ava);
+        }
+
     }
 
     private void launcherResgister(){
@@ -73,7 +92,7 @@ public class EditUserProfile extends AppCompatActivity {
                         editProfileImage.setImageURI(imageUri);
                         Log.d("UploadImage", "Image URI: " + imageUri.toString());
 
-                        uploadImageToFirebase(imageUri);
+                        uploadImageToCloudinary(imageUri);
                     }
                 }
         );
@@ -87,34 +106,35 @@ public class EditUserProfile extends AppCompatActivity {
         imagePickerLauncher.launch(intent);
     }
 
-    private void uploadImageToFirebase(Uri uri) {
+    private void uploadImageToCloudinary(Uri uri) {
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] data = baos.toByteArray();
+            byte[] imageBytes = baos.toByteArray();
 
-            String fileName = "profile_" + System.currentTimeMillis() + ".jpg";
-            StorageReference imageRef = FirebaseStorage.getInstance()
-                    .getReference("profile_pics/" + fileName);
+            new Thread(() -> {
+                try {
+                    Map uploadResult = cloudinary.uploader().upload(imageBytes, ObjectUtils.emptyMap());
+                    String imageUrl = uploadResult.get("secure_url").toString();
 
-            imageRef.putBytes(data)
-                    .addOnSuccessListener(taskSnapshot ->
-                            imageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
-                                String downloadUrl = downloadUri.toString();
-                                updateProfilePictureInFirebase(downloadUrl);
-                                Log.d("FirebaseUpload", "Upload thành công: " + downloadUrl);
-                            }))
-                    .addOnFailureListener(e -> {
-                        Log.e("FirebaseUpload", "Upload thất bại", e);
+                    runOnUiThread(() -> {
+                        updateProfilePictureInFirebase(imageUrl);
+                        Log.d("CloudinaryUpload", "Upload thành công: " + imageUrl);
+                    });
+                } catch (Exception e) {
+                    runOnUiThread(() -> {
+                        Log.e("CloudinaryUpload", "Upload thất bại", e);
                         Toast.makeText(this, "Upload ảnh thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     });
-
-        } catch (Exception e) {
-            Log.e("FirebaseUpload", "Lỗi khi đọc ảnh", e);
-            Toast.makeText(this, "Lỗi khi xử lý ảnh: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }).start();
+        } catch (IOException e) {
+            Log.e("CloudinaryUpload", "Lỗi xử lý ảnh", e);
+            Toast.makeText(this, "Lỗi ảnh: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+
 
     private void updateUserNameInFirebase(String username, String newName, OnUpdateNameListener listener) {
         FireBaseManager.getInstance().getDatabaseReference()
@@ -138,7 +158,8 @@ public class EditUserProfile extends AppCompatActivity {
         FireBaseManager.getInstance().updateProfilePicture(username, imageUrl, success -> {
             if (success) {
                 Toast.makeText(this, "Đã cập nhật ảnh đại diện", Toast.LENGTH_SHORT).show();
-                // Nếu bạn có lưu UserInfo local, thì cập nhật luôn field profilePic tại đây
+                userInfo.setProfilePic(imageUrl);
+                isUpdate = true;
             } else {
                 Toast.makeText(this, "Cập nhật ảnh thất bại", Toast.LENGTH_SHORT).show();
             }
