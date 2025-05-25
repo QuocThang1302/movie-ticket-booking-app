@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.moviebooking.CommentActivity;
 import com.example.moviebooking.R;
 import com.example.moviebooking.dto.Movie;
 import com.example.moviebooking.dto.UserInfo;
@@ -59,7 +60,7 @@ public class MovieGridAdapter2 extends RecyclerView.Adapter<MovieGridAdapter2.Mo
 
         holder.tvNote.setText(movie.getDetailDuration());
         holder.imgMovie.setOnClickListener(v -> {
-            Intent intent = new Intent(this.mContext, MoviePageActivity.class);
+            Intent intent = new Intent(this.mContext, CommentActivity.class);
             intent.putExtra("movie", movie);
             intent.putExtra("userinfoIntent", userInfo);
             mContext.startActivity(intent);
