@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviebooking.R;
 import com.example.moviebooking.allmovies.MovieGridAdapter;
-import com.example.moviebooking.allmovies.MovieGridAdapter2;
+import com.example.moviebooking.allmovies.MovieGridAdapter3;
 import com.example.moviebooking.data.FireBaseManager;
 import com.example.moviebooking.dto.Movie;
 import com.example.moviebooking.dto.UserInfo;
@@ -30,7 +30,7 @@ public class ReviewActivity extends AppCompatActivity {
     private List<Movie> moviesList = null;
     private RecyclerView allMoviesView;
     private SearchView searchView;
-    private MovieGridAdapter2 movieGridAdapter;
+    private MovieGridAdapter3 movieGridAdapter;
     private FireBaseManager fireBaseManager = FireBaseManager.getInstance();
 
     @Override
@@ -100,7 +100,7 @@ public class ReviewActivity extends AppCompatActivity {
         allMoviesView.setLayoutManager(linearLayoutManager);
 
 
-        movieGridAdapter = new MovieGridAdapter2(this, userInfo, moviesList);
+        movieGridAdapter = new MovieGridAdapter3(this, userInfo, moviesList);
         allMoviesView.setAdapter(movieGridAdapter);
     }
 }
