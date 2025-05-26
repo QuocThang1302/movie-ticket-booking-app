@@ -15,12 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.moviebooking.FilmReviewActivity;
 import com.example.moviebooking.booking.BookingHistoryActivity;
 import com.example.moviebooking.R;
 import com.example.moviebooking.dto.UserInfo;
 
 import java.util.Arrays;
 import java.util.List;
+import com.example.moviebooking.Trailer.ReviewActivity;
 
 public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<String> drawerItems;
@@ -35,7 +37,8 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public DrawerListAdapter(Context context, UserInfo userInfo, OnLogoutClickListener listener, ActivityResultLauncher<Intent> launcher) {
         this.context = context;
         this.userInfo = userInfo;
-        this.drawerItems = Arrays.asList("Username", "Booking History", "Logout");
+        this.drawerItems = Arrays.asList("Username", "Booking History", "Write a Review", "Film Review", "Logout");
+
         this.logoutClickListener = listener;
         this.launcher = launcher;
     }
@@ -90,10 +93,10 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         } else{
             ViewHolder viewHolder = (ViewHolder) holder;
+
             if(position == 1) {
                 viewHolder.textViewItem.setText("Booking History");
                 viewHolder.imageViewItem.setImageResource(R.drawable.icon_history);
-
                 viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -104,9 +107,34 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 });
 
             } else if (position == 2) {
+                viewHolder.textViewItem.setText("Write a Review");
+                viewHolder.imageViewItem.setImageResource(R.drawable.icon_review);
+
+                viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, ReviewActivity.class);
+                        intent.putExtra("userinfoIntent", userInfo);
+                        context.startActivity(intent);
+                    }
+                });
+
+            }
+            else if (position == 3) {
+                viewHolder.textViewItem.setText("Film Review");
+                viewHolder.imageViewItem.setImageResource(R.drawable.icon_film_review);
+
+                viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, FilmReviewActivity.class);
+                        intent.putExtra("userinfoIntent", userInfo);
+                        context.startActivity(intent);
+                    }
+                });
+            }else if (position == 4) {
                 viewHolder.textViewItem.setText("Logout");
                 viewHolder.imageViewItem.setImageResource(R.drawable.icon_logout);
-
                 viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
