@@ -110,9 +110,10 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="33dp">
+            android:layout_marginTop="15dp">
 
-            <TextView
+
+        <TextView
                 android:text="💵"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -124,7 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="100.000đ"
+                android:text="10$"
                 android:textColor="#009688"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -140,7 +141,7 @@
             android:layout_marginTop="58dp">
 
             <TextView
-                android:text="Đặt lúc:"
+                android:text="Booked at:"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
