@@ -3,6 +3,7 @@ package com.example.moviebooking;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.SearchView;
 
 import androidx.activity.EdgeToEdge;
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.moviebooking.allmovies.MovieGridAdapter;
 import com.example.moviebooking.allmovies.MovieGridAdapter2;
 import com.example.moviebooking.data.FireBaseManager;
@@ -46,11 +49,23 @@ public class AllMovieActivity extends AppCompatActivity {
         allMoviesView = findViewById(R.id.rcv_search_all_movies);
         searchView = findViewById(R.id.search_bar);
         searchView.clearFocus();
+
     }
 
     private void getIntentData() {
         Intent intent = getIntent();
         userInfo = (UserInfo) intent.getSerializableExtra("userinfoIntent");
+        ImageView avaImg = findViewById(R.id.all_movie_ava);
+        if (userInfo.getProfilePic() != null && !userInfo.getProfilePic().isEmpty()) {
+            Glide.with(this)
+                    .load(userInfo.getProfilePic())
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .circleCrop())
+                    .into(avaImg);
+        } else {
+            avaImg.setImageResource(R.drawable.icon_user_ava);
+        }
     }
 
     private void setSearchViewListener() {
