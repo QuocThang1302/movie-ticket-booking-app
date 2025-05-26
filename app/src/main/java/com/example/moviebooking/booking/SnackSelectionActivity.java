@@ -20,7 +20,6 @@ import com.example.moviebooking.dto.BookedTicketList;
 import com.example.moviebooking.dto.DateTime;
 import com.example.moviebooking.dto.Movie;
 import com.example.moviebooking.dto.UserInfo;
-import com.example.moviebooking.booking.PaymentActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -126,7 +125,7 @@ public class SnackSelectionActivity extends AppCompatActivity {
                 }).attach();
     }
 
-    private void updatePaymentInfo() {
+    void updatePaymentInfo() {
         tvSnackCount.setText("x" + selectedSnackCount);
         double totalPrice = ticketPrice + snackPrice;
         tvTotalPrice.setText("$" + String.format("%.2f", totalPrice));
@@ -144,8 +143,27 @@ public class SnackSelectionActivity extends AppCompatActivity {
         finish();
     }
 
+    public void updateSnackPrice(double price) {
+        snackPrice += price;
+    }
+
+    public void updateSnackCount() {
+        selectedSnackCount = 0;
+        for (int quantity : snackQuantities.values()) {
+            selectedSnackCount += quantity;
+        }
+    }
+
+    public void addSelectedCombo(String combo) {
+        selectedCombos.add(combo);
+    }
+
+    public void removeSelectedCombo(String combo) {
+        selectedCombos.remove(combo);
+    }
+
     // Adapter for ViewPager
-    private class SnackPagerAdapter extends RecyclerView.Adapter<SnackPagerAdapter.SnackViewHolder> {
+    private class SnackPagerAdapter extends RecyclerView.Adapter<SnackViewHolder> {
         private final List<List<SnackItem>> categoryItems;
         private final LayoutInflater inflater;
 
@@ -192,7 +210,6 @@ public class SnackSelectionActivity extends AppCompatActivity {
             items.add(new SnackItem("Pepsi Lớn", 30.0, R.drawable.pepsi));
             items.add(new SnackItem("Pepsi Không Calo", 27.0, R.drawable.pepsi));
             items.add(new SnackItem("Pepsi Không Calo Lớn", 30.0, R.drawable.pepsi));
-
             return items;
         }
 
@@ -209,142 +226,7 @@ public class SnackSelectionActivity extends AppCompatActivity {
             items.add(new SnackItem("Snack Quế Thái Lan Cam", 27.0, R.drawable.snack));
             items.add(new SnackItem("Oishi Pillows Socola", 27.0, R.drawable.snack));
             items.add(new SnackItem("Mực Bento Xanh (ít Cay)", 35.0, R.drawable.snack));
-
             return items;
         }
-    }
-
-    // ViewHolder for RecyclerView in each tab
-    private class SnackViewHolder extends RecyclerView.ViewHolder {
-        private final RecyclerView recyclerView;
-
-        SnackViewHolder(@NonNull View itemView) {
-            super(itemView);
-            recyclerView = itemView.findViewById(R.id.recycler_snack_items);
-            recyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
-        }
-    }
-
-    // Adapter for individual snack items
-    private class SnackItemAdapter extends RecyclerView.Adapter<SnackItemAdapter.ItemViewHolder> {
-        private final List<SnackItem> items;
-        private final Map<String, Integer> snackQuantities;
-        private final SnackSelectionActivity activity;
-
-        SnackItemAdapter(List<SnackItem> items, Map<String, Integer> snackQuantities, SnackSelectionActivity activity) {
-            this.items = items;
-            this.snackQuantities = snackQuantities;
-            this.activity = activity;
-        }
-
-        @NonNull
-        @Override
-        public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_snack_item, parent, false);
-            return new ItemViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-            SnackItem item = items.get(position);
-            holder.bind(item);
-        }
-
-        @Override
-        public int getItemCount() {
-            return items.size();
-        }
-    }
-
-    // ViewHolder for individual snack item
-    private class ItemViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tvSnackName;
-        private final TextView tvSnackPrice;
-        private final ImageView ivSnackImage;
-        private final TextView tvQuantity;
-        private final ImageView ivDecrease;
-        private final ImageView ivIncrease;
-
-        ItemViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvSnackName = itemView.findViewById(R.id.tv_snack_name);
-            tvSnackPrice = itemView.findViewById(R.id.tv_snack_price);
-            ivSnackImage = itemView.findViewById(R.id.iv_snack_image);
-            tvQuantity = itemView.findViewById(R.id.tv_quantity);
-            ivDecrease = itemView.findViewById(R.id.iv_decrease);
-            ivIncrease = itemView.findViewById(R.id.iv_increase);
-        }
-
-        void bind(SnackItem item) {
-            tvSnackName.setText(item.getName());
-            tvSnackPrice.setText("$" + String.format("%.2f", item.getPrice()));
-            ivSnackImage.setImageResource(item.getImageResId());
-            tvQuantity.setText(String.valueOf(snackQuantities.getOrDefault(item.getName(), 0)));
-
-            ivDecrease.setOnClickListener(v -> {
-                int quantity = Integer.parseInt(tvQuantity.getText().toString());
-                if (quantity > 0) {
-                    quantity--;
-                    tvQuantity.setText(String.valueOf(quantity));
-                    snackPrice -= item.getPrice();
-                    snackQuantities.put(item.getName(), quantity);
-                    if (quantity == 0) {
-                        activity.removeSelectedCombo(item.getName());
-                        snackQuantities.remove(item.getName());
-                    }
-                    activity.updateSnackCount();
-                    activity.updatePaymentInfo();
-                }
-            });
-
-            ivIncrease.setOnClickListener(v -> {
-                int quantity = Integer.parseInt(tvQuantity.getText().toString());
-                quantity++;
-                tvQuantity.setText(String.valueOf(quantity));
-                snackPrice += item.getPrice();
-                snackQuantities.put(item.getName(), quantity);
-                if (quantity == 1) {
-                    activity.addSelectedCombo(item.getName());
-                }
-                activity.updateSnackCount();
-                activity.updatePaymentInfo();
-            });
-        }
-    }
-
-    public void updateSnackPrice(double price) {
-        snackPrice += price;
-    }
-
-    public void updateSnackCount() {
-        selectedSnackCount = 0;
-        for (int quantity : snackQuantities.values()) {
-            selectedSnackCount += quantity;
-        }
-    }
-
-    public void addSelectedCombo(String combo) {
-        selectedCombos.add(combo);
-    }
-
-    public void removeSelectedCombo(String combo) {
-        selectedCombos.remove(combo);
-    }
-
-    // Data class for snack items
-    private static class SnackItem {
-        private final String name;
-        private final double price;
-        private final int imageResId;
-
-        SnackItem(String name, double price, int imageResId) {
-            this.name = name;
-            this.price = price;
-            this.imageResId = imageResId;
-        }
-
-        String getName() { return name; }
-        double getPrice() { return price; }
-        int getImageResId() { return imageResId; }
     }
 }
