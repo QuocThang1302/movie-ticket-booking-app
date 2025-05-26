@@ -2,12 +2,15 @@ package com.example.moviebooking.booking;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.moviebooking.R;
 import com.example.moviebooking.data.FireBaseManager;
 import com.example.moviebooking.dto.UserInfo;
@@ -25,6 +28,17 @@ public class BookingHistoryActivity extends AppCompatActivity {
         userInfo = (UserInfo) getIntent().getSerializableExtra("userinfoIntent");
         TextView username = findViewById(R.id.tv_user_name);
         username.setText(userInfo.getName());
+        ImageView avaImg = findViewById(R.id.booking_history_ava);
+        if (userInfo.getProfilePic() != null && !userInfo.getProfilePic().isEmpty()) {
+            Glide.with(this)
+                    .load(userInfo.getProfilePic())
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .circleCrop())
+                    .into(avaImg);
+        } else {
+            avaImg.setImageResource(R.drawable.icon_user_ava);
+        }
 
         Log.d("BookingHistoryActivity", "onCreate: " + userInfo.getUsername());
 

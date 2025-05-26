@@ -13,8 +13,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.moviebooking.R;
 import com.example.moviebooking.dto.UserInfo;
+
 
 public class UserProfile extends AppCompatActivity {
 
@@ -55,7 +57,12 @@ public class UserProfile extends AppCompatActivity {
         TextView usernameProfile = findViewById(R.id.user_profile_username);
 
         if (userInfo.getProfilePic() != null && !userInfo.getProfilePic().isEmpty()) {
-            Glide.with(this).load(userInfo.getProfilePic()).into(userProfilePicture);
+            Glide.with(this)
+                    .load(userInfo.getProfilePic())
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .circleCrop())
+                    .into(userProfilePicture);
         } else {
             userProfilePicture.setImageResource(R.drawable.icon_user_ava);
         }
