@@ -27,6 +27,16 @@
             android:name=".ForgotPasswordActivity"
             android:exported="false" />
         <activity
+            android:name=".CommentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FilmReviewActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".Trailer.ReviewActivity"
+            android:exported="false" />
+        <activity
             android:name=".booking.BookingStatusActivity"
             android:exported="false" />
         <activity

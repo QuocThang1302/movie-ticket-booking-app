@@ -46,6 +46,7 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/all_movie_ava"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_alignParentEnd="true"

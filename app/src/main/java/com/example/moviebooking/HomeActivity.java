@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.moviebooking.data.FireBaseManager;
 import com.example.moviebooking.dto.Movie;
 import com.example.moviebooking.dto.UserInfo;
@@ -105,6 +106,17 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
         });
 
         ImageView userAva = findViewById(R.id.imgUser);
+
+        if (userInfo.getProfilePic() != null && !userInfo.getProfilePic().isEmpty()) {
+            Glide.with(this)
+                    .load(userInfo.getProfilePic())
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .circleCrop())
+                    .into(userAva);
+        } else {
+            userAva.setImageResource(R.drawable.icon_user_ava);
+        }
 
         userAva.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,8 +227,12 @@ public class HomeActivity extends AppCompatActivity implements OnLogoutClickList
                 sliderHandler.postDelayed(sliderRunnable, SLIDER_DALAY_MS);
 
                 //
-                Movie currentMovie = nowShowingMoviesList.get(position);
-                updateBackgroundImage(currentMovie.getThumbnail());
+                if (position >= 0 && position < nowShowingMoviesList.size()) {
+                    Movie currentMovie = nowShowingMoviesList.get(position);
+                    updateBackgroundImage(currentMovie.getThumbnail());
+                } else {
+                    Log.e("onPageSelected", "Position out of bounds: " + position + " / Size: " + nowShowingMoviesList.size());
+                }
                 //
             }
         });

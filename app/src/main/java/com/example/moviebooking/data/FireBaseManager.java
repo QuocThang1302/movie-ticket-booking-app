@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.moviebooking.dto.Comment;
 import com.example.moviebooking.dto.DateTime;
 import com.example.moviebooking.dto.Movie;
 import com.example.moviebooking.dto.Schedule;
@@ -22,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +39,7 @@ public class FireBaseManager {
 
     private static final String USERS_TABLE = "USERS_INFO";
     private static final String TICKETS_TABLE = "TICKETS";
+    private static final String COMMENTS_TABLE = "COMMENTS";
 
     private FireBaseManager() {
         // Private constructor to prevent instantiation outside of this class
@@ -122,6 +125,12 @@ public class FireBaseManager {
                     userInfoReference.child(username).child("name").setValue(name);
                     userInfoReference.child(username).child("username").setValue(username);
                     userInfoReference.child(username).child("password").setValue(password);
+                    // ✅ Thêm ảnh mặc định
+                    userInfoReference.child(username).child("profilePic")
+                            .setValue("https://res.cloudinary.com/deagejli9/image/upload/v1748143032/rvsejnd0o74qrsbtegbv.jpg");
+
+                    callback.onRegistrationResult(true, "Register successfully", null);
+                    Log.d("TAG", "Data added successfully.");
 
                     callback.onRegistrationResult(true, "Register successfully", null);
                     Log.d("TAG", "Data added successfully.");
@@ -156,10 +165,13 @@ public class FireBaseManager {
                     String passwordFromDB = dataSnapshot.child("password").getValue(String.class);
                     String name = dataSnapshot.child("name").getValue(String.class);
                     String user = dataSnapshot.child("username").getValue(String.class);
+                    String profilePicture = dataSnapshot.child("profilePic").getValue(String.class);
 
                     if (passwordFromDB.equals(password)) {
                         Log.d("TAG", "Login successfully");
-                        callback.onRegistrationResult(true, "Login successfully", new UserInfo(name, user, passwordFromDB));
+                        Log.d("TAG", "Profile picture URL: " + profilePicture);
+                        callback.onRegistrationResult(true, "Login successfully", new UserInfo(name, user, passwordFromDB, profilePicture));
+
                     } else {
                         Toast.makeText(context, "Wrong password", Toast.LENGTH_SHORT).show();
                         callback.onRegistrationResult(false, "Wrong password", null);
@@ -832,5 +844,105 @@ public static void checkShowtimeAvailability(String movieId, String cinemaId, Da
     public static DatabaseReference getDatabaseReference() {
         return firebaseDatabase.getReference();
     }
+
+
+
+    //Comment
+    public interface OnCommentOperationListener {
+        void onCommentSaved(boolean success, String message);
+    }
+
+    public interface OnCommentsLoadedListener {
+        void onCommentsLoaded(List<Comment> comments);
+        void onCommentsError(String errorMessage);
+    }
+
+    // Method để lưu comment lên Firebase
+    public void saveComment(Comment comment, OnCommentOperationListener listener) {
+        DatabaseReference commentsReference = firebaseDatabase.getReference(COMMENTS_TABLE);
+
+
+        String commentKey = commentsReference.push().getKey();
+
+        if (commentKey != null) {
+            comment.setCommentId(commentKey);
+
+            commentsReference.child(commentKey).setValue(comment)
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("FireBaseManager", "Comment saved successfully");
+                        listener.onCommentSaved(true, "Comment saved successfully");
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("FireBaseManager", "Failed to save comment: " + e.getMessage());
+                        listener.onCommentSaved(false, "Failed to save comment: " + e.getMessage());
+                    });
+        } else {
+            listener.onCommentSaved(false, "Failed to generate comment ID");
+        }
+    }
+
+    // Method để lấy tất cả comments của một bộ phim
+    public void getCommentsByMovieId(String movieId, OnCommentsLoadedListener listener) {
+        DatabaseReference commentsReference = firebaseDatabase.getReference(COMMENTS_TABLE);
+
+        commentsReference.orderByChild("movieId").equalTo(movieId)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        List<Comment> comments = new ArrayList<>();
+
+                        for (DataSnapshot commentSnapshot : snapshot.getChildren()) {
+                            Comment comment = commentSnapshot.getValue(Comment.class);
+                            if (comment != null) {
+                                comment.setCommentId(commentSnapshot.getKey());
+                                comments.add(comment);
+                            }
+                        }
+
+                        // Sắp xếp theo thời gian (mới nhất trước)
+                        Collections.sort(comments, (c1, c2) -> Long.compare(c2.getTimestamp(), c1.getTimestamp()));
+
+                        listener.onCommentsLoaded(comments);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("FireBaseManager", "Error loading comments: " + error.getMessage());
+                        listener.onCommentsError("Error loading comments: " + error.getMessage());
+                    }
+                });
+    }
+
+    // Method để lấy tất cả comments (nếu cần)
+    public void getAllComments(OnCommentsLoadedListener listener) {
+        DatabaseReference commentsReference = firebaseDatabase.getReference(COMMENTS_TABLE);
+
+        commentsReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Comment> comments = new ArrayList<>();
+
+                for (DataSnapshot commentSnapshot : snapshot.getChildren()) {
+                    Comment comment = commentSnapshot.getValue(Comment.class);
+                    if (comment != null) {
+                        comment.setCommentId(commentSnapshot.getKey());
+                        comments.add(comment);
+                    }
+                }
+
+                // Sắp xếp theo thời gian (mới nhất trước)
+                Collections.sort(comments, (c1, c2) -> Long.compare(c2.getTimestamp(), c1.getTimestamp()));
+
+                listener.onCommentsLoaded(comments);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("FireBaseManager", "Error loading all comments: " + error.getMessage());
+                listener.onCommentsError("Error loading all comments: " + error.getMessage());
+            }
+        });
+    }
+    //
 
 }
