@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/violet"
     tools:context=".ui.app.booking.SnackSelectionActivity">
 
     <!-- Banner with movie image -->
@@ -40,7 +41,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@color/light_violet">
 
                 <TextView
                     android:id="@+id/tv_movie_title"
@@ -128,88 +130,29 @@
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
 
-    <!-- Snack selection section -->
-    <ScrollView
+    <!-- TabLayout for categories -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_banner"
-        android:layout_gravity="center"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="16dp">
+        android:background="@color/white"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabGravity="fill"
+        app:tabIndicatorHeight="0dp"
+        app:tabMode="fixed"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="Select Snack Combo"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-
-            <RelativeLayout
-                android:id="@+id/rl_combo1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/button_hours_style_unselected"
-                android:padding="10dp">
-
-                <TextView
-                    android:id="@+id/tv_combo1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="Combo 1: Small Popcorn + Coke ($5)"
-                    android:textColor="@color/black"
-                    android:textSize="15dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_combo2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/button_hours_style_unselected"
-                android:padding="10dp">
-
-                <TextView
-                    android:id="@+id/tv_combo2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="Combo 2: Medium Popcorn + Pepsi ($7)"
-                    android:textColor="@color/black"
-                    android:textSize="15dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_combo3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/button_hours_style_unselected"
-                android:padding="10dp">
-
-                <TextView
-                    android:id="@+id/tv_combo3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="Combo 3: Large Popcorn + Water ($9)"
-                    android:textColor="@color/black"
-                    android:textSize="15dp" />
-            </RelativeLayout>
-        </LinearLayout>
-    </ScrollView>
+    <!-- ViewPager for tab content -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/tab_layout"
+        android:layout_above="@+id/card_total"/>
 
     <!-- Total price and snack count -->
     <androidx.cardview.widget.CardView
+        android:id="@+id/card_total"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginStart="50dp"
@@ -220,7 +163,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/light_violet">
 
             <RelativeLayout
                 android:id="@+id/rl_ticket"

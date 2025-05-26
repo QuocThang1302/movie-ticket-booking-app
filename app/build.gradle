@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace 'com.example.moviebooking'
-    compileSdk 35
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.moviebooking"
         minSdk 26
-        targetSdk 35
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -34,49 +34,43 @@ android {
 }
 
 dependencies {
+    // Sử dụng biến phiên bản để dễ quản lý
+    def androidx_version = "1.6.1"
+    def material_version = "1.11.0"
 
-    implementation libs.appcompat
-    implementation libs.material
-    implementation libs.activity
-    implementation libs.constraintlayout
-    implementation libs.firebase.database
+    // AndroidX Core Libraries
+    implementation "androidx.appcompat:appcompat:$androidx_version"
+    implementation "com.google.android.material:material:$material_version"
+    implementation 'androidx.activity:activity:1.8.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'androidx.viewpager2:viewpager2:1.1.0' // Cập nhật phiên bản mới nhất
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    // UI Components
     implementation 'com.makeramen:roundedimageview:2.3.0'
-    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
-    implementation 'com.google.zxing:core:3.4.1'
-    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0'
-    implementation 'com.cloudinary:cloudinary-android:2.3.1'
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.github.denzcoskun:ImageSlideshow:0.1.0")
-    implementation("androidx.viewpager2:viewpager2:1.0.0")
-    implementation("com.makeramen:roundedimageview:2.3.0")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("androidx.core:core:1.12.0")
-    implementation("androidx.recyclerview:recyclerview:1.3.2")
-    implementation ("com.google.firebase:firebase-storage:20.3.0")
-    implementation("com.github.bumptech.glide:glide:4.12.0")
-    implementation("com.google.firebase:firebase-database:20.3.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
-    implementation("com.github.bumptech.glide:glide:4.16.0")
-    implementation("jp.wasabeef:glide-transformations:4.3.0")
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0' // Giữ từ QThang2
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.2' // Cập nhật phiên bản mới nhất
+    implementation 'com.cloudinary:cloudinary-android:2.3.1' // Giữ từ master
 
+    // Firebase (sử dụng BOM để quản lý phiên bản)
+    implementation platform('com.google.firebase:firebase-bom:32.8.1') // Cập nhật phiên bản mới nhất
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-database'
+    implementation 'com.google.firebase:firebase-storage'
 
+    // Image Loading (loại bỏ trùng lặp, sử dụng phiên bản mới nhất)
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+    implementation 'jp.wasabeef:glide-transformations:4.3.0'
 
-
-
-
-
-    implementation("com.google.zxing:core:3.4.1")
+    // QR Code scanning (sử dụng phiên bản mới nhất)
+    implementation 'com.google.zxing:core:3.5.3'
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
 
-    implementation("com.journeyapps:zxing-android-embedded:4.2.0")
-
-
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    testImplementation libs.junit
-    androidTestImplementation libs.ext.junit
-    androidTestImplementation libs.espresso.core
+    // Testing
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
