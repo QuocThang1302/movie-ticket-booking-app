@@ -133,16 +133,19 @@ public class SnackSelectionActivity extends AppCompatActivity {
 
     private void handleFabButtonClick(View v) {
         Intent intent = new Intent(this, PaymentActivity.class);
+        intent.putExtra("movieTitle", receivedMovie.getTitle());
+        intent.putExtra("cinema", cinemaName);
+        intent.putExtra("date", selectedDateTime.getShortDate());
+        intent.putExtra("time", selectedDateTime.getTimeAMPM());
         intent.putExtra("movie", receivedMovie);
         intent.putExtra("bookedTicketList", bookedTicketList);
         intent.putExtra("userinfoIntent", userInfo);
         intent.putExtra("totalPrice", ticketPrice + snackPrice);
         intent.putStringArrayListExtra("selectedCombos", (ArrayList<String>) selectedCombos);
-        intent.putExtra("bookingTime", "10:28 PM, Sun, 25 May 2025"); // Cập nhật thời gian hiện tại
+        intent.putExtra("bookingTime", "10:28 PM, Sun, 25 May 2025");
         startActivity(intent);
         finish();
     }
-
     public void updateSnackPrice(double price) {
         snackPrice += price;
     }

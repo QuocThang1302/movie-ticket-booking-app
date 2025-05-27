@@ -49,6 +49,8 @@ public class BookingStatusActivity extends AppCompatActivity {
         date = intent.getStringExtra("date");
         time = intent.getStringExtra("time");
         userInfo = (UserInfo) intent.getSerializableExtra("userinfoIntent");
+        Movie movie = (Movie) intent.getSerializableExtra("movie");
+        BookedTicketList bookedTicketList = (BookedTicketList) intent.getSerializableExtra("bookedTicketList");
     }
 
     private void initUI() {
