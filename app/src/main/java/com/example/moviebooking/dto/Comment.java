@@ -7,30 +7,31 @@ public class Comment {
     private float rating;
     private long timestamp;
     private String username;
+    private String movieTitle;
 
 
     public Comment() {
     }
 
 
-    public Comment(String movieId, String content, float rating, long timestamp, String username) {
+    public Comment(String movieId, String movieTitle, String content, float rating, long timestamp, String username) {
         this.movieId = movieId;
+        this.movieTitle = movieTitle;
         this.content = content;
         this.rating = rating;
         this.timestamp = timestamp;
         this.username = username;
     }
 
-
-    public Comment(String commentId, String movieId, String content, float rating, long timestamp, String username) {
+    public Comment(String commentId, String movieId, String movieTitle, String content, float rating, long timestamp, String username) {
         this.commentId = commentId;
         this.movieId = movieId;
+        this.movieTitle = movieTitle;
         this.content = content;
         this.rating = rating;
         this.timestamp = timestamp;
         this.username = username;
     }
-
 
     public String getCommentId() {
         return commentId;
@@ -78,5 +79,12 @@ public class Comment {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+    public String getMovieTitle() {
+        return movieTitle;
+    }
+
+    public void setMovieTitle(String movieTitle) {
+        this.movieTitle = movieTitle;
     }
 }

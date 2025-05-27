@@ -18,10 +18,9 @@
         <!-- Title Section with refined styling -->
         <LinearLayout
             android:id="@+id/title_section"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/profile_avatar"
             android:layout_centerVertical="true"
             android:orientation="vertical"
             android:layout_marginEnd="16dp">
@@ -32,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:text="Write a comment"
                 android:textColor="@color/white"
+                android:layout_marginStart="7dp"
                 android:textSize="28sp"
                 android:fontFamily="sans-serif-medium"
                 android:letterSpacing="0.02"
@@ -39,29 +39,9 @@
                 android:shadowDx="0"
                 android:shadowDy="2"
                 android:shadowRadius="4" />
-
-
-
         </LinearLayout>
 
-        <!-- Profile Avatar with enhanced styling -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/profile_avatar"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            app:cardCornerRadius="32dp"
-            app:cardElevation="6dp"
-            app:cardUseCompatPadding="true">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/ava"
-                android:scaleType="centerCrop" />
-
-        </androidx.cardview.widget.CardView>
 
     </RelativeLayout>
 

@@ -37,7 +37,7 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public DrawerListAdapter(Context context, UserInfo userInfo, OnLogoutClickListener listener, ActivityResultLauncher<Intent> launcher) {
         this.context = context;
         this.userInfo = userInfo;
-        this.drawerItems = Arrays.asList("Username", "Booking History", "Write a Review", "Film Review", "Logout");
+        this.drawerItems = Arrays.asList("Username", "Booking History", "Write a Review", "Your Reviews", "Logout");
 
         this.logoutClickListener = listener;
         this.launcher = launcher;
@@ -121,7 +121,7 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             }
             else if (position == 3) {
-                viewHolder.textViewItem.setText("Film Review");
+                viewHolder.textViewItem.setText("Your Reviews");
                 viewHolder.imageViewItem.setImageResource(R.drawable.icon_film_review);
 
                 viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {

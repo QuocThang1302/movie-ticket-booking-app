@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">moviebooking</string>
     <string name="back_arrow">\u2190</string>
+    <string name="film_review_title">%s\'s Reviews</string>
+    <string name="no_comments">No reviews found for this user</string>
+    <string name="error_loading_comments">Error loading reviews</string>
+    <string name="error_invalid_user">Invalid user information</string>
+    <string name="loading_comments">Loading reviews...</string>
+    <string name="movie_prefix">Movie: %s</string>
+    <string name="rating_format">★ %.1f/5</string>
 </resources>

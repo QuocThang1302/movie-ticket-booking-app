@@ -83,6 +83,7 @@ public class CommentActivity extends AppCompatActivity {
             long currentTimestamp = System.currentTimeMillis();
             Comment newComment = new Comment(
                     movie.getMovieID(),
+                    movie.getTitle(),
                     commentContent,
                     rating,
                     currentTimestamp,

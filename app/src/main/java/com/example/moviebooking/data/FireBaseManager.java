@@ -913,36 +913,38 @@ public static void checkShowtimeAvailability(String movieId, String cinemaId, Da
                 });
     }
 
-    // Method để lấy tất cả comments (nếu cần)
-    public void getAllComments(OnCommentsLoadedListener listener) {
+    // Method để lấy comment theo username
+    public void getCommentsByUsername(String username, OnCommentsLoadedListener listener) {
         DatabaseReference commentsReference = firebaseDatabase.getReference(COMMENTS_TABLE);
 
-        commentsReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<Comment> comments = new ArrayList<>();
+        commentsReference.orderByChild("username").equalTo(username)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        List<Comment> comments = new ArrayList<>();
 
-                for (DataSnapshot commentSnapshot : snapshot.getChildren()) {
-                    Comment comment = commentSnapshot.getValue(Comment.class);
-                    if (comment != null) {
-                        comment.setCommentId(commentSnapshot.getKey());
-                        comments.add(comment);
+                        for (DataSnapshot commentSnapshot : snapshot.getChildren()) {
+                            Comment comment = commentSnapshot.getValue(Comment.class);
+                            if (comment != null) {
+                                comment.setCommentId(commentSnapshot.getKey());
+                                comments.add(comment);
+                            }
+                        }
+
+                        // Sắp xếp theo thời gian (mới nhất trước)
+                        Collections.sort(comments, (c1, c2) -> Long.compare(c2.getTimestamp(), c1.getTimestamp()));
+
+                        listener.onCommentsLoaded(comments);
                     }
-                }
 
-                // Sắp xếp theo thời gian (mới nhất trước)
-                Collections.sort(comments, (c1, c2) -> Long.compare(c2.getTimestamp(), c1.getTimestamp()));
-
-                listener.onCommentsLoaded(comments);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("FireBaseManager", "Error loading all comments: " + error.getMessage());
-                listener.onCommentsError("Error loading all comments: " + error.getMessage());
-            }
-        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("FireBaseManager", "Error loading comments by username: " + error.getMessage());
+                        listener.onCommentsError("Error loading comments by username: " + error.getMessage());
+                    }
+                });
     }
+
     //
 
 }
