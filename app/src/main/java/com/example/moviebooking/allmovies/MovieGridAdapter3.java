@@ -23,13 +23,13 @@ import com.example.moviebooking.moviepage.MoviePageActivity;
 
 import java.util.List;
 
-public class MovieGridAdapter2 extends RecyclerView.Adapter<MovieGridAdapter2.MovieViewHolder> implements Filterable {
+public class MovieGridAdapter3 extends RecyclerView.Adapter<MovieGridAdapter3.MovieViewHolder> implements Filterable {
 
     private Context mContext;
     private UserInfo userInfo;
     private List<Movie> mListMovie;
 
-    public MovieGridAdapter2(Context context, UserInfo userInfo, List<Movie> mListMovie) {
+    public MovieGridAdapter3(Context context, UserInfo userInfo, List<Movie> mListMovie) {
         this.mContext = context;
         this.mListMovie = mListMovie;
         this.userInfo = userInfo;
@@ -60,7 +60,7 @@ public class MovieGridAdapter2 extends RecyclerView.Adapter<MovieGridAdapter2.Mo
 
         holder.tvNote.setText(movie.getDetailDuration());
         holder.imgMovie.setOnClickListener(v -> {
-            Intent intent = new Intent(this.mContext, MoviePageActivity.class);
+            Intent intent = new Intent(this.mContext, CommentActivity.class);
             intent.putExtra("movie", movie);
             intent.putExtra("userinfoIntent", userInfo);
             mContext.startActivity(intent);
@@ -101,3 +101,4 @@ public class MovieGridAdapter2 extends RecyclerView.Adapter<MovieGridAdapter2.Mo
         }
     }
 }
+

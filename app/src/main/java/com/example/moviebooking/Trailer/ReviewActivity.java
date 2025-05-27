@@ -1,9 +1,8 @@
-package com.example.moviebooking;
+package com.example.moviebooking.Trailer;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.SearchView;
 
 import androidx.activity.EdgeToEdge;
@@ -15,10 +14,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.example.moviebooking.R;
 import com.example.moviebooking.allmovies.MovieGridAdapter;
-import com.example.moviebooking.allmovies.MovieGridAdapter2;
+import com.example.moviebooking.allmovies.MovieGridAdapter3;
 import com.example.moviebooking.data.FireBaseManager;
 import com.example.moviebooking.dto.Movie;
 import com.example.moviebooking.dto.UserInfo;
@@ -26,19 +24,19 @@ import com.example.moviebooking.dto.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllMovieActivity extends AppCompatActivity {
+public class ReviewActivity extends AppCompatActivity {
 
     private UserInfo userInfo = null;
     private List<Movie> moviesList = null;
     private RecyclerView allMoviesView;
     private SearchView searchView;
-    private MovieGridAdapter2 movieGridAdapter;
+    private MovieGridAdapter3 movieGridAdapter;
     private FireBaseManager fireBaseManager = FireBaseManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_movie);
+        setContentView(R.layout.activity_review);
         initViews();
         getIntentData();
         setSearchViewListener();
@@ -49,23 +47,11 @@ public class AllMovieActivity extends AppCompatActivity {
         allMoviesView = findViewById(R.id.rcv_search_all_movies);
         searchView = findViewById(R.id.search_bar);
         searchView.clearFocus();
-
     }
 
     private void getIntentData() {
         Intent intent = getIntent();
         userInfo = (UserInfo) intent.getSerializableExtra("userinfoIntent");
-        ImageView avaImg = findViewById(R.id.all_movie_ava);
-        if (userInfo.getProfilePic() != null && !userInfo.getProfilePic().isEmpty()) {
-            Glide.with(this)
-                    .load(userInfo.getProfilePic())
-                    .apply(new RequestOptions()
-                            .centerCrop()
-                            .circleCrop())
-                    .into(avaImg);
-        } else {
-            avaImg.setImageResource(R.drawable.icon_user_ava);
-        }
     }
 
     private void setSearchViewListener() {
@@ -114,7 +100,7 @@ public class AllMovieActivity extends AppCompatActivity {
         allMoviesView.setLayoutManager(linearLayoutManager);
 
 
-        movieGridAdapter = new MovieGridAdapter2(this, userInfo, moviesList);
+        movieGridAdapter = new MovieGridAdapter3(this, userInfo, moviesList);
         allMoviesView.setAdapter(movieGridAdapter);
     }
 }
