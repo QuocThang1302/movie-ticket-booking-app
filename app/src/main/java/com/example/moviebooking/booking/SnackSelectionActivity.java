@@ -197,19 +197,19 @@ public class SnackSelectionActivity extends AppCompatActivity {
 
         private List<SnackItem> getComboItems() {
             List<SnackItem> items = new ArrayList<>();
-            items.add(new SnackItem("Pepsi Lớn + Bắp Ngọt", 70.0, R.drawable.combo));
-            items.add(new SnackItem("Pepsi Lớn + Bắp phô mai", 77.0, R.drawable.combo));
-            items.add(new SnackItem("Pepsi Không Calo Lớn + Bắp Ngọt", 70.0, R.drawable.combo));
-            items.add(new SnackItem("Pepsi Không Calo Lớn + Bắp phô mai", 77.0, R.drawable.combo));
+            items.add(new SnackItem("Pepsi Lớn + Bắp Ngọt", 70.0, R.drawable.combo2));
+            items.add(new SnackItem("Pepsi Lớn + Bắp phô mai", 77.0, R.drawable.combo2));
+            items.add(new SnackItem("Pepsi Không Calo Lớn + Bắp Ngọt", 70.0, R.drawable.combo2));
+            items.add(new SnackItem("Pepsi Không Calo Lớn + Bắp phô mai", 77.0, R.drawable.combo2));
             return items;
         }
 
         private List<SnackItem> getDrinkItems() {
             List<SnackItem> items = new ArrayList<>();
-            items.add(new SnackItem("Pepsi", 27.0, R.drawable.pepsi));
-            items.add(new SnackItem("Pepsi Lớn", 30.0, R.drawable.pepsi));
-            items.add(new SnackItem("Pepsi Không Calo", 27.0, R.drawable.pepsi));
-            items.add(new SnackItem("Pepsi Không Calo Lớn", 30.0, R.drawable.pepsi));
+            items.add(new SnackItem("Pepsi", 27.0, R.drawable.pepsi2));
+            items.add(new SnackItem("Pepsi Lớn", 30.0, R.drawable.pepsi2));
+            items.add(new SnackItem("Pepsi Không Calo", 27.0, R.drawable.pepsi2));
+            items.add(new SnackItem("Pepsi Không Calo Lớn", 30.0, R.drawable.pepsi2));
             return items;
         }
 
