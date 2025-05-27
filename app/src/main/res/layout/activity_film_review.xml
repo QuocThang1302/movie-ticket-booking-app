@@ -10,7 +10,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Film review form users"
+        android:text="Film review form viewers"
         android:textSize="20sp"
         android:textStyle="bold"
         android:padding="16dp"

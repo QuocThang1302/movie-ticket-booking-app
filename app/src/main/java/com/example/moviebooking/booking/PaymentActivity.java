@@ -38,13 +38,17 @@ public class PaymentActivity extends AppCompatActivity {
 
     private void extractIntentData() {
         Intent intent = getIntent();
-
         movieTitle = intent.getStringExtra("movieTitle");
         cinema = intent.getStringExtra("cinema");
         date = intent.getStringExtra("date");
         time = intent.getStringExtra("time");
         userInfo = (UserInfo) intent.getSerializableExtra("userinfoIntent");
         totalPrice = intent.getDoubleExtra("totalPrice", 0.0);
+        // Kiểm tra null để tránh crash
+        if (movieTitle == null || cinema == null || date == null || time == null || userInfo == null) {
+            Toast.makeText(this, "Dữ liệu không hợp lệ", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     private void initUI() {
@@ -55,18 +59,15 @@ public class PaymentActivity extends AppCompatActivity {
         TextView tvTotalPrice = findViewById(R.id.tv_total_price);
         qrCodeImage = findViewById(R.id.iv_qr_code);
 
-        tvMovieTitle.setText(movieTitle);
-        tvCinemaName.setText(cinema);
-        tvDate.setText(date);
-        tvHours.setText(time);
-
+        tvMovieTitle.setText(movieTitle != null ? movieTitle : "Không có tiêu đề");
+        tvCinemaName.setText(cinema != null ? cinema : "Không có rạp");
+        tvDate.setText(date != null ? date : "Không có ngày");
+        tvHours.setText(time != null ? time : "Không có giờ");
         tvTotalPrice.setText("Total: $" + String.format("%.2f", totalPrice));
 
-        // Nút trở về
         ImageView backBtn = findViewById(R.id.iv_back_btn);
-        backBtn.setOnClickListener(v -> finish()); // Quay về trang trước
+        backBtn.setOnClickListener(v -> finish());
 
-        // Nút chuyển tiếp (FAB)
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(this::handleNextStep);
     }
@@ -90,6 +91,8 @@ public class PaymentActivity extends AppCompatActivity {
         intent.putExtra("date", date);
         intent.putExtra("time", time);
         intent.putExtra("userinfoIntent", userInfo);
+        intent.putExtra("movie", getIntent().getSerializableExtra("movie"));
+        intent.putExtra("bookedTicketList", getIntent().getSerializableExtra("bookedTicketList"));
         startActivity(intent);
         finish();
     }

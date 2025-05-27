@@ -133,16 +133,19 @@ public class SnackSelectionActivity extends AppCompatActivity {
 
     private void handleFabButtonClick(View v) {
         Intent intent = new Intent(this, PaymentActivity.class);
+        intent.putExtra("movieTitle", receivedMovie.getTitle());
+        intent.putExtra("cinema", cinemaName);
+        intent.putExtra("date", selectedDateTime.getShortDate());
+        intent.putExtra("time", selectedDateTime.getTimeAMPM());
         intent.putExtra("movie", receivedMovie);
         intent.putExtra("bookedTicketList", bookedTicketList);
         intent.putExtra("userinfoIntent", userInfo);
         intent.putExtra("totalPrice", ticketPrice + snackPrice);
         intent.putStringArrayListExtra("selectedCombos", (ArrayList<String>) selectedCombos);
-        intent.putExtra("bookingTime", "10:28 PM, Sun, 25 May 2025"); // Cập nhật thời gian hiện tại
+        intent.putExtra("bookingTime", "10:28 PM, Sun, 25 May 2025");
         startActivity(intent);
         finish();
     }
-
     public void updateSnackPrice(double price) {
         snackPrice += price;
     }
@@ -197,19 +200,19 @@ public class SnackSelectionActivity extends AppCompatActivity {
 
         private List<SnackItem> getComboItems() {
             List<SnackItem> items = new ArrayList<>();
-            items.add(new SnackItem("Pepsi Lớn + Bắp Ngọt", 70.0, R.drawable.combo));
-            items.add(new SnackItem("Pepsi Lớn + Bắp phô mai", 77.0, R.drawable.combo));
-            items.add(new SnackItem("Pepsi Không Calo Lớn + Bắp Ngọt", 70.0, R.drawable.combo));
-            items.add(new SnackItem("Pepsi Không Calo Lớn + Bắp phô mai", 77.0, R.drawable.combo));
+            items.add(new SnackItem("Pepsi Lớn + Bắp Ngọt", 70.0, R.drawable.combo2));
+            items.add(new SnackItem("Pepsi Lớn + Bắp phô mai", 77.0, R.drawable.combo2));
+            items.add(new SnackItem("Pepsi Không Calo Lớn + Bắp Ngọt", 70.0, R.drawable.combo2));
+            items.add(new SnackItem("Pepsi Không Calo Lớn + Bắp phô mai", 77.0, R.drawable.combo2));
             return items;
         }
 
         private List<SnackItem> getDrinkItems() {
             List<SnackItem> items = new ArrayList<>();
-            items.add(new SnackItem("Pepsi", 27.0, R.drawable.pepsi));
-            items.add(new SnackItem("Pepsi Lớn", 30.0, R.drawable.pepsi));
-            items.add(new SnackItem("Pepsi Không Calo", 27.0, R.drawable.pepsi));
-            items.add(new SnackItem("Pepsi Không Calo Lớn", 30.0, R.drawable.pepsi));
+            items.add(new SnackItem("Pepsi", 27.0, R.drawable.pepsi2));
+            items.add(new SnackItem("Pepsi Lớn", 30.0, R.drawable.pepsi2));
+            items.add(new SnackItem("Pepsi Không Calo", 27.0, R.drawable.pepsi2));
+            items.add(new SnackItem("Pepsi Không Calo Lớn", 30.0, R.drawable.pepsi2));
             return items;
         }
 
