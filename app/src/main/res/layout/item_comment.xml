@@ -1,97 +1,85 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="12dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="#ffffff">
+    android:background="@android:color/white">
 
     <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:gravity="center_vertical">
 
-        <!-- Header với thông tin user và thời gian -->
+        <ImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ava"
+            android:layout_marginEnd="8dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circle_background"/>
+
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="8dp">
-
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvUsername"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Username"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="#333333" />
-
-                <TextView
-                    android:id="@+id/tvTimestamp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="12/12/2024 10:30"
-                    android:textSize="12sp"
-                    android:textColor="#666666" />
-
-            </LinearLayout>
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tvRating"
+                android:id="@+id/tvUsername"
+                android:text="Tên người dùng"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:id="@+id/tvTimestamp"
+                android:text="2 tháng trước"
+                android:textSize="12sp"
+                android:textColor="#888888"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvMovieTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="★ 4.5/5"
+                android:text="Tên phim"
+                android:textColor="#3F51B5"
+                android:textStyle="italic"
                 android:textSize="14sp"
-                android:textColor="#FFD700"
-                android:textStyle="bold"
-                android:background="@drawable/rating_background"
-                android:padding="4dp"
-                android:visibility="visible" />
+                android:layout_marginTop="2dp"/>
 
         </LinearLayout>
-
-        <!-- Tên phim -->
-        <TextView
-            android:id="@+id/tvMovieTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Movie: Avengers Endgame"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:textColor="#FF4081"
-            android:layout_marginBottom="8dp" />
-
-        <!-- Nội dung bình luận -->
-        <TextView
-            android:id="@+id/tvCommentText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="This is the user's review content about the movie..."
-            android:textSize="14sp"
-            android:textColor="#333333"
-            android:lineSpacingExtra="2dp"
-            android:maxLines="5"
-            android:ellipsize="end" />
-
-        <!-- Divider line -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#E0E0E0"
-            android:layout_marginTop="12dp" />
-
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+    <TextView
+        android:id="@+id/tvRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="★ 4.5/5"
+        android:textSize="14sp"
+        android:textColor="#FFD700"
+        android:textStyle="bold"
+        android:background="@drawable/rating_background"
+        android:padding="4dp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tvCommentText"
+        android:text="Nội dung đánh giá"
+        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/imgReview"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="centerCrop"
+        android:visibility="gone"/>
+</LinearLayout>
