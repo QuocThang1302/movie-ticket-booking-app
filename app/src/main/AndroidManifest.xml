@@ -27,6 +27,9 @@
             android:name=".ForgotPasswordActivity"
             android:exported="false" />
         <activity
+            android:name=".Trailer.MembershipActivity"
+            android:exported="false" />
+        <activity
             android:name=".CommentActivity"
             android:exported="false" />
         <activity

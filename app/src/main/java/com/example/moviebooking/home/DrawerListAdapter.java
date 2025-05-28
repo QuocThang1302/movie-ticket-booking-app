@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviebooking.FilmReviewActivity;
+import com.example.moviebooking.Trailer.MembershipActivity;
 import com.example.moviebooking.booking.BookingHistoryActivity;
 import com.example.moviebooking.R;
 import com.example.moviebooking.dto.UserInfo;
@@ -26,6 +27,7 @@ import com.example.moviebooking.dto.UserInfo;
 import java.util.Arrays;
 import java.util.List;
 import com.example.moviebooking.Trailer.ReviewActivity;
+import com.example.moviebooking.home.OnLogoutClickListener;
 
 public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<String> drawerItems;
@@ -40,7 +42,7 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public DrawerListAdapter(Context context, UserInfo userInfo, OnLogoutClickListener listener, ActivityResultLauncher<Intent> launcher) {
         this.context = context;
         this.userInfo = userInfo;
-        this.drawerItems = Arrays.asList("Username", "Booking History", "Write a Review", "Your Reviews", "Logout","Contact Us");
+        this.drawerItems = Arrays.asList("Username", "Booking History", "Write a Review", "Your Reviews", "Membership Registration", "Contact Us", "Logout");
 
         this.logoutClickListener = listener;
         this.launcher = launcher;
@@ -135,13 +137,24 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         context.startActivity(intent);
                     }
                 });
-            }else if (position == 4) { // Contact Us
+            }
+            else if (position == 4) {
+                viewHolder.textViewItem.setText("Membership Registration");
+                viewHolder.imageViewItem.setImageResource(R.drawable.icon_membership);
+
+                viewHolder.textViewItem.setOnClickListener(v -> {
+                    Intent intent = new Intent(context, MembershipActivity.class);
+                    intent.putExtra("userinfoIntent", userInfo);
+                    context.startActivity(intent);
+                });
+            }
+            else if (position == 5) { // Contact Us
                 viewHolder.textViewItem.setText("Contact Us");
                 viewHolder.imageViewItem.setImageResource(R.drawable.icon_contact_us);
 
                 viewHolder.textViewItem.setOnClickListener(v -> showContactDialog());
             }
-            else if (position == 5) {
+            else if (position == 6) {
                 viewHolder.textViewItem.setText("Logout");
                 viewHolder.imageViewItem.setImageResource(R.drawable.icon_logout);
                 viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
