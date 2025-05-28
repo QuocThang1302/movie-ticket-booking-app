@@ -4,11 +4,10 @@
     package="com.example.moviebooking">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
-    
-    <!-- Sử dụng READ_EXTERNAL_STORAGE cho các thiết bị Android < 13 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" 
-        android:maxSdkVersion="32"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" /> <!-- Sử dụng READ_EXTERNAL_STORAGE cho các thiết bị Android < 13 -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
 
     <application
         android:allowBackup="true"
@@ -21,6 +20,9 @@
         android:theme="@style/Theme.Moviebooking"
         tools:targetApi="31">
         <activity
+            android:name=".ReviewFilmActivity"
+            android:exported="false" />
+        <activity
             android:name=".TrailerActivity"
             android:exported="false" />
         <activity
@@ -32,7 +34,6 @@
         <activity
             android:name=".FilmReviewActivity"
             android:exported="false" />
-
         <activity
             android:name=".Trailer.ReviewActivity"
             android:exported="false" />

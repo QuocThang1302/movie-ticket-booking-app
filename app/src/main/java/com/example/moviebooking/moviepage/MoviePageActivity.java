@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.moviebooking.R;
+import com.example.moviebooking.ReviewFilmActivity;
 import com.example.moviebooking.Trailer.TrailerDialogFragment;
 import com.example.moviebooking.data.FireBaseManager;
 import com.example.moviebooking.dto.DateTime;
@@ -50,6 +51,7 @@ public class MoviePageActivity extends AppCompatActivity {
     private TextView movieDescription;
     private TextView trailerTextView;
     private ImageView expandButton;
+    private TextView reviewTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,12 @@ public class MoviePageActivity extends AppCompatActivity {
         }
         String movieId = receivedMovie.getMovieID();
         trailerTextView = findViewById(R.id.tv_trailer);
+        reviewTextView = findViewById(R.id.tv_review);
+        reviewTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(MoviePageActivity.this, ReviewFilmActivity.class);
+            intent.putExtra("movie", receivedMovie);
+            startActivity(intent);
+        });
         trailerTextView.setOnClickListener(v -> openYoutubeTrailer());
         initializeUI();
         setOnClickForFABButtonAndBackButton();

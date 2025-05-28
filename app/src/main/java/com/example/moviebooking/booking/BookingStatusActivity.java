@@ -41,6 +41,14 @@ public class BookingStatusActivity extends AppCompatActivity {
         extractIntentData();
         initUI();
         setOnClickListeners();
+        Intent intent = getIntent();
+        BookedTicketList bookedTicketList = (BookedTicketList) intent.getSerializableExtra("bookedTicketList");
+        if (bookedTicketList == null) {
+            return;
+        }
+        Movie movie = intent.getSerializableExtra("movie") != null ? (Movie) intent.getSerializableExtra("movie") : null;
+
+        createTicketsCard(bookedTicketList, movie);
     }
     private void extractIntentData() {
         Intent intent = getIntent();
@@ -49,8 +57,6 @@ public class BookingStatusActivity extends AppCompatActivity {
         date = intent.getStringExtra("date");
         time = intent.getStringExtra("time");
         userInfo = (UserInfo) intent.getSerializableExtra("userinfoIntent");
-        Movie movie = (Movie) intent.getSerializableExtra("movie");
-        BookedTicketList bookedTicketList = (BookedTicketList) intent.getSerializableExtra("bookedTicketList");
     }
 
     private void initUI() {
