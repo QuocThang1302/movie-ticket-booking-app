@@ -86,4 +86,41 @@ public class SharedReferenceController {
         }
         return true;
     }
+    private static final String PREF_REMEMBER = "RememberPref";
+    private static final String KEY_REMEMBER = "remember";
+    private static final String KEY_USERNAME = "remembered_username";
+    private static final String KEY_PASSWORD = "remembered_password";
+
+    // Lưu thông tin khi bật Remember Me
+    public static void saveRememberedUser(Context context, String username, String password, boolean remember) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_REMEMBER, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if (remember) {
+            editor.putBoolean(KEY_REMEMBER, true);
+            editor.putString(KEY_USERNAME, username);
+            editor.putString(KEY_PASSWORD, password);
+        } else {
+            editor.clear(); // Xóa nếu không nhớ
+        }
+        editor.apply();
+    }
+
+    // Lấy username đã lưu
+    public static String getRememberedUsername(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_REMEMBER, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(KEY_USERNAME, "");
+    }
+
+    // Lấy password đã lưu
+    public static String getRememberedPassword(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_REMEMBER, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(KEY_PASSWORD, "");
+    }
+
+    // Kiểm tra có bật Remember không
+    public static boolean isRemembered(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_REMEMBER, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(KEY_REMEMBER, false);
+    }
+
 }

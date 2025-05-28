@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,6 +22,9 @@ import com.example.moviebooking.dto.UserInfo;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
+    private CheckBox rememberMeCheckBox;
+
+
     private EditText usernameEditText, passwordEditText;
     private Button loginButton;
     private TextView registerTextView;
@@ -38,6 +42,16 @@ public class LoginActivity extends AppCompatActivity {
         registerTextView = findViewById(com.example.moviebooking.R.id.tv_next_to_register);
         forgotPasswordTextView = findViewById(R.id.txtForgotPassword);
         loginButton= findViewById(R.id.btn_login);
+        rememberMeCheckBox = findViewById(R.id.cb_remember_me);
+
+        usernameEditText.setText(SharedReferenceController.getRememberedUsername(this));
+        passwordEditText.setText(SharedReferenceController.getRememberedPassword(this));
+        rememberMeCheckBox.setChecked(SharedReferenceController.isRemembered(this));
+
+
+
+
+
 
         setOnCLickListenerForThoseViews();
         preLoadData();
@@ -92,6 +106,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onRegistrationResult(boolean isSuccess, String message, Object userInfo) {
                 if (isSuccess) {
+                    boolean remember = rememberMeCheckBox.isChecked();
+                    SharedReferenceController.saveRememberedUser(LoginActivity.this, username, password, remember);
+
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     intent.putExtra("userinfoIntent", UserInfo.class.cast(userInfo));
                     startActivity(intent);
