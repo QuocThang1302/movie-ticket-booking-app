@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -150,13 +152,7 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         }
                     }
                 });
-            } else if (position == 4) { // Contact Us
-                viewHolder.textViewItem.setText("Contact Us");
-                viewHolder.imageViewItem.setImageResource(R.drawable.icon_contact_us);
-
-                viewHolder.textViewItem.setOnClickListener(v -> showContactDialog());
             }
-
         }
 
         //customizeTextViewItem(position, holder.textViewItem);
@@ -175,6 +171,11 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         ImageView fbIcon = dialogView.findViewById(R.id.img_fb);
         ImageView insIcon = dialogView.findViewById(R.id.img_ins);
+        Animation shake = AnimationUtils.loadAnimation(context, R.anim.shake);
+
+        // Start shake on both icons
+        fbIcon.startAnimation(shake);
+        insIcon.startAnimation(shake);
 
         fbIcon.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/curyhao123/"));
