@@ -2,9 +2,12 @@ package com.example.moviebooking.home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviebooking.FilmReviewActivity;
+import com.example.moviebooking.Trailer.MembershipActivity;
 import com.example.moviebooking.booking.BookingHistoryActivity;
 import com.example.moviebooking.R;
 import com.example.moviebooking.dto.UserInfo;
@@ -23,6 +27,7 @@ import com.example.moviebooking.dto.UserInfo;
 import java.util.Arrays;
 import java.util.List;
 import com.example.moviebooking.Trailer.ReviewActivity;
+import com.example.moviebooking.home.OnLogoutClickListener;
 
 public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<String> drawerItems;
@@ -37,7 +42,7 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public DrawerListAdapter(Context context, UserInfo userInfo, OnLogoutClickListener listener, ActivityResultLauncher<Intent> launcher) {
         this.context = context;
         this.userInfo = userInfo;
-        this.drawerItems = Arrays.asList("Username", "Booking History", "Write a Review", "Your Reviews", "Logout");
+        this.drawerItems = Arrays.asList("Username", "Booking History", "Write a Review", "Your Reviews", "Membership Registration", "Contact Us", "Logout");
 
         this.logoutClickListener = listener;
         this.launcher = launcher;
@@ -132,7 +137,24 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         context.startActivity(intent);
                     }
                 });
-            }else if (position == 4) {
+            }
+            else if (position == 4) {
+                viewHolder.textViewItem.setText("Membership Registration");
+                viewHolder.imageViewItem.setImageResource(R.drawable.icon_membership);
+
+                viewHolder.textViewItem.setOnClickListener(v -> {
+                    Intent intent = new Intent(context, MembershipActivity.class);
+                    intent.putExtra("userinfoIntent", userInfo);
+                    context.startActivity(intent);
+                });
+            }
+            else if (position == 5) { // Contact Us
+                viewHolder.textViewItem.setText("Contact Us");
+                viewHolder.imageViewItem.setImageResource(R.drawable.icon_contact_us);
+
+                viewHolder.textViewItem.setOnClickListener(v -> showContactDialog());
+            }
+            else if (position == 6) {
                 viewHolder.textViewItem.setText("Logout");
                 viewHolder.imageViewItem.setImageResource(R.drawable.icon_logout);
                 viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +179,34 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private void customizeTextViewItem(int position, TextView textViewItem) {
 
     }
+    private void showContactDialog() {
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_contact_us, null);
+
+        ImageView fbIcon = dialogView.findViewById(R.id.img_fb);
+        ImageView insIcon = dialogView.findViewById(R.id.img_ins);
+        Animation shake = AnimationUtils.loadAnimation(context, R.anim.shake);
+
+        // Start shake on both icons
+        fbIcon.startAnimation(shake);
+        insIcon.startAnimation(shake);
+
+        fbIcon.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/curyhao123/"));
+            context.startActivity(intent);
+        });
+
+        insIcon.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/trananhhao133/"));
+            context.startActivity(intent);
+        });
+
+        new androidx.appcompat.app.AlertDialog.Builder(context)
+                .setTitle("Contact Us")
+                .setView(dialogView)
+                .setNegativeButton("Close", null)
+                .show();
+    }
+
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textViewItem;
