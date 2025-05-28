@@ -2,6 +2,7 @@ package com.example.moviebooking.home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public DrawerListAdapter(Context context, UserInfo userInfo, OnLogoutClickListener listener, ActivityResultLauncher<Intent> launcher) {
         this.context = context;
         this.userInfo = userInfo;
-        this.drawerItems = Arrays.asList("Username", "Booking History", "Write a Review", "Your Reviews", "Logout");
+        this.drawerItems = Arrays.asList("Username", "Booking History", "Write a Review", "Your Reviews", "Logout","Contact Us");
 
         this.logoutClickListener = listener;
         this.launcher = launcher;
@@ -132,7 +133,13 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         context.startActivity(intent);
                     }
                 });
-            }else if (position == 4) {
+            }else if (position == 4) { // Contact Us
+                viewHolder.textViewItem.setText("Contact Us");
+                viewHolder.imageViewItem.setImageResource(R.drawable.icon_contact_us);
+
+                viewHolder.textViewItem.setOnClickListener(v -> showContactDialog());
+            }
+            else if (position == 5) {
                 viewHolder.textViewItem.setText("Logout");
                 viewHolder.imageViewItem.setImageResource(R.drawable.icon_logout);
                 viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +150,13 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         }
                     }
                 });
+            } else if (position == 4) { // Contact Us
+                viewHolder.textViewItem.setText("Contact Us");
+                viewHolder.imageViewItem.setImageResource(R.drawable.icon_contact_us);
+
+                viewHolder.textViewItem.setOnClickListener(v -> showContactDialog());
             }
+
         }
 
         //customizeTextViewItem(position, holder.textViewItem);
@@ -157,6 +170,29 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private void customizeTextViewItem(int position, TextView textViewItem) {
 
     }
+    private void showContactDialog() {
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_contact_us, null);
+
+        ImageView fbIcon = dialogView.findViewById(R.id.img_fb);
+        ImageView insIcon = dialogView.findViewById(R.id.img_ins);
+
+        fbIcon.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/curyhao123/"));
+            context.startActivity(intent);
+        });
+
+        insIcon.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/trananhhao133/"));
+            context.startActivity(intent);
+        });
+
+        new androidx.appcompat.app.AlertDialog.Builder(context)
+                .setTitle("Contact Us")
+                .setView(dialogView)
+                .setNegativeButton("Close", null)
+                .show();
+    }
+
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textViewItem;

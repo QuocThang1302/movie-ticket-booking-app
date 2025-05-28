@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:padding="24dp">
+
+    <ImageView
+        android:id="@+id/img_fb"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/icon_facebook"
+        android:layout_margin="16dp"
+        android:contentDescription="Facebook" />
+
+    <ImageView
+        android:id="@+id/img_ins"
+        android:layout_width="73dp"
+        android:layout_height="73dp"
+        android:src="@drawable/icon_instagram"
+        android:layout_margin="16dp"
+        android:contentDescription="Instagram" />
+</LinearLayout>
