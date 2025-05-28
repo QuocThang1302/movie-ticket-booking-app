@@ -202,8 +202,8 @@ public class SnackSelectionActivity extends AppCompatActivity {
             List<SnackItem> items = new ArrayList<>();
             items.add(new SnackItem("Pepsi Lớn + Bắp Ngọt", 70.0, R.drawable.combo2));
             items.add(new SnackItem("Pepsi Lớn + Bắp phô mai", 77.0, R.drawable.combo2));
-            items.add(new SnackItem("Pepsi Không Calo Lớn + Bắp Ngọt", 70.0, R.drawable.combo2));
-            items.add(new SnackItem("Pepsi Không Calo Lớn + Bắp phô mai", 77.0, R.drawable.combo2));
+            items.add(new SnackItem("Pepsi Zero Lớn + Bắp Ngọt", 70.0, R.drawable.combo2));
+            items.add(new SnackItem("Pepsi Zero Lớn + Bắp phô mai", 77.0, R.drawable.combo2));
             return items;
         }
 
