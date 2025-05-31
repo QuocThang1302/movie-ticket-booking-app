@@ -18,6 +18,7 @@ import com.example.moviebooking.R;
 import com.example.moviebooking.dto.DateTime;
 import com.example.moviebooking.dto.Schedule;
 
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,34 +97,39 @@ public class DateOfWeekAdapter extends RecyclerView.Adapter<DateOfWeekAdapter.Da
         private RelativeLayout relativeLayout;
         private TextView day;
         private TextView dayOfWeek;
+        private TextView month;
         public DateTimeViewHolder(@NonNull View itemView) {
             super(itemView);
             relativeLayout = itemView.findViewById(R.id.rl_calendar);
             day = itemView.findViewById(R.id.tv_day);
             dayOfWeek = itemView.findViewById(R.id.tv_dayOfWeek);
+            month = itemView.findViewById(R.id.tv_month);
         }
 
         public void bindData(DateTime dateTime) {
             day.setText(dateTime.getDay());
             dayOfWeek.setText(dateTime.getDayOfWeek().toUpperCase().substring(0, 3));
+            month.setText(dateTime.getMonth());
+            Log.d("DateTimeViewHolder", "Month value: " + dateTime.getMonth());
 
             if (dateTime.isDisable()) {
                 relativeLayout.setBackgroundResource(R.drawable.bg_disabled_date);
                 day.setTextColor(mContext.getResources().getColor(R.color.yellow));
                 dayOfWeek.setTextColor(mContext.getResources().getColor(R.color.white));
+                month.setTextColor(mContext.getResources().getColor(R.color.white));
             } else
             if (dateTime.isSelected()) {
                 relativeLayout.setBackgroundResource(R.drawable.bg_glow_orange);
                 day.setTextColor(mContext.getResources().getColor(android.R.color.black));
                 dayOfWeek.setTextColor(mContext.getResources().getColor(android.R.color.black));
+                month.setTextColor(mContext.getResources().getColor(R.color.white));
             } else {
                 relativeLayout.setBackgroundResource(R.drawable.bg_disabled_date);
                 day.setTextColor(mContext.getResources().getColor(R.color.yellow));
                 dayOfWeek.setTextColor(mContext.getResources().getColor(R.color.white));
+                month.setTextColor(mContext.getResources().getColor(R.color.white));
             }
         }
     }
-    //Thử nghiệm
 
-    //Thử nghiệm
 }

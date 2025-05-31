@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.moviebooking.booking.SnackOrder;
 import com.example.moviebooking.dto.Comment;
 import com.example.moviebooking.dto.DateTime;
 import com.example.moviebooking.dto.Movie;
@@ -40,7 +41,7 @@ public class FireBaseManager {
     private static final String USERS_TABLE = "USERS_INFO";
     private static final String TICKETS_TABLE = "TICKETS";
     private static final String COMMENTS_TABLE = "COMMENTS";
-
+    private static final String SNACK_ORDERS_TABLE = "SNACK_ORDERS";
     private FireBaseManager() {
         // Private constructor to prevent instantiation outside of this class
         firebaseDatabase = FirebaseDatabase.getInstance("https://moviebooking-59c69-default-rtdb.asia-southeast1.firebasedatabase.app/");
@@ -945,6 +946,130 @@ public static void checkShowtimeAvailability(String movieId, String cinemaId, Da
                 });
     }
 
+    //Snack
+    public interface OnSnackOrderSavedListener {
+        void onSnackOrderSaved(String orderId, boolean success);
+        void onSnackOrderError(String errorMessage);
+    }
+
+    public interface OnSnackOrdersLoadedListener {
+        void onSnackOrdersLoaded(List<SnackOrder> snackOrders);
+        void onSnackOrdersError(String errorMessage);
+    }
+// ===== SNACK ORDER METHODS =====
+
+    /**
+     * Lưu đơn hàng bắp nước vào Firebase
+     */
+    public void saveSnackOrder(SnackOrder snackOrder, OnSnackOrderSavedListener listener) {
+        DatabaseReference snackOrdersRef = firebaseDatabase.getReference(SNACK_ORDERS_TABLE);
+
+        if (snackOrder.getOrderId() == null || snackOrder.getOrderId().isEmpty()) {
+            snackOrder.setOrderId(snackOrdersRef.push().getKey());
+        }
+
+        snackOrdersRef.child(snackOrder.getOrderId())
+                .setValue(snackOrder)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("SnackOrder", "Đã lưu đơn hàng bắp nước thành công: " + snackOrder.getOrderId());
+                    listener.onSnackOrderSaved(snackOrder.getOrderId(), true);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("SnackOrder", "Lỗi khi lưu đơn hàng bắp nước", e);
+                    listener.onSnackOrderError("Lưu đơn hàng thất bại: " + e.getMessage());
+                });
+    }
+
+    /**
+     * Lấy tất cả đơn hàng bắp nước của một user
+     */
+    public void getUserSnackOrders(String userId, OnSnackOrdersLoadedListener listener) {
+        DatabaseReference snackOrdersRef = firebaseDatabase.getReference(SNACK_ORDERS_TABLE);
+
+        snackOrdersRef.orderByChild("userId").equalTo(userId)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        List<SnackOrder> snackOrders = new ArrayList<>();
+                        for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
+                            SnackOrder order = orderSnapshot.getValue(SnackOrder.class);
+                            if (order != null) {
+                                snackOrders.add(order);
+                            }
+                        }
+                        // Sắp xếp theo thời gian tạo (mới nhất trước)
+                        snackOrders.sort((o1, o2) -> Long.compare(o2.getOrderTimestamp(), o1.getOrderTimestamp()));
+                        listener.onSnackOrdersLoaded(snackOrders);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        listener.onSnackOrdersError("Lỗi khi tải đơn hàng: " + error.getMessage());
+                    }
+                });
+    }
+
+    /**
+     * Lấy tất cả đơn hàng bắp nước (cho admin)
+     */
+    public void getAllSnackOrders(OnSnackOrdersLoadedListener listener) {
+        DatabaseReference snackOrdersRef = firebaseDatabase.getReference(SNACK_ORDERS_TABLE);
+
+        snackOrdersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<SnackOrder> snackOrders = new ArrayList<>();
+                for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
+                    SnackOrder order = orderSnapshot.getValue(SnackOrder.class);
+                    if (order != null) {
+                        snackOrders.add(order);
+                    }
+                }
+                // Sắp xếp theo thời gian tạo (mới nhất trước)
+                snackOrders.sort((o1, o2) -> Long.compare(o2.getOrderTimestamp(), o1.getOrderTimestamp()));
+                listener.onSnackOrdersLoaded(snackOrders);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onSnackOrdersError("Lỗi khi tải tất cả đơn hàng: " + error.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Cập nhật trạng thái đơn hàng
+     */
+    public void updateSnackOrderStatus(String orderId, String newStatus, OnSnackOrderSavedListener listener) {
+        DatabaseReference orderRef = firebaseDatabase.getReference(SNACK_ORDERS_TABLE).child(orderId);
+
+        orderRef.child("orderStatus").setValue(newStatus)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("SnackOrder", "Đã cập nhật trạng thái đơn hàng: " + orderId + " -> " + newStatus);
+                    listener.onSnackOrderSaved(orderId, true);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("SnackOrder", "Lỗi khi cập nhật trạng thái đơn hàng", e);
+                    listener.onSnackOrderError("Cập nhật trạng thái thất bại: " + e.getMessage());
+                });
+    }
+
+    /**
+     * Xóa đơn hàng bắp nước
+     */
+    public void deleteSnackOrder(String orderId, OnSnackOrderSavedListener listener) {
+        DatabaseReference orderRef = firebaseDatabase.getReference(SNACK_ORDERS_TABLE).child(orderId);
+
+        orderRef.removeValue()
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("SnackOrder", "Đã xóa đơn hàng: " + orderId);
+                    listener.onSnackOrderSaved(orderId, true);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("SnackOrder", "Lỗi khi xóa đơn hàng", e);
+                    listener.onSnackOrderError("Xóa đơn hàng thất bại: " + e.getMessage());
+                });
+    }
     //
 
 }

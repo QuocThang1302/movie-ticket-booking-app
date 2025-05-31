@@ -1,6 +1,7 @@
 package com.example.moviebooking.dto;
 
 import java.io.Serializable;
+import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Calendar;
@@ -41,10 +42,11 @@ public class DateTime implements Serializable {
     }
 
     public String getMonth() {
-        if (month < 10) {
-            return "0" + month;
+        String[] months = new DateFormatSymbols().getShortMonths();
+        if (month >= 1 && month <= 12) {
+            return months[month - 1].toUpperCase();
         }
-        return "" + month;
+        return "";
     }
 
     public String getYear() {

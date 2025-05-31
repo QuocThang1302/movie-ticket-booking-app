@@ -2,11 +2,13 @@ package com.example.moviebooking.booking;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.moviebooking.R;
+import com.example.moviebooking.data.FireBaseManager;
 import com.example.moviebooking.dto.BookedTicketList;
 import com.example.moviebooking.dto.DateTime;
 import com.example.moviebooking.dto.Movie;
@@ -46,16 +49,27 @@ public class SnackSelectionActivity extends AppCompatActivity {
     private List<String> selectedCombos = new ArrayList<>();
     private Map<String, Integer> snackQuantities = new HashMap<>();
 
+    // Thêm danh sách tất cả snack items để truyền qua trang sau
+    private List<SnackItem> allSnackItems = new ArrayList<>();
+
+    // Firebase manager
+    private FireBaseManager fireBaseManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_snack_selection);
+
+        fireBaseManager = FireBaseManager.getInstance();
 
         extractIntentData();
         initializeUI();
         setDataForFilmView();
         setupTabs();
         updatePaymentInfo();
+
+        // Khởi tạo danh sách tất cả snack items
+        initializeAllSnackItems();
     }
 
     private void extractIntentData() {
@@ -125,6 +139,14 @@ public class SnackSelectionActivity extends AppCompatActivity {
                 }).attach();
     }
 
+    private void initializeAllSnackItems() {
+        allSnackItems.clear();
+        allSnackItems.addAll(getComboItems());
+        allSnackItems.addAll(getDrinkItems());
+        allSnackItems.addAll(getPopcornItems());
+        allSnackItems.addAll(getSnackItems());
+    }
+
     void updatePaymentInfo() {
         tvSnackCount.setText("x" + selectedSnackCount);
         double totalPrice = ticketPrice + snackPrice;
@@ -132,6 +154,67 @@ public class SnackSelectionActivity extends AppCompatActivity {
     }
 
     private void handleFabButtonClick(View v) {
+        // Lưu đơn hàng bắp nước vào Firebase trước khi chuyển trang
+        if (hasSnackOrders()) {
+            saveSnackOrderToFirebase();
+        } else {
+            // Không có snack nào được chọn, chuyển trang luôn
+            navigateToPaymentActivity();
+        }
+    }
+
+    private boolean hasSnackOrders() {
+        return selectedSnackCount > 0;
+    }
+
+    private void saveSnackOrderToFirebase() {
+        // Hiển thị loading indicator (tuỳ chọn)
+        // progressDialog.show();
+
+        SnackOrder snackOrder = new SnackOrder(
+                userInfo.getUsername(),
+                userInfo.getUsername(), // Assuming UserInfo has getUsername() method
+                receivedMovie.getTitle(),
+                cinemaName,
+                selectedDateTime.getShortDate(),
+                selectedDateTime.getTimeAMPM(),
+                snackQuantities,
+                allSnackItems
+        );
+
+        fireBaseManager.saveSnackOrder(snackOrder, new FireBaseManager.OnSnackOrderSavedListener() {
+            @Override
+            public void onSnackOrderSaved(String orderId, boolean success) {
+                // progressDialog.dismiss();
+                if (success) {
+                    Log.d("SnackOrder", "Snack order saved successfully: " + orderId);
+                    Toast.makeText(SnackSelectionActivity.this, "Snack order saved successfully!", Toast.LENGTH_SHORT).show();
+
+                    // Chuyển trang với orderId
+                    navigateToPaymentActivity(orderId);
+                } else {
+                    Toast.makeText(SnackSelectionActivity.this, "Failed to save snack order!", Toast.LENGTH_SHORT).show();
+                    // Vẫn cho phép chuyển trang
+                    navigateToPaymentActivity();
+                }
+            }
+
+            @Override
+            public void onSnackOrderError(String errorMessage) {
+                // progressDialog.dismiss();
+                Log.e("SnackOrder", "Failed to save snack order!" + errorMessage);
+                Toast.makeText(SnackSelectionActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
+                // Vẫn cho phép chuyển trang
+                navigateToPaymentActivity();
+            }
+        });
+    }
+
+    private void navigateToPaymentActivity() {
+        navigateToPaymentActivity(null);
+    }
+
+    private void navigateToPaymentActivity(String snackOrderId) {
         Intent intent = new Intent(this, PaymentActivity.class);
         intent.putExtra("movieTitle", receivedMovie.getTitle());
         intent.putExtra("cinema", cinemaName);
@@ -143,9 +226,22 @@ public class SnackSelectionActivity extends AppCompatActivity {
         intent.putExtra("totalPrice", ticketPrice + snackPrice);
         intent.putStringArrayListExtra("selectedCombos", (ArrayList<String>) selectedCombos);
         intent.putExtra("bookingTime", "10:28 PM, Sun, 25 May 2025");
+
+        // Thêm thông tin snack order
+        if (snackOrderId != null) {
+            intent.putExtra("snackOrderId", snackOrderId);
+        }
+        intent.putExtra("snackPrice", snackPrice);
+        intent.putExtra("snackCount", selectedSnackCount);
+
+        // Truyền chi tiết các snack items đã chọn
+        HashMap<String, Integer> snackQuantitiesHashMap = new HashMap<>(snackQuantities);
+        intent.putExtra("snackQuantities", snackQuantitiesHashMap);
+
         startActivity(intent);
         finish();
     }
+
     public void updateSnackPrice(double price) {
         snackPrice += price;
     }
@@ -163,6 +259,41 @@ public class SnackSelectionActivity extends AppCompatActivity {
 
     public void removeSelectedCombo(String combo) {
         selectedCombos.remove(combo);
+    }
+
+    // Helper methods để tạo danh sách snack items
+    private List<SnackItem> getComboItems() {
+        List<SnackItem> items = new ArrayList<>();
+        items.add(new SnackItem("Pepsi Lớn + Bắp Ngọt", 70.0, R.drawable.combo2));
+        items.add(new SnackItem("Pepsi Lớn + Bắp phô mai", 77.0, R.drawable.combo2));
+        items.add(new SnackItem("Pepsi Zero Lớn + Bắp Ngọt", 70.0, R.drawable.combo2));
+        items.add(new SnackItem("Pepsi Zero Lớn + Bắp phô mai", 77.0, R.drawable.combo2));
+        return items;
+    }
+
+    private List<SnackItem> getDrinkItems() {
+        List<SnackItem> items = new ArrayList<>();
+        items.add(new SnackItem("Pepsi", 27.0, R.drawable.pepsi2));
+        items.add(new SnackItem("Pepsi Lớn", 30.0, R.drawable.pepsi2));
+        items.add(new SnackItem("Pepsi Không Calo", 27.0, R.drawable.pepsi2));
+        items.add(new SnackItem("Pepsi Không Calo Lớn", 30.0, R.drawable.pepsi2));
+        return items;
+    }
+
+    private List<SnackItem> getPopcornItems() {
+        List<SnackItem> items = new ArrayList<>();
+        items.add(new SnackItem("Bắp Ngọt", 45.0, R.drawable.popcorn));
+        items.add(new SnackItem("Bắp Phô Mai", 52.0, R.drawable.popcorn));
+        items.add(new SnackItem("Bắp Caramel", 52.0, R.drawable.popcorn));
+        return items;
+    }
+
+    private List<SnackItem> getSnackItems() {
+        List<SnackItem> items = new ArrayList<>();
+        items.add(new SnackItem("Snack Quế Thái Lan Cam", 27.0, R.drawable.snack));
+        items.add(new SnackItem("Oishi Pillows Socola", 27.0, R.drawable.snack));
+        items.add(new SnackItem("Mực Bento Xanh (ít Cay)", 35.0, R.drawable.snack));
+        return items;
     }
 
     // Adapter for ViewPager
@@ -196,40 +327,6 @@ public class SnackSelectionActivity extends AppCompatActivity {
         @Override
         public int getItemCount() {
             return 4; // Số lượng tab
-        }
-
-        private List<SnackItem> getComboItems() {
-            List<SnackItem> items = new ArrayList<>();
-            items.add(new SnackItem("Pepsi Lớn + Bắp Ngọt", 70.0, R.drawable.combo2));
-            items.add(new SnackItem("Pepsi Lớn + Bắp phô mai", 77.0, R.drawable.combo2));
-            items.add(new SnackItem("Pepsi Zero Lớn + Bắp Ngọt", 70.0, R.drawable.combo2));
-            items.add(new SnackItem("Pepsi Zero Lớn + Bắp phô mai", 77.0, R.drawable.combo2));
-            return items;
-        }
-
-        private List<SnackItem> getDrinkItems() {
-            List<SnackItem> items = new ArrayList<>();
-            items.add(new SnackItem("Pepsi", 27.0, R.drawable.pepsi2));
-            items.add(new SnackItem("Pepsi Lớn", 30.0, R.drawable.pepsi2));
-            items.add(new SnackItem("Pepsi Không Calo", 27.0, R.drawable.pepsi2));
-            items.add(new SnackItem("Pepsi Không Calo Lớn", 30.0, R.drawable.pepsi2));
-            return items;
-        }
-
-        private List<SnackItem> getPopcornItems() {
-            List<SnackItem> items = new ArrayList<>();
-            items.add(new SnackItem("Bắp Ngọt", 45.0, R.drawable.popcorn));
-            items.add(new SnackItem("Bắp Phô Mai", 52.0, R.drawable.popcorn));
-            items.add(new SnackItem("Bắp Caramel", 52.0, R.drawable.popcorn));
-            return items;
-        }
-
-        private List<SnackItem> getSnackItems() {
-            List<SnackItem> items = new ArrayList<>();
-            items.add(new SnackItem("Snack Quế Thái Lan Cam", 27.0, R.drawable.snack));
-            items.add(new SnackItem("Oishi Pillows Socola", 27.0, R.drawable.snack));
-            items.add(new SnackItem("Mực Bento Xanh (ít Cay)", 35.0, R.drawable.snack));
-            return items;
         }
     }
 }

@@ -97,8 +97,8 @@ public class CommentActivity extends AppCompatActivity {
 
     private void saveCommentToFirebase(Comment comment, EditText editComment, RatingBar ratingBar) {
         String commentContent = editComment.getText().toString().trim();
-        if (commentContent.length() > 1000) {
-            Toast.makeText(this, "Comment cannot exceed 500 characters.", Toast.LENGTH_SHORT).show();
+        if (commentContent.length() > 5000) {
+            Toast.makeText(this, "Comment cannot exceed 5000 characters.", Toast.LENGTH_SHORT).show();
             return;
         }
         Button btnSubmit = findViewById(R.id.btnSubmit);

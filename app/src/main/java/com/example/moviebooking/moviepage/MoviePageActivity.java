@@ -190,11 +190,27 @@ public class MoviePageActivity extends AppCompatActivity {
         FireBaseManager.fetchSchedulesByMovie(movieId, new FireBaseManager.OnSchedulesDataLoadedListener() {
             @Override
             public void onSchedulesDataLoaded(List<Schedule> schedules) {
+                // Get current date and next 7 days
+                LocalDate today = LocalDate.now();
+                LocalDate endDate = today.plusDays(6); // Next 7 days (including today)
+
                 Set<LocalDate> uniqueDates = new TreeSet<>();
                 for (Schedule schedule : schedules) {
                     for (DateTime dateTime : schedule.getShowTimes()) {
-                        uniqueDates.add(dateTime.toLocalDate());
+                        LocalDate scheduleDate = dateTime.toLocalDate();
+
+                        // Only add dates that fall within the next 7 days
+                        if (!scheduleDate.isBefore(today) && !scheduleDate.isAfter(endDate)) {
+                            uniqueDates.add(scheduleDate);
+                        }
                     }
+                }
+
+                // If no schedules available in the next 7 days, don't display anything
+                if (uniqueDates.isEmpty()) {
+                    Log.d("DateList", "No schedules available in the next 7 days");
+                    dateOfWeekAdapter.setData(new ArrayList<>());
+                    return;
                 }
 
                 List<DateTime> dateList = new ArrayList<>();
@@ -211,7 +227,7 @@ public class MoviePageActivity extends AppCompatActivity {
                     bindDataToHourList1List2(schedules, dateList.get(0));
                 }
 
-                // Lắng nghe khi chọn ngày mới
+                // Listen for date selection changes
                 dateOfWeekAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
                     @Override
                     public void onChanged() {
@@ -229,8 +245,6 @@ public class MoviePageActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     private void bindDataToHourList1List2(List<Schedule> schedules, DateTime selectedDate) {
         RecyclerView hourRCV1 = findViewById(R.id.rcv_hours1);

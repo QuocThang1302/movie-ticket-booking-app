@@ -7,38 +7,52 @@
     android:layout_marginTop="10dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
-    app:cardBackgroundColor="@android:color/transparent"> <!-- Màu nền tím đậm -->
+    app:cardBackgroundColor="@android:color/transparent">
 
     <RelativeLayout
         android:id="@+id/rl_calendar"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="@drawable/bg_disabled_date"> <!-- Viền tím -->
+        android:minHeight="100dp"
+        android:padding="8dp"
+        android:background="@drawable/bg_disabled_date">
 
-        <!-- TextView: Thứ hoặc Chủ Nhật -->
+        <!-- Thứ -->
         <TextView
             android:id="@+id/tv_dayOfWeek"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Saturday"
-            android:textSize="15sp"
+            android:text="TUE"
+            android:textSize="14sp"
             android:textColor="@color/white"
             android:textStyle="bold"/>
 
-        <!-- TextView: Ngày -->
+        <!-- Ngày -->
         <TextView
             android:id="@+id/tv_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_dayOfWeek"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:text="18"
-            android:textSize="30sp"
-            android:textColor="#FFB300"
+            android:layout_marginTop="4dp"
+            android:text="03"
+            android:textSize="26sp"
+            android:textColor="#000000"
             android:textStyle="bold"/>
+
+        <!-- Tháng -->
+        <TextView
+            android:id="@+id/tv_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_day"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"
+            android:text="May"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

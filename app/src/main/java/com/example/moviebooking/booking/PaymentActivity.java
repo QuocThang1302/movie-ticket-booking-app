@@ -18,13 +18,20 @@ import android.graphics.Bitmap;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 
 public class PaymentActivity extends AppCompatActivity {
 
-    private String movieTitle, cinema, date, time;
+    private String movieTitle, cinema, date, time, snackOrderId;
     private double totalPrice;
     private UserInfo userInfo;
     private ImageView qrCodeImage;
+    private ArrayList<String> selectedCombos;
+    private int snackPrice, snackCount;
+    private HashMap<String, Integer> snackQuantities;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +51,13 @@ public class PaymentActivity extends AppCompatActivity {
         time = intent.getStringExtra("time");
         userInfo = (UserInfo) intent.getSerializableExtra("userinfoIntent");
         totalPrice = intent.getDoubleExtra("totalPrice", 0.0);
-        // Kiểm tra null để tránh crash
+        selectedCombos = getIntent().getStringArrayListExtra("selectedCombos");
+        snackOrderId = getIntent().getStringExtra("snackOrderId");
+        snackPrice = getIntent().getIntExtra("snackPrice", 0);
+        snackCount = getIntent().getIntExtra("snackCount", 0);
+        snackQuantities = (HashMap<String, Integer>) getIntent().getSerializableExtra("snackQuantities");
         if (movieTitle == null || cinema == null || date == null || time == null || userInfo == null) {
-            Toast.makeText(this, "Dữ liệu không hợp lệ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Invalid data", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -93,6 +104,11 @@ public class PaymentActivity extends AppCompatActivity {
         intent.putExtra("userinfoIntent", userInfo);
         intent.putExtra("movie", getIntent().getSerializableExtra("movie"));
         intent.putExtra("bookedTicketList", getIntent().getSerializableExtra("bookedTicketList"));
+        intent.putExtra("selectedCombos", selectedCombos);
+        intent.putExtra("snackOrderId", snackOrderId);
+        intent.putExtra("snackPrice", snackPrice);
+        intent.putExtra("snackCount", snackCount);
+        intent.putExtra("snackQuantities", snackQuantities);
         startActivity(intent);
         finish();
     }
