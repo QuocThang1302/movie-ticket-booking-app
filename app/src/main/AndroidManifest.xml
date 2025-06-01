@@ -22,9 +22,7 @@
         <activity
             android:name=".ReviewFilmActivity"
             android:exported="false" />
-        <activity
-            android:name=".TrailerActivity"
-            android:exported="false" />
+
         <activity
             android:name=".ForgotPasswordActivity"
             android:exported="false" />

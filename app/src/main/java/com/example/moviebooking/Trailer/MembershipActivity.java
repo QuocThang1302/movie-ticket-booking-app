@@ -52,7 +52,7 @@ public class MembershipActivity extends AppCompatActivity {
             RadioButton selectedGender = findViewById(selectedGenderId);
             String gender = selectedGender.getText().toString();
 
-            String cardCode = "MB" + (int)(Math.random() * 90000 + 10000);
+            String cardCode = "CINES" + (int)(Math.random() * 90000 + 10000);
 
             new AlertDialog.Builder(this)
                     .setIcon(R.drawable.icon_success)

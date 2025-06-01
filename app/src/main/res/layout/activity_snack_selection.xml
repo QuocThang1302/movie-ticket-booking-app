@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@color/violet"
-    tools:context=".ui.app.booking.SnackSelectionActivity">
+    tools:context=".booking.SnackSelectionActivity">
 
     <!-- Banner with movie image -->
     <RelativeLayout
