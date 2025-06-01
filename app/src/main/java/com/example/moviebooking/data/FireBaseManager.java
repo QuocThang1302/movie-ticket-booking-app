@@ -126,9 +126,9 @@ public class FireBaseManager {
                     userInfoReference.child(username).child("name").setValue(name);
                     userInfoReference.child(username).child("username").setValue(username);
                     userInfoReference.child(username).child("password").setValue(password);
-                    // ✅ Thêm ảnh mặc định
-                    userInfoReference.child(username).child("profilePic")
-                            .setValue("https://res.cloudinary.com/deagejli9/image/upload/v1748143032/rvsejnd0o74qrsbtegbv.jpg");
+                    // ✅ Thêm ảnh mặc định | Ảnh mặc định đã có trên drawable, nếu muốn thêm thì hãy lấy ảnh icon_user_ava
+                    //userInfoReference.child(username).child("profilePic")
+                    //        .setValue("https://res.cloudinary.com/deagejli9/image/upload/v1748143032/rvsejnd0o74qrsbtegbv.jpg");
 
                     callback.onRegistrationResult(true, "Register successfully", null);
                     Log.d("TAG", "Data added successfully.");
