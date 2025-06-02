@@ -73,15 +73,14 @@ public class FilmReviewActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         commentList = new ArrayList<>();
-        commentAdapter = new CommentAdapter(this, commentList);
+        String profilePicUrl = userInfo.getProfilePic();
+        commentAdapter = new CommentAdapter(this, commentList, profilePicUrl);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerViewReviews.setLayoutManager(layoutManager);
         recyclerViewReviews.setAdapter(commentAdapter);
 
-        // Thêm divider cho RecyclerView (tùy chọn)
-        // DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        // recyclerViewReviews.addItemDecoration(divider);
+
     }
 
     private void loadUserComments() {

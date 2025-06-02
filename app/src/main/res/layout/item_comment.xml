@@ -16,10 +16,10 @@
             android:id="@+id/imgAvatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ava"
             android:layout_marginEnd="8dp"
+            android:background="@drawable/circle_background"
             android:scaleType="centerCrop"
-            android:background="@drawable/circle_background"/>
+            android:src="@drawable/ava" />
 
         <LinearLayout
             android:orientation="vertical"

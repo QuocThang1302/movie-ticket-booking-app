@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.example.moviebooking.R;
 import com.example.moviebooking.dto.Comment;
 
@@ -16,19 +17,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import com.bumptech.glide.Glide;
+
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
     private Context context;
     private List<Comment> commentList;
     private SimpleDateFormat dateFormat;
+    private String profilePicUrl;
 
-    public CommentAdapter(Context context, List<Comment> commentList) {
+    public CommentAdapter(Context context, List<Comment> commentList, String profilePicUrl) {
         this.context = context;
         this.commentList = commentList;
         this.dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        this.profilePicUrl = profilePicUrl;
     }
-
     @NonNull
     @Override
     public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -61,6 +65,17 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             holder.tvRating.setVisibility(View.GONE);
         }
 
+        if (profilePicUrl != null && !profilePicUrl.isEmpty()) {
+            Glide.with(context)
+                    .load(profilePicUrl)
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .circleCrop())
+                    .into(holder.imgAvatar);
+        } else {
+            holder.imgAvatar.setImageResource(R.drawable.icon_user_ava);
+        }
+
         // Set background cho item (tuỳ chọn)
         holder.itemView.setBackgroundColor(context.getResources().getColor(android.R.color.white));
     }
@@ -73,7 +88,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     // ViewHolder class
     public static class CommentViewHolder extends RecyclerView.ViewHolder {
         TextView tvUsername, tvCommentText, tvMovieTitle, tvTimestamp, tvRating;
-        ImageView ivUserAvatar;
+        ImageView imgAvatar;
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -83,7 +98,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             tvMovieTitle = itemView.findViewById(R.id.tvMovieTitle);
             tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
             tvRating = itemView.findViewById(R.id.tvRating);
-            //ivUserAvatar = itemView.findViewById(R.id.ivUserAvatar);
+            imgAvatar = itemView.findViewById(R.id.imgAvatar);
 
         }
     }

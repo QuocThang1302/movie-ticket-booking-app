@@ -9,7 +9,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.moviebooking.R;
+import com.example.moviebooking.data.FireBaseManager;
 import com.example.moviebooking.dto.Comment;
 
 import java.text.SimpleDateFormat;
@@ -21,6 +24,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
     private Context context;
     private List<Comment> comments;
+    private FireBaseManager fireBaseManager = FireBaseManager.getInstance();
 
     public CommentsAdapter(Context context, List<Comment> comments) {
         this.context = context;
@@ -49,6 +53,30 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
         // Set rating stars
         setRatingStars(holder, comment.getRating());
+        // Load profile picture
+        fireBaseManager.getUserProfilePicFromComment(comment, new FireBaseManager.OnUserProfilePicLoadedListener() {
+            @Override
+            public void onProfilePicLoaded(String profilePicUrl) {
+                Glide.with(context)
+                        .load(profilePicUrl)
+                        .apply(new RequestOptions()
+                                .centerCrop()
+                                .circleCrop()
+                                .placeholder(R.drawable.ava)
+                                .error(R.drawable.ava))
+                        .into(holder.imgAvatar);
+            }
+
+            @Override
+            public void onProfilePicError(String errorMessage) {
+                holder.imgAvatar.setImageResource(R.drawable.ava);
+            }
+
+            @Override
+            public void onProfilePicNotFound() {
+                holder.imgAvatar.setImageResource(R.drawable.ava);
+            }
+        });
     }
 
     @Override
@@ -117,6 +145,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
     public static class CommentViewHolder extends RecyclerView.ViewHolder {
         TextView tvUsername, tvTimestamp, tvCommentContent;
         ImageView star1, star2, star3, star4, star5;
+        ImageView imgAvatar;
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -128,6 +157,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
             star3 = itemView.findViewById(R.id.star3);
             star4 = itemView.findViewById(R.id.star4);
             star5 = itemView.findViewById(R.id.star5);
+            imgAvatar = itemView.findViewById(R.id.imgAvatar);
         }
     }
 }

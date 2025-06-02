@@ -17,6 +17,7 @@ import com.example.moviebooking.Comment_Review.CommentsAdapter;
 import com.example.moviebooking.data.FireBaseManager;
 import com.example.moviebooking.dto.Comment;
 import com.example.moviebooking.dto.Movie;
+import com.example.moviebooking.dto.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class ReviewFilmActivity extends AppCompatActivity implements FireBaseMan
 
     // Data
     private Movie receivedMovie;
+    private UserInfo userInfo;
     private CommentsAdapter commentsAdapter;
     private List<Comment> commentsList;
     private FireBaseManager fireBaseManager;
