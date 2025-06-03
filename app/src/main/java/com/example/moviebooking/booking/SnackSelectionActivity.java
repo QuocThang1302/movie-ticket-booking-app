@@ -264,35 +264,35 @@ public class SnackSelectionActivity extends AppCompatActivity {
     // Helper methods để tạo danh sách snack items
     private List<SnackItem> getComboItems() {
         List<SnackItem> items = new ArrayList<>();
-        items.add(new SnackItem("Pepsi Lớn + Bắp Ngọt", 70.0, R.drawable.combo2));
-        items.add(new SnackItem("Pepsi Lớn + Bắp phô mai", 77.0, R.drawable.combo2));
-        items.add(new SnackItem("Pepsi Zero Lớn + Bắp Ngọt", 70.0, R.drawable.combo2));
-        items.add(new SnackItem("Pepsi Zero Lớn + Bắp phô mai", 77.0, R.drawable.combo2));
+        items.add(new SnackItem("Pepsi + Popcorn", 65.0, R.drawable.combo2));
+        items.add(new SnackItem("Pepsi (L) + Popcorn", 77.0, R.drawable.combo2));
+        items.add(new SnackItem("Pepsi Zero + Popcorn", 65.0, R.drawable.combo2));
+        items.add(new SnackItem("Pepsi Zero (L) + Popcorn", 77.0, R.drawable.combo2));
         return items;
     }
 
     private List<SnackItem> getDrinkItems() {
         List<SnackItem> items = new ArrayList<>();
         items.add(new SnackItem("Pepsi", 27.0, R.drawable.pepsi2));
-        items.add(new SnackItem("Pepsi Lớn", 30.0, R.drawable.pepsi2));
-        items.add(new SnackItem("Pepsi Không Calo", 27.0, R.drawable.pepsi2));
-        items.add(new SnackItem("Pepsi Không Calo Lớn", 30.0, R.drawable.pepsi2));
+        items.add(new SnackItem("Pepsi (L)", 30.0, R.drawable.pepsi2));
+        items.add(new SnackItem("Pepsi Zero", 27.0, R.drawable.pepsi2));
+        items.add(new SnackItem("Pepsi Zero (L)", 30.0, R.drawable.pepsi2));
         return items;
     }
 
     private List<SnackItem> getPopcornItems() {
         List<SnackItem> items = new ArrayList<>();
-        items.add(new SnackItem("Bắp Ngọt", 45.0, R.drawable.popcorn));
-        items.add(new SnackItem("Bắp Phô Mai", 52.0, R.drawable.popcorn));
-        items.add(new SnackItem("Bắp Caramel", 52.0, R.drawable.popcorn));
+        items.add(new SnackItem("Sweet Popcorn", 45.0, R.drawable.popcorn));
+        items.add(new SnackItem("Cheese Popcorn", 52.0, R.drawable.popcorn));
+        items.add(new SnackItem("Caramel Popcorn", 52.0, R.drawable.popcorn));
         return items;
     }
 
     private List<SnackItem> getSnackItems() {
         List<SnackItem> items = new ArrayList<>();
-        items.add(new SnackItem("Snack Quế Thái Lan Cam", 27.0, R.drawable.snack));
+        items.add(new SnackItem("Thai Cinnamon Snack", 27.0, R.drawable.snack));
         items.add(new SnackItem("Oishi Pillows Socola", 27.0, R.drawable.snack));
-        items.add(new SnackItem("Mực Bento Xanh (ít Cay)", 35.0, R.drawable.snack));
+        items.add(new SnackItem("Green Bento Squid", 35.0, R.drawable.snack));
         return items;
     }
 
