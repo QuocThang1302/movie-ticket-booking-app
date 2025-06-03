@@ -3,6 +3,7 @@ package com.example.moviebooking;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -108,7 +109,6 @@ public class LoginActivity extends AppCompatActivity {
                 if (isSuccess) {
                     boolean remember = rememberMeCheckBox.isChecked();
                     SharedReferenceController.saveRememberedUser(LoginActivity.this, username, password, remember);
-
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     intent.putExtra("userinfoIntent", UserInfo.class.cast(userInfo));
                     startActivity(intent);
