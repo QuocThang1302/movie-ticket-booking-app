@@ -1,6 +1,5 @@
 package com.example.moviebooking.home;
 
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -24,12 +23,9 @@ import com.cloudinary.utils.ObjectUtils;
 import com.example.moviebooking.R;
 import com.example.moviebooking.data.FireBaseManager;
 import com.example.moviebooking.dto.UserInfo;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,6 +51,7 @@ public class EditUserProfile extends AppCompatActivity {
         getIntentData();
         setupCloudinary();
         launcherResgister();
+        //setupCloudinary();
         setUserInfo();
         allViewClickListener();
     }
@@ -95,7 +92,7 @@ public class EditUserProfile extends AppCompatActivity {
                         editProfileImage.setImageURI(imageUri);
                         Log.d("UploadImage", "Image URI: " + imageUri.toString());
 
-                        uploadImageToCloudinary(imageUri);
+
                     }
                 }
         );
@@ -109,7 +106,7 @@ public class EditUserProfile extends AppCompatActivity {
         imagePickerLauncher.launch(intent);
     }
 
-    private void uploadImageToCloudinary(Uri uri) {
+    private void uploadImageToCloudinary(Uri uri, OnUpdatePictureListener listener) {
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -123,6 +120,8 @@ public class EditUserProfile extends AppCompatActivity {
 
                     runOnUiThread(() -> {
                         updateProfilePictureInFirebase(imageUrl);
+                        userInfo.setProfilePic(imageUrl);
+                        listener.onUploaded(imageUrl);
                         Log.d("CloudinaryUpload", "Upload thành công: " + imageUrl);
                     });
                 } catch (Exception e) {
@@ -136,6 +135,9 @@ public class EditUserProfile extends AppCompatActivity {
             Log.e("CloudinaryUpload", "Lỗi xử lý ảnh", e);
             Toast.makeText(this, "Lỗi ảnh: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+    public interface OnUpdatePictureListener {
+        void onUploaded(String imageUrl);
     }
 
 
@@ -190,16 +192,29 @@ public class EditUserProfile extends AppCompatActivity {
                 }
 
                 userInfo.setName(newName);
+
                 updateUserNameInFirebase(username, newName, success -> {
                     if (success) {
                         Toast.makeText(EditUserProfile.this, "Cập nhật tên thành công", Toast.LENGTH_SHORT).show();
                         isUpdate = true;
 
-                        Intent resultIntent = new Intent();
-                        resultIntent.putExtra("UpdateStat", isUpdate);
-                        resultIntent.putExtra("UserInfoIntent", userInfo);
-                        setResult(RESULT_OK, resultIntent);
-                        finish();
+                        if(imageUri != null){
+                            uploadImageToCloudinary(imageUri, imageUrl -> {
+                                Intent resultIntent = new Intent();
+                                resultIntent.putExtra("UpdateStat", isUpdate);
+                                resultIntent.putExtra("UserInfoIntent", userInfo);
+                                setResult(RESULT_OK, resultIntent);
+                                finish();
+                            });
+                        } else {
+                            Intent resultIntent = new Intent();
+                            resultIntent.putExtra("UpdateStat", isUpdate);
+                            resultIntent.putExtra("UserInfoIntent", userInfo);
+                            setResult(RESULT_OK, resultIntent);
+                            finish();
+                        }
+
+
                     } else {
                         Toast.makeText(EditUserProfile.this, "Cập nhật tên thất bại, thử lại sau", Toast.LENGTH_LONG).show();
                     }
