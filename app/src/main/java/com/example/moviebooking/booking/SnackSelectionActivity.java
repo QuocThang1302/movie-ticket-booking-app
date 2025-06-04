@@ -22,6 +22,7 @@ import com.example.moviebooking.data.FireBaseManager;
 import com.example.moviebooking.dto.BookedTicketList;
 import com.example.moviebooking.dto.DateTime;
 import com.example.moviebooking.dto.Movie;
+import com.example.moviebooking.dto.Seat;
 import com.example.moviebooking.dto.UserInfo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -39,7 +40,7 @@ public class SnackSelectionActivity extends AppCompatActivity {
     private Movie receivedMovie;
     private DateTime selectedDateTime;
     private String cinemaName;
-    private BookedTicketList bookedTicketList;
+    private ArrayList<Seat> selectedSeats; // Changed from BookedTicketList
 
     private int selectedSnackCount = 0;
     private double ticketPrice;
@@ -52,15 +53,13 @@ public class SnackSelectionActivity extends AppCompatActivity {
     // Thêm danh sách tất cả snack items để truyền qua trang sau
     private List<SnackItem> allSnackItems = new ArrayList<>();
 
-    // Firebase manager
-    private FireBaseManager fireBaseManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_snack_selection);
 
-        fireBaseManager = FireBaseManager.getInstance();
 
         extractIntentData();
         initializeUI();
@@ -78,14 +77,14 @@ public class SnackSelectionActivity extends AppCompatActivity {
         receivedMovie = (Movie) intent.getSerializableExtra("movie");
         selectedDateTime = (DateTime) intent.getSerializableExtra("datetime");
         cinemaName = intent.getStringExtra("cinema");
-        bookedTicketList = (BookedTicketList) intent.getSerializableExtra("bookedTicketList");
+        selectedSeats = (ArrayList<Seat>) intent.getSerializableExtra("selectedSeats");
 
-        if (receivedMovie == null || selectedDateTime == null || userInfo == null || bookedTicketList == null) {
+        if (receivedMovie == null || selectedDateTime == null || userInfo == null || selectedSeats == null) {
             finish();
             return;
         }
 
-        ticketPrice = bookedTicketList.getBookedTicketList().size() * 10.0; // Giả sử mỗi vé $10
+        ticketPrice = selectedSeats.size() * 10.0; // Calculate based on selected seats
     }
 
     private void initializeUI() {
@@ -154,89 +153,36 @@ public class SnackSelectionActivity extends AppCompatActivity {
     }
 
     private void handleFabButtonClick(View v) {
-        // Lưu đơn hàng bắp nước vào Firebase trước khi chuyển trang
-        if (hasSnackOrders()) {
-            saveSnackOrderToFirebase();
-        } else {
-            // Không có snack nào được chọn, chuyển trang luôn
-            navigateToPaymentActivity();
-        }
-    }
-
-    private boolean hasSnackOrders() {
-        return selectedSnackCount > 0;
-    }
-
-    private void saveSnackOrderToFirebase() {
-        // Hiển thị loading indicator (tuỳ chọn)
-        // progressDialog.show();
-
-        SnackOrder snackOrder = new SnackOrder(
-                userInfo.getUsername(),
-                userInfo.getUsername(), // Assuming UserInfo has getUsername() method
-                receivedMovie.getTitle(),
-                cinemaName,
-                selectedDateTime.getShortDate(),
-                selectedDateTime.getTimeAMPM(),
-                snackQuantities,
-                allSnackItems
-        );
-
-        fireBaseManager.saveSnackOrder(snackOrder, new FireBaseManager.OnSnackOrderSavedListener() {
-            @Override
-            public void onSnackOrderSaved(String orderId, boolean success) {
-                // progressDialog.dismiss();
-                if (success) {
-                    Log.d("SnackOrder", "Snack order saved successfully: " + orderId);
-                    Toast.makeText(SnackSelectionActivity.this, "Snack order saved successfully!", Toast.LENGTH_SHORT).show();
-
-                    // Chuyển trang với orderId
-                    navigateToPaymentActivity(orderId);
-                } else {
-                    Toast.makeText(SnackSelectionActivity.this, "Failed to save snack order!", Toast.LENGTH_SHORT).show();
-                    // Vẫn cho phép chuyển trang
-                    navigateToPaymentActivity();
-                }
-            }
-
-            @Override
-            public void onSnackOrderError(String errorMessage) {
-                // progressDialog.dismiss();
-                Log.e("SnackOrder", "Failed to save snack order!" + errorMessage);
-                Toast.makeText(SnackSelectionActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
-                // Vẫn cho phép chuyển trang
-                navigateToPaymentActivity();
-            }
-        });
+        // Simply navigate to PaymentActivity without creating any orders yet
+        navigateToPaymentActivity();
     }
 
     private void navigateToPaymentActivity() {
-        navigateToPaymentActivity(null);
-    }
-
-    private void navigateToPaymentActivity(String snackOrderId) {
         Intent intent = new Intent(this, PaymentActivity.class);
+        intent.putExtra("receivedMovie", receivedMovie);
         intent.putExtra("movieTitle", receivedMovie.getTitle());
         intent.putExtra("cinema", cinemaName);
         intent.putExtra("date", selectedDateTime.getShortDate());
         intent.putExtra("time", selectedDateTime.getTimeAMPM());
         intent.putExtra("movie", receivedMovie);
-        intent.putExtra("bookedTicketList", bookedTicketList);
+        intent.putExtra("selectedSeats", selectedSeats); // Pass seats instead of tickets
         intent.putExtra("userinfoIntent", userInfo);
+        intent.putExtra("datetime", selectedDateTime);
         intent.putExtra("totalPrice", ticketPrice + snackPrice);
+        intent.putExtra("ticketPrice", ticketPrice);
         intent.putStringArrayListExtra("selectedCombos", (ArrayList<String>) selectedCombos);
         intent.putExtra("bookingTime", "10:28 PM, Sun, 25 May 2025");
 
-        // Thêm thông tin snack order
-        if (snackOrderId != null) {
-            intent.putExtra("snackOrderId", snackOrderId);
-        }
+        // Thêm thông tin snack
         intent.putExtra("snackPrice", snackPrice);
         intent.putExtra("snackCount", selectedSnackCount);
 
         // Truyền chi tiết các snack items đã chọn
         HashMap<String, Integer> snackQuantitiesHashMap = new HashMap<>(snackQuantities);
         intent.putExtra("snackQuantities", snackQuantitiesHashMap);
+
+        // Pass all snack items for order creation in PaymentActivity
+        intent.putExtra("allSnackItems", (ArrayList<SnackItem>) allSnackItems);
 
         startActivity(intent);
         finish();

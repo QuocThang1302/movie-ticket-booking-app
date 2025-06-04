@@ -64,8 +64,7 @@ public class BookingActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        fetchBookedSeat();
-        setDataToSeatsGrid();
+        // Removed ticket creation logic from here
     }
 
     @Override
@@ -78,35 +77,8 @@ public class BookingActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
-        List<Seat> selectedSeats = new ArrayList<>();
-        for (int i = 0; i < seatStatus.length; i++) {
-            for (int j = 0; j < seatStatus[0].length; j++) {
-                if (seatStatus[i][j].isSelected() && !seatStatus[i][j].isBooked()) {
-                    selectedSeats.add(seatStatus[i][j]);
-                }
-            }
-        }
-        if (selectedSeats.size() == 0) {
-            return;
-        }
-        BookedTicketList bookedTicketList = new BookedTicketList();
-
-        for (Seat seat : selectedSeats) {
-            Ticket ticket = new Ticket(userInfo, receivedMovie, cinemaName, selectedDateTime, seat, false);
-            bookedTicketList.addTicket(ticket);
-        }
-
-        for (Ticket ticket : bookedTicketList.getBookedTicketList()) {
-            FireBaseManager.registerTicket(this, ticket, new FireBaseManager.RegistrationCallback() {
-                @Override
-                public void onRegistrationResult(boolean isSuccess, String message, Object data) {
-                    if (isSuccess) {
-                        Log.d("BookingStatusActivity", "onRegistrationResult: " + message);
-                    }
-                }
-            });
-        }
+        // Removed ticket creation logic from here
+        // Now we only preserve the selected seats state temporarily
     }
 
     private void extractIntentData() {
@@ -142,21 +114,18 @@ public class BookingActivity extends AppCompatActivity {
     }
 
     private void handleFabButtonClick() {
-        List<Seat> selectedSeats = getSelectedSeats();
+        ArrayList<Seat> selectedSeats = getSelectedSeats();
         if (selectedSeats.size() == 0) {
             Toast.makeText(this, "Please select at least one seat", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        BookedTicketList bookedTicketList = createBookedTicketList(selectedSeats);
-        registerTickets(bookedTicketList.getBookedTicketList());
-
-        Log.d("Booking", "handleFabButtonClick: " + bookedTicketList.getBookedTicketList().get(0).getId());
-        navigateToBookingStatusActivity(bookedTicketList);
+        // Just navigate to SnackSelectionActivity without creating tickets
+        navigateToSnackSelectionActivity(selectedSeats);
     }
 
-    private List<Seat> getSelectedSeats() {
-        List<Seat> selectedSeats = new ArrayList<>();
+    private ArrayList<Seat> getSelectedSeats() {
+        ArrayList<Seat> selectedSeats = new ArrayList<>();
         for (int i = 0; i < seatStatus.length; i++) {
             for (int j = 0; j < seatStatus[0].length; j++) {
                 if (seatStatus[i][j].isSelected() && !seatStatus[i][j].isBooked()) {
@@ -167,49 +136,14 @@ public class BookingActivity extends AppCompatActivity {
         return selectedSeats;
     }
 
-    private BookedTicketList createBookedTicketList(List<Seat> selectedSeats) {
-        BookedTicketList bookedTicketList = new BookedTicketList();
-        String id = generateRandomString();
-        for (int i = 0; i < selectedSeats.size(); i++) {
-            String next_id = id.substring(0, id.length() - 1) + (char) (id.charAt(id.length() - 1) + i);
-            Ticket ticket = new Ticket(next_id, userInfo, receivedMovie, cinemaName, selectedDateTime, selectedSeats.get(i), true);
-            Log.d("Booking", "createBookedTicketList: " + ticket.getId());
-            bookedTicketList.addTicket(ticket);
-        }
-        return bookedTicketList;
-    }
-
-    private static String generateRandomString() {
-        SecureRandom secureRandom = new SecureRandom();
-        StringBuilder randomString = new StringBuilder();
-
-        randomString.append((char) (secureRandom.nextInt(26) + 'A'));
-        randomString.append((char) (secureRandom.nextInt(26) + 'A'));
-
-        for (int i = 0; i < 13; i++) {
-            randomString.append((char) (secureRandom.nextInt(10) + '0'));
-        }
-
-        return randomString.toString();
-    }
-
-    private void registerTickets(List<Ticket> tickets) {
-        for (Ticket ticket : tickets) {
-            FireBaseManager.registerTicket(this, ticket, (isSuccess, message, data) -> {
-                if (isSuccess) {
-                    Log.d("BookingStatusActivity", "onRegistrationResult: " + message);
-                }
-            });
-        }
-    }
-
-    private void navigateToBookingStatusActivity(BookedTicketList bookedTicketList) {
-        Intent intent = new Intent(this, com.example.moviebooking.booking.SnackSelectionActivity.class); // Chuyển sang SnackSelectionActivity
+    private void navigateToSnackSelectionActivity(ArrayList<Seat> selectedSeats) {
+        Intent intent = new Intent(this, com.example.moviebooking.booking.SnackSelectionActivity.class);
         intent.putExtra("movie", receivedMovie);
-        intent.putExtra("bookedTicketList", bookedTicketList);
         intent.putExtra("userinfoIntent", userInfo);
         intent.putExtra("datetime", selectedDateTime);
         intent.putExtra("cinema", cinemaName);
+        intent.putExtra("selectedSeats", selectedSeats);
+
         startActivity(intent);
     }
 
@@ -218,16 +152,25 @@ public class BookingActivity extends AppCompatActivity {
             if (isSuccess) {
                 List<Seat> bookedSeats = (List<Seat>) data;
                 selectedSeatCount = 0;
+
+                // Reset all seats to unselected first
+                for (int i = 0; i < seatStatus.length; i++) {
+                    for (int j = 0; j < seatStatus[0].length; j++) {
+                        seatStatus[i][j].setSelected(false);
+                        seatStatus[i][j].setBooked(false);
+                    }
+                }
+
+                // Mark only permanently booked seats
                 for (Seat seat : bookedSeats) {
                     int row = seat.getSeatId().charAt(0) - 'A';
                     int col = seat.getSeatId().charAt(1) - '0';
-                    seatStatus[row][col].setBooked(seat.isBooked());
-                    seatStatus[row][col].setSelected(true);
-                    if (!seat.isBooked()) {
-                        selectedSeatCount++;
+                    if (seat.isBooked()) { // Only mark truly booked seats
+                        seatStatus[row][col].setBooked(true);
                     }
                 }
                 updatePaymentInfo();
+                setDataToSeatsGrid();
             }
         });
     }

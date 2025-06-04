@@ -1,6 +1,8 @@
 package com.example.moviebooking.booking;
 
-public class SnackItem {
+import java.io.Serializable;
+
+public class SnackItem implements Serializable {
     private final String name;
     private final double price;
     private final int imageResId;

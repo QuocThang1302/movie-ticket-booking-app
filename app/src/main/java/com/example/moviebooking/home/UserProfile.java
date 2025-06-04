@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviebooking.R;
 import com.example.moviebooking.dto.UserInfo;
@@ -61,7 +62,9 @@ public class UserProfile extends AppCompatActivity {
                     .load(userInfo.getProfilePic())
                     .apply(new RequestOptions()
                             .centerCrop()
-                            .circleCrop())
+                            .circleCrop()
+                            .skipMemoryCache(true) // Bỏ qua memory cache
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)) // Bỏ qua disk cache
                     .into(userProfilePicture);
         } else {
             userProfilePicture.setImageResource(R.drawable.icon_user_ava);
