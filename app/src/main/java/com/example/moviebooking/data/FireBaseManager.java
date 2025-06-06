@@ -432,7 +432,7 @@ public class FireBaseManager {
                 for (DataSnapshot scheduleSnapshot : snapshot.getChildren()) {
                     try {
                         String scheduleId = scheduleSnapshot.getKey();
-                        String cinemaId = scheduleSnapshot.child("cinemaId").getValue(String.class);
+                        String cinemaId = scheduleSnapshot.child("cinema").getValue(String.class);
                         Boolean isActive = scheduleSnapshot.child("active").getValue(Boolean.class);
 
                         if (isActive == null) {

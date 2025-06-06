@@ -39,6 +39,7 @@ public class MoviePageActivity extends AppCompatActivity {
     private Map<String, List<String>> dateToHoursMap = new LinkedHashMap<>(); // Map ngày → danh sách giờ
     private String selectedDate = null;
     private Movie receivedMovie;
+    private List<Schedule> currentSchedules = new ArrayList<>();
     private UserInfo userInfo;
     private List<DateTime> dates;
     private DateOfWeekAdapter dateOfWeekAdapter;
@@ -70,6 +71,7 @@ public class MoviePageActivity extends AppCompatActivity {
             intent.putExtra("movie", receivedMovie);
             startActivity(intent);
         });
+
         trailerTextView.setOnClickListener(v -> openYoutubeTrailer());
         initializeUI();
         setOnClickForFABButtonAndBackButton();
@@ -145,12 +147,25 @@ public class MoviePageActivity extends AppCompatActivity {
         intent.putExtra(MOVIE_INTENT_KEY, receivedMovie);
 
         DateTime selectedHour = selectedHour1;
-        String selectedCinema = getCinema1Text();
+        String selectedCinema = findCinemaIdForSelectedDateTime(selectedDate, selectedHour1);
 
         intent.putExtra("cinema", selectedCinema);
         intent.putExtra("datetime", selectedDate.setHoursFromDateTime(selectedHour));
 
         startActivity(intent);
+    }
+    private String findCinemaIdForSelectedDateTime(DateTime selectedDate, DateTime selectedHour) {
+        for (Schedule schedule : currentSchedules) {
+            for (DateTime showTime : schedule.getShowTimes()) {
+                if (showTime.toLocalDate().equals(selectedDate.toLocalDate()) &&
+                        showTime.getHour() == selectedHour.getHour() &&
+                        showTime.getMinute() == selectedHour.getMinute()) {
+                    return schedule.getCinemaId();
+                }
+            }
+        }
+        // Fallback nếu không tìm thấy
+        return currentSchedules.isEmpty() ? "" : currentSchedules.get(0).getCinemaId();
     }
 
     private String getCinema1Text() {
@@ -191,6 +206,7 @@ public class MoviePageActivity extends AppCompatActivity {
             @Override
             public void onSchedulesDataLoaded(List<Schedule> schedules) {
                 // Get current date and next 7 days
+                currentSchedules = schedules;
                 LocalDate today = LocalDate.now();
                 LocalDate endDate = today.plusDays(6); // Next 7 days (including today)
 
