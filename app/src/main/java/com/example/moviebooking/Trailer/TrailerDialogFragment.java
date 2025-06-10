@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -30,12 +31,16 @@ public class TrailerDialogFragment extends DialogFragment {
         getLifecycle().addObserver(playerView);
 
         String videoId = extractVideoIdFromUrl(youtubeUrl);
-        playerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-            @Override
-            public void onReady(YouTubePlayer youTubePlayer) {
-                youTubePlayer.loadVideo(videoId, 0);
-            }
-        });
+        if (videoId.isEmpty()) {
+            Toast.makeText(getContext(), "Trailer is not available.", Toast.LENGTH_SHORT).show();
+        } else {
+            playerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                @Override
+                public void onReady(YouTubePlayer youTubePlayer) {
+                    youTubePlayer.loadVideo(videoId, 0);
+                }
+            });
+        }
 
         return view;
     }

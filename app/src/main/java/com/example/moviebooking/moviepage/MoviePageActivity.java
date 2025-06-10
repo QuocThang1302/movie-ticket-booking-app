@@ -67,9 +67,26 @@ public class MoviePageActivity extends AppCompatActivity {
         trailerTextView = findViewById(R.id.tv_trailer);
         reviewTextView = findViewById(R.id.tv_review);
         reviewTextView.setOnClickListener(v -> {
-            Intent intent = new Intent(MoviePageActivity.this, ReviewFilmActivity.class);
-            intent.putExtra("movie", receivedMovie);
-            startActivity(intent);
+            try {
+                // Kiểm tra movie object trước khi chuyển
+                if (receivedMovie != null) {
+                    Intent intent = new Intent(MoviePageActivity.this, ReviewFilmActivity.class);
+                    intent.putExtra("movie", receivedMovie);
+
+                    // Thêm flags để tối ưu performance
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    startActivity(intent);
+
+                    // Thêm animation transition mượt mà
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                } else {
+                    Toast.makeText(MoviePageActivity.this, "Movie data not available", Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e) {
+                Log.e("MoviePageActivity", "Error starting ReviewFilmActivity: " + e.getMessage());
+                Toast.makeText(MoviePageActivity.this, "Error opening reviews", Toast.LENGTH_SHORT).show();
+            }
         });
 
         trailerTextView.setOnClickListener(v -> openYoutubeTrailer());

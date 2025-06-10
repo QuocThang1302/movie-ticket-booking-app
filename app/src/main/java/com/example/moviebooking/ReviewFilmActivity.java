@@ -52,6 +52,45 @@ public class ReviewFilmActivity extends AppCompatActivity implements FireBaseMan
         loadComments();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Đảm bảo UI được cập nhật khi activity resume
+        if (receivedMovie != null) {
+            loadMovieData();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Hủy các task đang chạy để tránh memory leak
+        if (fireBaseManager != null) {
+            // Nếu FireBaseManager có method để cancel tasks
+            // fireBaseManager.cancelPendingTasks();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Clean up resources
+        if (commentsAdapter != null) {
+            commentsAdapter = null;
+        }
+        if (commentsList != null) {
+            commentsList.clear();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Xử lý nút back một cách mượt mà
+        super.onBackPressed();
+        // Thêm animation transition nếu cần
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+    }
+
     private void initViews() {
         // Movie info views
         imgMoviePoster = findViewById(R.id.img_movie_poster);
