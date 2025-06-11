@@ -2,6 +2,7 @@ package com.example.moviebooking.moviepage;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -51,7 +52,6 @@ public class MoviePageActivity extends AppCompatActivity {
     private boolean isExpanded = false;
     private TextView movieDescription;
     private TextView trailerTextView;
-    private ImageView expandButton;
     private TextView reviewTextView;
 
     @Override
@@ -110,30 +110,10 @@ public class MoviePageActivity extends AppCompatActivity {
     private void initializeUI() {
         ImageView backButton = findViewById(R.id.iv_back_btn);
         backButton.setOnClickListener(v -> finish());
-
         com.google.android.material.floatingactionbutton.FloatingActionButton fab =
                 findViewById(R.id.fab);
         fab.setOnClickListener(this::onFabClick);
-
         movieDescription = findViewById(R.id.tv_movie_description);
-        expandButton = findViewById(R.id.iv_expand);
-
-        expandButton.setOnClickListener(v -> {
-            Log.d("MoviePageActivity", "iv_expand clicked, isExpanded: " + isExpanded); // Debug
-            toggleDescription();
-        });
-    }
-
-    private void toggleDescription() {
-        if (isExpanded) {
-            movieDescription.setMaxHeight((int) (130 * getResources().getDisplayMetrics().density));
-            expandButton.setBackgroundResource(R.drawable.button_expand);
-            isExpanded = false;
-        } else {
-            movieDescription.setMaxHeight(Integer.MAX_VALUE);
-            expandButton.setBackgroundResource(R.drawable.button_collapse); // Cần drawable này
-            isExpanded = true;
-        }
     }
 
     private void onFabClick(View v) {

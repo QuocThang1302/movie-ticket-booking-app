@@ -37,7 +37,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/iv_back_btn"
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="20dp"
@@ -146,7 +146,6 @@
                                 android:id="@+id/tv_title_synopsis"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/icon_star"
                                 android:text="Synopsis"
                                 android:textColor="@color/white"
                                 android:textSize="18dp"/>
@@ -178,25 +177,21 @@
                                 android:textStyle="bold"
                                 android:layout_marginStart="16dp"
                                 android:layout_toEndOf="@id/tv_trailer" />
-
-                            <TextView
-                                android:id="@+id/tv_movie_description"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                            <ScrollView
+                                android:id="@+id/scroll_movie_description"
+                                android:layout_width="match_parent"
+                                android:layout_height="180dp"
                                 android:layout_below="@id/tv_title_synopsis"
-                                android:maxHeight="130dp"
-                                android:text="Scott Lang is grappling with the consequences of his choices as both a superhero and a father. Approached by Hope van Dyne and Dr. Hank Pym, Lang must once again don …"
-                                android:textColor="@color/white"
-                                android:textSize="15dp"></TextView>
-
-                            <ImageView
-                                android:id="@+id/iv_expand"
-                                android:layout_width="200dp"
-                                android:layout_height="24dp"
-                                android:layout_alignParentBottom="true"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="20dp"
-                                android:background="@drawable/button_expand"></ImageView>
+                                android:layout_marginTop="8dp"
+                                android:fillViewport="true"
+                                android:overScrollMode="ifContentScrolls">
+                                <TextView
+                                    android:id="@+id/tv_movie_description"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/white"
+                                    android:textSize="15dp" />
+                            </ScrollView>
                         </RelativeLayout>
 
                     </RelativeLayout>
