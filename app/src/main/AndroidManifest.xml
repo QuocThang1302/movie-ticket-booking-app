@@ -4,7 +4,7 @@
     package="com.example.moviebooking">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" /> <!-- Sử dụng READ_EXTERNAL_STORAGE cho các thiết bị Android < 13 -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />

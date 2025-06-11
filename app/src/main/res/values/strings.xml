@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">moviebooking</string>
+    <string name="app_name">Cinespace</string>
     <string name="back_arrow">\u2190</string>
     <string name="film_review_title">%s\'s Reviews</string>
     <string name="no_comments">No reviews found for this user</string>
