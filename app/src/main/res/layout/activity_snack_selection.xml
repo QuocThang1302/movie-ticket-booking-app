@@ -150,7 +150,6 @@
         android:layout_below="@id/tab_layout"
         android:layout_above="@+id/card_total"/>
 
-    <!-- Total price and snack count -->
     <androidx.cardview.widget.CardView
         android:id="@+id/card_total"
         android:layout_width="match_parent"
@@ -178,6 +177,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginEnd="200dp"
                     android:src="@drawable/icon_genre" />
 
                 <TextView
