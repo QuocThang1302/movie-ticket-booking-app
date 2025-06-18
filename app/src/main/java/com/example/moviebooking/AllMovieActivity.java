@@ -84,12 +84,42 @@ public class AllMovieActivity extends AppCompatActivity {
     }
 
     private void filterMovies(String newText) {
+        // Kiểm tra null và empty cho moviesList
+        if (moviesList == null || moviesList.isEmpty()) {
+            Log.w("AllMovieActivity", "Movies list is null or empty, cannot filter");
+            // Có thể hiển thị empty state hoặc reload data
+            if (movieGridAdapter != null) {
+                movieGridAdapter.setFilterList(new ArrayList<>());
+            }
+            return;
+        }
+
+        // Kiểm tra null cho adapter
+        if (movieGridAdapter == null) {
+            Log.e("AllMovieActivity", "Movie adapter is null");
+            return;
+        }
+
         List<Movie> filteredList = new ArrayList<>();
-        for (Movie movie : moviesList) {
-            if (movie.getTitle().toLowerCase().contains(newText.toLowerCase())) {
-                filteredList.add(movie);
+
+        // Kiểm tra nếu search text là null hoặc empty
+        if (newText == null || newText.trim().isEmpty()) {
+            // Nếu không có text tìm kiếm, hiển thị tất cả phim
+            filteredList.addAll(moviesList);
+        } else {
+            // Lọc phim theo từ khóa
+            String searchText = newText.toLowerCase().trim();
+            for (Movie movie : moviesList) {
+                // Kiểm tra null cho movie và title
+                if (movie != null && movie.getTitle() != null) {
+                    if (movie.getTitle().toLowerCase().contains(searchText)) {
+                        filteredList.add(movie);
+                    }
+                }
             }
         }
+
+        // Cập nhật adapter với danh sách đã lọc
         movieGridAdapter.setFilterList(filteredList);
     }
 

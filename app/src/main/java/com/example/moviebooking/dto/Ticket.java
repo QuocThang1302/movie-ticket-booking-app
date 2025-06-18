@@ -167,7 +167,6 @@ public class Ticket implements Serializable {
     }
 
     public String getTicketDateTime() {
-        String[] part = dateTime.split("-");
-        return part[0].substring(0, 3)+ "-" + part[1] + "-" + part[2];
+        return dateTime;
     }
 }

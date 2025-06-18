@@ -117,22 +117,32 @@ public class MoviePageActivity extends AppCompatActivity {
     }
 
     private void onFabClick(View v) {
+        if (dateOfWeekAdapter == null) {
+            showToast("No showtimes currently available");
+            return;
+        }
+
+        if (hours1Adapter == null) {
+            showToast("No showtimes currently available");
+            return;
+        }
+
         DateTime selectedDate = dateOfWeekAdapter.getSelectedDate();
         DateTime selectedHour1 = hours1Adapter.getSelectedHour();
-
 
         if (selectedDate == null) {
             showToast("Please select date");
             return;
         }
 
-        if (selectedHour1 == null ) {
+        if (selectedHour1 == null) {
             showToast("Please select hour");
             return;
         }
 
         startBookingActivity(selectedDate, selectedHour1);
     }
+
 
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

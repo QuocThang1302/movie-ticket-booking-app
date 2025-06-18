@@ -8,4 +8,6 @@
     <string name="loading_comments">Loading reviews...</string>
     <string name="movie_prefix">Movie: %s</string>
     <string name="rating_format">★ %.1f/5</string>
+    <string name="prompt_select_movie">Select Movie</string>
+    <string name="prompt_select_cinema">Select Cinema</string>
 </resources>

@@ -42,6 +42,8 @@ public class FireBaseManager {
     private static final String TICKETS_TABLE = "TICKETS";
     private static final String COMMENTS_TABLE = "COMMENTS";
     private static final String SNACK_ORDERS_TABLE = "SNACK_ORDERS";
+    private static final String MOVIES_TABLE = "MOVIES";
+    private static final String NOW_SHOWING_TABLE = "NOW_SHOWING";
     private FireBaseManager() {
         // Private constructor to prevent instantiation outside of this class
         firebaseDatabase = FirebaseDatabase.getInstance("https://moviebooking-59c69-default-rtdb.asia-southeast1.firebasedatabase.app/");
@@ -57,7 +59,175 @@ public class FireBaseManager {
         void onMoviesDataLoaded(List<Movie> allMovieList);
         void onMoviesDataError(String errorMessage);
     }
+    public interface OnMovieOperationListener {
+        void onSuccess(String message);
+        void onError(String errorMessage);
+    }
+    //Admin
+    public void addMovie(Movie movie, boolean addToNowShowing, OnMovieOperationListener listener) {
+        if (movie == null) {
+            listener.onError("Movie data must not be null.");
+            return;
+        }
 
+        // Generate a new MovieID
+        generateMovieID(new OnMovieIDGeneratedListener() {
+            @Override
+            public void onMovieIDGenerated(String movieID) {
+                movie.setMovieID(movieID); // Gán ID mới cho movie
+                Map<String, Object> movieData = createMovieDataMap(movie);
+
+                // Push to MOVIES with generated ID as the key
+                DatabaseReference moviesRef = firebaseDatabase.getReference(MOVIES_TABLE).child(movieID);
+                moviesRef.setValue(movieData).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (addToNowShowing) {
+                            DatabaseReference nowShowingRef = firebaseDatabase.getReference(NOW_SHOWING_TABLE).child(movieID);
+                            nowShowingRef.setValue(movieData).addOnCompleteListener(task2 -> {
+                                if (task2.isSuccessful()) {
+                                    listener.onSuccess("Movie added with ID " + movieID + " to both MOVIES and NOW_SHOWING.");
+                                } else {
+                                    listener.onError("Movie added to MOVIES, but failed to add to NOW_SHOWING: " + task2.getException().getMessage());
+                                }
+                            });
+                        } else {
+                            listener.onSuccess("Movie added with ID " + movieID + " to MOVIES.");
+                        }
+                    } else {
+                        listener.onError("Failed to add movie: " + task.getException().getMessage());
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                listener.onError(errorMessage);
+            }
+        });
+    }
+
+
+    public void updateMovie(Movie movie, OnMovieOperationListener listener) {
+        if (movie == null || movie.getMovieID() == null || movie.getMovieID().isEmpty()) {
+            listener.onError("Movie or MovieID must not be empty.");
+            return;
+        }
+
+        Map<String, Object> movieData = createMovieDataMap(movie);
+
+        DatabaseReference moviesRef = firebaseDatabase.getReference(MOVIES_TABLE).child(movie.getMovieID());
+        moviesRef.setValue(movieData).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DatabaseReference nowShowingRef = firebaseDatabase.getReference(NOW_SHOWING_TABLE).child(movie.getMovieID());
+                nowShowingRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            nowShowingRef.setValue(movieData).addOnCompleteListener(task2 -> {
+                                if (task2.isSuccessful()) {
+                                    listener.onSuccess("Movie updated successfully in both MOVIES and NOW_SHOWING.");
+                                } else {
+                                    listener.onError("Movie updated in MOVIES, but failed to update in NOW_SHOWING: " + task2.getException().getMessage());
+                                }
+                            });
+                        } else {
+                            listener.onSuccess("Movie updated successfully in MOVIES.");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        listener.onError("Error checking NOW_SHOWING: " + error.getMessage());
+                    }
+                });
+            } else {
+                listener.onError("Failed to update movie: " + task.getException().getMessage());
+            }
+        });
+    }
+
+    public void deleteMovie(String movieID, OnMovieOperationListener listener) {
+        if (movieID == null || movieID.isEmpty()) {
+            listener.onError("MovieID must not be empty.");
+            return;
+        }
+
+        DatabaseReference moviesRef = firebaseDatabase.getReference(MOVIES_TABLE).child(movieID);
+        moviesRef.removeValue().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DatabaseReference nowShowingRef = firebaseDatabase.getReference(NOW_SHOWING_TABLE).child(movieID);
+                nowShowingRef.removeValue().addOnCompleteListener(task2 -> {
+                    if (task2.isSuccessful()) {
+                        listener.onSuccess("Movie deleted successfully from both MOVIES and NOW_SHOWING.");
+                    } else {
+                        listener.onSuccess("Movie deleted from MOVIES. It may not exist in NOW_SHOWING.");
+                    }
+                });
+            } else {
+                listener.onError("Failed to delete movie: " + task.getException().getMessage());
+            }
+        });
+    }
+    public void removeMovieFromNowShowing(String movieID, OnMovieOperationListener listener) {
+        if (movieID == null || movieID.isEmpty()) {
+            listener.onError("MovieID không được để trống");
+            return;
+        }
+
+        DatabaseReference nowShowingRef = firebaseDatabase.getReference(NOW_SHOWING_TABLE).child(movieID);
+        nowShowingRef.removeValue().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                listener.onSuccess("Xóa movie khỏi NOW_SHOWING thành công");
+            } else {
+                listener.onError("Thất bại khi xóa movie khỏi NOW_SHOWING: " + task.getException().getMessage());
+            }
+        });
+    }
+    private Map<String, Object> createMovieDataMap(Movie movie) {
+        Map<String, Object> movieData = new HashMap<>();
+        movieData.put("title", movie.getTitle());
+        movieData.put("description", movie.getDescription());
+        movieData.put("thumbnail", movie.getThumbnail());
+        movieData.put("duration", movie.getDuration());
+        movieData.put("genres", movie.getGenres());
+        movieData.put("rate", movie.getRate());
+        movieData.put("year", movie.getYear());
+        movieData.put("trailerYoutube", movie.getTrailerYoutube());
+        return movieData;
+    }
+    public interface OnMovieIDGeneratedListener {
+        void onMovieIDGenerated(String movieID);
+        void onError(String errorMessage);
+    }
+    public void generateMovieID(OnMovieIDGeneratedListener listener) {
+        DatabaseReference moviesRef = firebaseDatabase.getReference(MOVIES_TABLE);
+        moviesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int maxId = 0;
+                for (DataSnapshot movieSnapshot : snapshot.getChildren()) {
+                    String movieId = movieSnapshot.getKey();
+                    if (movieId != null && movieId.startsWith("movie")) {
+                        try {
+                            int id = Integer.parseInt(movieId.substring(5));
+                            maxId = Math.max(maxId, id);
+                        } catch (NumberFormatException e) {
+                            // Ignore invalid movie IDs
+                        }
+                    }
+                }
+                String newMovieId = String.format("movie%05d", maxId + 1);
+                listener.onMovieIDGenerated(newMovieId);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onError("Error generating MovieID: " + error.getMessage());
+            }
+        });
+    }
+
+    //Admin
     private void fetchMoviesData(String node, OnMoviesDataLoadedListener listener) {
         List<Movie> allMovieList = new ArrayList<>();
 
@@ -126,9 +296,10 @@ public class FireBaseManager {
                     userInfoReference.child(username).child("name").setValue(name);
                     userInfoReference.child(username).child("username").setValue(username);
                     userInfoReference.child(username).child("password").setValue(password);
+                    userInfoReference.child(username).child("role").setValue(false);
                     // ✅ Thêm ảnh mặc định | Ảnh mặc định đã có trên drawable, nếu muốn thêm thì hãy lấy ảnh icon_user_ava
-                    //userInfoReference.child(username).child("profilePic")
-                    //        .setValue("https://res.cloudinary.com/deagejli9/image/upload/v1748143032/rvsejnd0o74qrsbtegbv.jpg");
+                    userInfoReference.child(username).child("profilePic")
+                            .setValue("https://res.cloudinary.com/deagejli9/image/upload/v1748143032/rvsejnd0o74qrsbtegbv.jpg");
 
                     callback.onRegistrationResult(true, "Register successfully", null);
                     Log.d("TAG", "Data added successfully.");
@@ -167,11 +338,12 @@ public class FireBaseManager {
                     String name = dataSnapshot.child("name").getValue(String.class);
                     String user = dataSnapshot.child("username").getValue(String.class);
                     String profilePicture = dataSnapshot.child("profilePic").getValue(String.class);
-
+                    Boolean roleValue = dataSnapshot.child("role").getValue(Boolean.class);
+                    boolean role = roleValue != null ? roleValue : false;
                     if (passwordFromDB.equals(password)) {
                         Log.d("TAG", "Login successfully");
                         Log.d("TAG", "Profile picture URL: " + profilePicture);
-                        callback.onRegistrationResult(true, "Login successfully", new UserInfo(name, user, passwordFromDB, profilePicture));
+                        callback.onRegistrationResult(true, "Login successfully", new UserInfo(name, user, passwordFromDB, profilePicture, role));
 
                     } else {
                         Toast.makeText(context, "Wrong password", Toast.LENGTH_SHORT).show();
@@ -675,6 +847,166 @@ public class FireBaseManager {
             public void onCancelled(@NonNull DatabaseError error) {
                 listener.onProfilePicError("Database query error: " + error.getMessage());
                 Log.e("FireBaseManager", "Database error: " + error.getMessage());
+            }
+        });
+    }
+    // admin
+    public static void addSchedule(Context context, Schedule schedule, RegistrationCallback callback) {
+        DatabaseReference schedulesReference = firebaseDatabase.getReference(SCHEDULES_TABLE);
+
+        // First check if the movie exists
+        DatabaseReference moviesReference = firebaseDatabase.getReference("MOVIES");
+        moviesReference.child(schedule.getMovieId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    callback.onRegistrationResult(false, "Movie with ID " + schedule.getMovieId() + " does not exist", null);
+                    return;
+                }
+
+                // Generate a new key for the schedule
+                String scheduleId = schedulesReference.push().getKey();
+                if (scheduleId == null) {
+                    callback.onRegistrationResult(false, "Failed to generate schedule ID", null);
+                    return;
+                }
+
+                schedule.setScheduleId(scheduleId);
+
+                // Create a map with the schedule data
+                Map<String, Object> scheduleValues = new HashMap<>();
+                //scheduleValues.put("scheduleId", schedule.getScheduleId());
+                scheduleValues.put("movieId", schedule.getMovieId());
+                scheduleValues.put("cinema", schedule.getCinemaId());
+                //scheduleValues.put("active", schedule.isActive());
+
+                // Convert DateTime objects to strings for Firebase
+                List<String> showTimeStrings = schedule.getShowTimesAsStrings();
+                scheduleValues.put("showTimes", showTimeStrings);
+
+                // Add the schedule to the database
+                schedulesReference.child(scheduleId).setValue(scheduleValues)
+                        .addOnSuccessListener(aVoid -> {
+                            callback.onRegistrationResult(true, "Schedule added successfully", scheduleId);
+                        })
+                        .addOnFailureListener(e -> {
+                            callback.onRegistrationResult(false, "Failed to add schedule: " + e.getMessage(), null);
+                        });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("TAG", "Error checking movie: " + databaseError.getMessage());
+                callback.onRegistrationResult(false, "Error checking movie: " + databaseError.getMessage(), null);
+            }
+        });
+    }
+    // Update an existing schedule
+    public static void updateSchedule(Context context, Schedule schedule, RegistrationCallback callback) {
+        if (schedule.getScheduleId() == null || schedule.getScheduleId().isEmpty()) {
+            callback.onRegistrationResult(false, "Schedule ID is required for updates", null);
+            return;
+        }
+
+        DatabaseReference scheduleRef = firebaseDatabase.getReference(SCHEDULES_TABLE).child(schedule.getScheduleId());
+
+        // Check if the schedule exists
+        scheduleRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    callback.onRegistrationResult(false, "Schedule with ID " + schedule.getScheduleId() + " does not exist", null);
+                    return;
+                }
+
+                // Update the schedule
+                Map<String, Object> updates = new HashMap<>();
+                updates.put("movieId", schedule.getMovieId());
+                updates.put("cinema", schedule.getCinemaId());
+                updates.put("active", schedule.isActive());
+
+                // Convert DateTime objects to strings for Firebase
+                updates.put("showTimes", schedule.getShowTimesAsStrings());
+
+                scheduleRef.updateChildren(updates)
+                        .addOnSuccessListener(aVoid -> {
+                            callback.onRegistrationResult(true, "Schedule updated successfully", schedule.getScheduleId());
+                        })
+                        .addOnFailureListener(e -> {
+                            callback.onRegistrationResult(false, "Failed to update schedule: " + e.getMessage(), null);
+                        });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("TAG", "Error checking schedule: " + databaseError.getMessage());
+                callback.onRegistrationResult(false, "Error checking schedule: " + databaseError.getMessage(), null);
+            }
+        });
+    }
+
+    // Delete a schedule
+    public static void deleteSchedule(Context context, String scheduleId, RegistrationCallback callback) {
+        DatabaseReference scheduleRef = firebaseDatabase.getReference(SCHEDULES_TABLE).child(scheduleId);
+
+        scheduleRef.removeValue()
+                .addOnSuccessListener(aVoid -> {
+                    callback.onRegistrationResult(true, "Schedule deleted successfully", null);
+                })
+                .addOnFailureListener(e -> {
+                    callback.onRegistrationResult(false, "Failed to delete schedule: " + e.getMessage(), null);
+                });
+    }
+
+    // Fetch all schedules
+    public static void fetchAllSchedules(OnSchedulesDataLoadedListener listener) {
+        DatabaseReference schedulesReference = firebaseDatabase.getReference(SCHEDULES_TABLE);
+
+        schedulesReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Schedule> schedules = new ArrayList<>();
+
+                for (DataSnapshot scheduleSnapshot : snapshot.getChildren()) {
+                    try {
+                        String scheduleId = scheduleSnapshot.getKey();
+                        String movieId = scheduleSnapshot.child("movieId").getValue(String.class);
+                        String cinemaId = scheduleSnapshot.child("cinema").getValue(String.class);
+                        Boolean isActive = scheduleSnapshot.child("active").getValue(Boolean.class);
+
+                        if (isActive == null) {
+                            isActive = true; // Default value if not set
+                        }
+
+                        // Create a schedule object
+                        Schedule schedule = new Schedule();
+                        schedule.setScheduleId(scheduleId);
+                        schedule.setMovieId(movieId);
+                        schedule.setCinemaId(cinemaId);
+                        schedule.setActive(isActive);
+
+                        // Parse showTimes from strings to DateTime objects
+                        List<String> showTimeStrings = new ArrayList<>();
+                        for (DataSnapshot timeSnapshot : scheduleSnapshot.child("showTimes").getChildren()) {
+                            String time = timeSnapshot.getValue(String.class);
+                            if (time != null) {
+                                showTimeStrings.add(time);
+                            }
+                        }
+                        schedule.setShowTimesFromStrings(showTimeStrings);
+
+                        schedules.add(schedule);
+                    } catch (Exception e) {
+                        Log.e("TAG", "Error parsing schedule: " + e.getMessage());
+                    }
+                }
+
+                listener.onSchedulesDataLoaded(schedules);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onSchedulesDataError("Error: " + error.getMessage());
             }
         });
     }

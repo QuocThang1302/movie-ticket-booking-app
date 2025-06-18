@@ -20,9 +20,29 @@
         android:theme="@style/Theme.Moviebooking"
         tools:targetApi="31">
         <activity
+            android:name=".MovieManager.UpdateDeleteMovieActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MovieManager.AddMovieActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MovieManager.MovieListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MovieListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ManageSchedule.UpdateScheduleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ManageSchedule.ScheduleListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ManageSchedule.AddScheduleActivity"
+            android:exported="false" />
+        <activity
             android:name=".ReviewFilmActivity"
             android:exported="false" />
-
         <activity
             android:name=".ForgotPasswordActivity"
             android:exported="false" />

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/titleInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tiêu đề phim" />
+
+        <EditText
+            android:id="@+id/descriptionInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mô tả phim" />
+
+        <EditText
+            android:id="@+id/durationInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Thời lượng (phút)"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/rateInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Đánh giá (rate)" />
+
+        <EditText
+            android:id="@+id/yearInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Năm sản xuất" />
+
+        <EditText
+            android:id="@+id/trailerInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Link trailer YouTube" />
+
+        <EditText
+            android:id="@+id/genresInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Thể loại (phân tách dấu phẩy)" />
+
+        <EditText
+            android:id="@+id/thumbnailInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Link ảnh thumbnail" />
+
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cập nhật phim"
+            android:layout_marginTop="16dp" />
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Xóa phim"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btnRemoveNowShowing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Xóa khỏi Now Showing"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@android:color/holo_orange_dark"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</ScrollView>

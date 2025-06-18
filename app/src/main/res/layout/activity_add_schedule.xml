@@ -1,0 +1,62 @@
+<!-- res/layout/activity_add_schedule.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Spinner
+        android:id="@+id/spinnerMovie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:prompt="@string/prompt_select_movie" />
+
+    <Spinner
+        android:id="@+id/spinnerCinema"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:prompt="@string/prompt_select_cinema"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnPickDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pick Date"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnPickTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pick Time"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/txtDateTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Selected: "
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnAddTimeSlot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Time Slot"
+        android:layout_marginTop="8dp" />
+
+    <ListView
+        android:id="@+id/listViewTimes"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnAddSchedule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit Schedule"
+        android:layout_marginTop="8dp" />
+</LinearLayout>

@@ -77,7 +77,16 @@ public class Schedule implements Serializable {
         List<String> showTimeStrings = new ArrayList<>();
         if (showTimes != null) {
             for (DateTime dateTime : showTimes) {
-                showTimeStrings.add(dateTime.toString());
+                String formatted = String.format(
+                        "%s-%d/%d/%d-%02d:%02d",
+                        dateTime.getDayOfWeek().toUpperCase(), // e.g., MONDAY
+                        dateTime.day,  // Số nguyên, không thêm 0 ở đầu
+                        dateTime.month,
+                        dateTime.year,
+                        dateTime.hour,
+                        dateTime.minute
+                );
+                showTimeStrings.add(formatted);
             }
         }
         return showTimeStrings;
@@ -93,4 +102,9 @@ public class Schedule implements Serializable {
         }
         this.showTimes = dateTimes;
     }
+    @Override
+    public String toString() {
+        return "Schedule ID: " + scheduleId + "\nMovie ID: " + movieId;
+    }
+
 }

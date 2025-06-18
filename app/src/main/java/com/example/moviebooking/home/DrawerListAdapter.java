@@ -19,11 +19,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviebooking.FilmReviewActivity;
+import com.example.moviebooking.ManageSchedule.AddScheduleActivity;
+import com.example.moviebooking.ManageSchedule.ScheduleListActivity;
+import com.example.moviebooking.MovieManager.MovieListActivity;
 import com.example.moviebooking.Trailer.MembershipActivity;
 import com.example.moviebooking.booking.BookingHistoryActivity;
 import com.example.moviebooking.R;
 import com.example.moviebooking.dto.UserInfo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import com.example.moviebooking.Trailer.ReviewActivity;
@@ -43,7 +47,12 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.context = context;
         this.userInfo = userInfo;
         this.drawerItems = Arrays.asList("Username", "Booking History", "Write a Review", "Your Reviews", "Membership Registration", "Contact Us", "Logout");
-
+        if (userInfo.isAdmin()) {
+            drawerItems = new java.util.ArrayList<>(drawerItems);
+            ((ArrayList<String>) drawerItems).add("Add Schedule");
+            ((ArrayList<String>) drawerItems).add("Update and Delete Schedule");
+            ((ArrayList<String>) drawerItems).add("Movie Management");
+        }
         this.logoutClickListener = listener;
         this.launcher = launcher;
     }
@@ -163,6 +172,42 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         if(logoutClickListener != null) {
                             logoutClickListener.onLogoutClick();
                         }
+                    }
+                });
+            }
+            else if (position == 7)
+            {
+                viewHolder.textViewItem.setText("Add schedule");
+                viewHolder.imageViewItem.setImageResource(R.drawable.icon_location);
+                viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, AddScheduleActivity.class);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+            else if (position == 8)
+            {
+                viewHolder.textViewItem.setText("Update and delete Schedule");
+                viewHolder.imageViewItem.setImageResource(R.drawable.icon_location);
+                viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, ScheduleListActivity.class);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+            else if (position == 9)
+            {
+                viewHolder.textViewItem.setText("Movie Management");
+                viewHolder.imageViewItem.setImageResource(R.drawable.icon_location);
+                viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, MovieListActivity.class);
+                        context.startActivity(intent);
                     }
                 });
             }

@@ -9,6 +9,7 @@ public class UserInfo implements Serializable {
     private String name;
     private String email;
     private String profilePic;
+    private boolean role; // true = admin, false = user
 
     private static final String wrongPassword = "WP";
     private static final String wrongID = "WI";
@@ -16,16 +17,19 @@ public class UserInfo implements Serializable {
 
     private UserInfo() {
     }
+
     public UserInfo(String name, String username, String password) {
         this.username = username;
         this.email = username;
         this.password = password;
         this.name = name;
+        this.role = false; // mặc định là user
     }
 
     public UserInfo(String UserInfoID, String password) {
         this.username = UserInfoID;
         this.password = password;
+        this.role = false;
     }
 
     public UserInfo(String name, String username, String password, String profilePic) {
@@ -34,7 +38,18 @@ public class UserInfo implements Serializable {
         this.email = username;
         this.password = password;
         this.profilePic = profilePic;
+        this.role = false;
     }
+
+    public UserInfo(String name, String username, String password, String profilePic, boolean role) {
+        this.name = name;
+        this.username = username;
+        this.email = username;
+        this.password = password;
+        this.profilePic = profilePic;
+        this.role = role;
+    }
+
     public String isValidLogin(String UserInfoID, String password) {
         if (!this.username.equals(UserInfoID)) {
             return wrongID;
@@ -53,8 +68,10 @@ public class UserInfo implements Serializable {
         if (data.size() > 4) {
             this.profilePic = data.get(4);
         }
+        if (data.size() > 5) {
+            this.role = Boolean.parseBoolean(data.get(5));
+        }
     }
-
 
     public void setName(String name) {
         this.name = name;
@@ -75,6 +92,7 @@ public class UserInfo implements Serializable {
     public String getName() {
         return this.name;
     }
+
     public String getProfilePic() {
         return profilePic;
     }
@@ -83,4 +101,11 @@ public class UserInfo implements Serializable {
         this.profilePic = profilePic;
     }
 
+    public boolean isAdmin() {
+        return role;
+    }
+
+    public void setRole(boolean role) {
+        this.role = role;
+    }
 }

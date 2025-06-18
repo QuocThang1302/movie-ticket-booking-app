@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/btnAddMovie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="➕ Thêm Phim Mới"
+        android:backgroundTint="#9C27B0"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/movieListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#CCCCCC"
+        android:dividerHeight="1dp"
+        android:layout_marginTop="12dp" />
+</LinearLayout>
