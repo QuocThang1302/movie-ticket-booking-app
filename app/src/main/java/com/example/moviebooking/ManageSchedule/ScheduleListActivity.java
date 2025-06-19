@@ -46,15 +46,15 @@ public class ScheduleListActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener((parent, view, position, id) -> {
             Schedule selected = scheduleList.get(position);
             new AlertDialog.Builder(this)
-                    .setTitle("Xoá lịch chiếu")
-                    .setMessage("Bạn có chắc muốn xoá?")
-                    .setPositiveButton("Xoá", (dialog, which) -> {
+                    .setTitle("Remove movie schedule")
+                    .setMessage("Are you sure?")
+                    .setPositiveButton("Remove", (dialog, which) -> {
                         FireBaseManager.deleteSchedule(this, selected.getScheduleId(), (success, msg, data) -> {
                             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
                             if (success) loadSchedules();
                         });
                     })
-                    .setNegativeButton("Huỷ", null)
+                    .setNegativeButton("Cancel", null)
                     .show();
             return true;
         });

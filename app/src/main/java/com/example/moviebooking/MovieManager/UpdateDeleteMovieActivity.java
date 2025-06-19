@@ -81,7 +81,7 @@ public class UpdateDeleteMovieActivity extends AppCompatActivity {
                     Toast.makeText(UpdateDeleteMovieActivity.this, "Error: " , Toast.LENGTH_SHORT).show();
                 }
             });
-            Toast.makeText(this, "Đã cập nhật phim", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Movie updated successfully!", Toast.LENGTH_SHORT).show();
             finish();
         });
 

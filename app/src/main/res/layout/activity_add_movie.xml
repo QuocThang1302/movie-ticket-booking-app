@@ -13,56 +13,56 @@
             android:id="@+id/titleInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Tiêu đề phim" />
+            android:hint="Movie Title" />
 
         <EditText
             android:id="@+id/descriptionInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Mô tả phim" />
+            android:hint="Movie Description" />
 
         <EditText
             android:id="@+id/durationInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Thời lượng (phút)"
+            android:hint="Duration (minutes)"
             android:inputType="number" />
 
         <EditText
             android:id="@+id/rateInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Đánh giá (rate)" />
+            android:hint="Rating" />
 
         <EditText
             android:id="@+id/yearInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Năm sản xuất" />
+            android:hint="Release Year" />
 
         <EditText
             android:id="@+id/trailerInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Link trailer YouTube" />
+            android:hint="YouTube Trailer Link" />
 
         <EditText
             android:id="@+id/genresInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Thể loại (phân tách dấu phẩy)" />
+            android:hint="Genre (comma-separated)" />
 
         <EditText
             android:id="@+id/thumbnailInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Link ảnh thumbnail" />
+            android:hint="Thumbnail Image Link" />
 
         <Button
             android:id="@+id/btnAddMovie"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Thêm phim"
+            android:text="Add Movie"
             android:layout_marginTop="16dp"/>
     </LinearLayout>
 </ScrollView>

@@ -178,7 +178,7 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             else if (position == 7)
             {
                 viewHolder.textViewItem.setText("Add schedule");
-                viewHolder.imageViewItem.setImageResource(R.drawable.icon_location);
+                viewHolder.imageViewItem.setImageResource(R.drawable.icon_add);
                 viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -190,7 +190,7 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             else if (position == 8)
             {
                 viewHolder.textViewItem.setText("Update and delete Schedule");
-                viewHolder.imageViewItem.setImageResource(R.drawable.icon_location);
+                viewHolder.imageViewItem.setImageResource(R.drawable.icon_update);
                 viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -202,7 +202,7 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             else if (position == 9)
             {
                 viewHolder.textViewItem.setText("Movie Management");
-                viewHolder.imageViewItem.setImageResource(R.drawable.icon_location);
+                viewHolder.imageViewItem.setImageResource(R.drawable.icon_management);
                 viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

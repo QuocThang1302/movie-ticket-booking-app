@@ -9,7 +9,7 @@
         android:id="@+id/btnAddMovie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="➕ Thêm Phim Mới"
+        android:text="➕ Add New Movie"
         android:backgroundTint="#9C27B0"
         android:textColor="@android:color/white"
         android:textStyle="bold" />

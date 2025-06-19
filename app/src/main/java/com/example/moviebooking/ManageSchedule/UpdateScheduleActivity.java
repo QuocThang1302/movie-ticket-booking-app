@@ -69,13 +69,13 @@ public class UpdateScheduleActivity extends AppCompatActivity {
         // Xoá giờ chiếu bằng long click
         showTimeListView.setOnItemLongClickListener((adapterView, view, position, id) -> {
             new AlertDialog.Builder(this)
-                    .setTitle("Xoá giờ chiếu")
-                    .setMessage("Bạn có chắc muốn xoá giờ này?")
-                    .setPositiveButton("Xoá", (dialog, which) -> {
+                    .setTitle("Remove the showtime")
+                    .setMessage("Are you sure?")
+                    .setPositiveButton("Remove", (dialog, which) -> {
                         showTimesList.remove(position);
                         refreshShowTimeList();
                     })
-                    .setNegativeButton("Huỷ", null)
+                    .setNegativeButton("Cancel", null)
                     .show();
             return true;
         });
@@ -135,7 +135,7 @@ public class UpdateScheduleActivity extends AppCompatActivity {
         boolean isActive = chkActive.isChecked();
 
         if (movieId.isEmpty() || cinemaId.isEmpty() || showTimesList.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please fill in all the required information!", Toast.LENGTH_SHORT).show();
             return;
         }
 

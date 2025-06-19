@@ -65,7 +65,7 @@ public class AddMovieActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(String msg) {
-                    Toast.makeText(AddMovieActivity.this, "Lỗi: " + msg, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddMovieActivity.this, "Error: " + msg, Toast.LENGTH_SHORT).show();
                 }
             });
         });

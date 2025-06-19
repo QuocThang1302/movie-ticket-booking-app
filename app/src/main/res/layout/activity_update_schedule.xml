@@ -10,7 +10,7 @@
         android:padding="16dp">
 
         <TextView
-            android:text="Cập nhật lịch chiếu"
+            android:text="Update Showtime Schedule"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_width="wrap_content"
@@ -18,14 +18,14 @@
 
         <EditText
             android:id="@+id/edtMovieId"
-            android:hint="Mã phim (movieId)"
+            android:hint="Movie ID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"/>
 
         <EditText
             android:id="@+id/edtCinemaId"
-            android:hint="Mã rạp (cinemaId)"
+            android:hint="Cinema ID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"/>
@@ -34,10 +34,10 @@
             android:id="@+id/chkActive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hoạt động (isActive)" />
+            android:text="Active (isActive)" />
 
         <TextView
-            android:text="Danh sách giờ chiếu"
+            android:text="Showtime List"
             android:textStyle="bold"
             android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
@@ -54,13 +54,13 @@
             android:id="@+id/btnAddTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Thêm giờ chiếu" />
+            android:text="Add Showtime" />
 
         <Button
             android:id="@+id/btnSaveSchedule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Lưu thay đổi"
+            android:text="Save Changes"
             android:layout_marginTop="16dp"
             android:backgroundTint="@android:color/holo_blue_dark"
             android:textColor="@android:color/white" />

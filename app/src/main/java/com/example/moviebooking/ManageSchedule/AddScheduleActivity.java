@@ -161,7 +161,7 @@ public class AddScheduleActivity extends AppCompatActivity {
 
     private void addTimeSlot() {
         if (selectedDate == null || selectedTime == null) {
-            Toast.makeText(this, "Please select both date and time", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please select both date and time!", Toast.LENGTH_SHORT).show();
             return;
         }
         DateTime dateTime = new DateTime(selectedDate);
@@ -179,7 +179,7 @@ public class AddScheduleActivity extends AppCompatActivity {
 
     private void addSchedule() {
         if (selectedMovieId == null || selectedCinemaId == null || showTimes.isEmpty()) {
-            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please fill all fields!", Toast.LENGTH_SHORT).show();
             return;
         }
 
