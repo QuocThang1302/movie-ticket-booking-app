@@ -20,4 +20,10 @@
     <color name="silver_light_gray">#C0C0C0</color>
     <color name="purple_500">#6200EE</color>
 
+    <color name="primary">#1976D2</color>
+    <color name="primary_dark">#0D47A1</color>
+    <color name="accent">#FF4081</color>
+    <color name="background_light">#F5F5F5</color>
+    <color name="text_secondary">#757575</color>
+
 </resources>

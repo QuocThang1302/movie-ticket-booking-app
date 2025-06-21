@@ -1,86 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:background="#F8F9FA"
+    android:fillViewport="true">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="20dp">
 
-        <EditText
-            android:id="@+id/titleInput"
+        <!-- Header Section -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Movie Title" />
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp"
+            android:gravity="center">
 
-        <EditText
-            android:id="@+id/descriptionInput"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit Movie Details"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Update movie information or manage visibility"
+                android:textSize="16sp"
+                android:textColor="#6C757D" />
+
+        </LinearLayout>
+
+        <!-- Form Card -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Movie Description" />
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            >
 
-        <EditText
-            android:id="@+id/durationInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Duration (minutes)"
-            android:inputType="number" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="24dp">
 
-        <EditText
-            android:id="@+id/rateInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Rating" />
+                <!-- Movie Title -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxStrokeColor="#007BFF"
+                    app:hintTextColor="#007BFF"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <EditText
-            android:id="@+id/yearInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Release Year" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/titleInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Movie Title"
+                        android:drawablePadding="12dp"
+                        android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/trailerInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="YouTube Trailer Link" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/genresInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="TGenre (comma-separated)" />
+                <!-- Movie Description -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxStrokeColor="#007BFF"
+                    app:hintTextColor="#007BFF"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <EditText
-            android:id="@+id/thumbnailInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Thumbnail Image Link" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/descriptionInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Movie Description"
+                        android:drawablePadding="12dp"
+                        android:minLines="3"
+                        android:maxLines="5"
+                        android:textSize="16sp"
+                        android:gravity="top" />
 
-        <Button
-            android:id="@+id/btnUpdate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Update Movie"
-            android:layout_marginTop="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/btnDelete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Delete Movie"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@android:color/holo_red_dark"
-            android:textColor="@android:color/white" />
+                <!-- Duration and Rating Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
 
-        <Button
-            android:id="@+id/btnRemoveNowShowing"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Remove from Now Showing"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@android:color/holo_orange_dark"
-            android:textColor="@android:color/white" />
+                    <!-- Duration -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        app:boxStrokeColor="#007BFF"
+                        app:hintTextColor="#007BFF"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/durationInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Duration (min)"
+                            android:drawablePadding="12dp"
+                            android:inputType="number"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Rating -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        app:boxStrokeColor="#007BFF"
+                        app:hintTextColor="#007BFF"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/rateInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Rating (1-5)"
+                            android:drawablePadding="12dp"
+                            android:inputType="numberDecimal"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <!-- Release Year -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxStrokeColor="#007BFF"
+                    app:hintTextColor="#007BFF"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/yearInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Release Year"
+                        android:drawablePadding="12dp"
+                        android:inputType="number"
+                        android:textSize="16sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Genre -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxStrokeColor="#007BFF"
+                    app:hintTextColor="#007BFF"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/genresInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Genres (Action, Drama, Comedy...)"
+                        android:drawablePadding="12dp"
+                        android:textSize="16sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Trailer Link -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxStrokeColor="#007BFF"
+                    app:hintTextColor="#007BFF"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/trailerInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="YouTube Trailer Link"
+                        android:drawablePadding="12dp"
+                        android:inputType="textUri"
+                        android:textSize="16sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Thumbnail Link -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    app:boxStrokeColor="#007BFF"
+                    app:hintTextColor="#007BFF"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/thumbnailInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Thumbnail Image URL"
+                        android:drawablePadding="12dp"
+                        android:inputType="textUri"
+                        android:textSize="16sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Action Buttons -->
+                <!-- Update Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnUpdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Update Movie"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#28A745"
+                    app:cornerRadius="12dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="12dp"
+                    android:elevation="4dp"
+                    app:rippleColor="#FFFFFF"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Delete Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDelete"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Delete Movie"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#DC3545"
+                    app:cornerRadius="12dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="12dp"
+                    android:elevation="4dp"
+                    app:rippleColor="#FFFFFF"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Remove from Now Showing Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRemoveNowShowing"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Remove from Now Showing"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#FD7E14"
+                    app:cornerRadius="12dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="12dp"
+                    android:elevation="4dp"
+                    app:rippleColor="#FFFFFF" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
     </LinearLayout>
+
 </ScrollView>

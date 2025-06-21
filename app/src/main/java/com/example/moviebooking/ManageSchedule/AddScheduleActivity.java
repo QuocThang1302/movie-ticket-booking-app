@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,10 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviebooking.R;
 import com.example.moviebooking.data.FireBaseManager;
@@ -36,15 +40,13 @@ public class AddScheduleActivity extends AppCompatActivity {
     private Spinner movieSpinner, cinemaSpinner;
     private Button btnPickDate, btnPickTime, btnAddSchedule, btnAddTimeSlot;
     private TextView txtDateTime;
-    private ListView listViewTimes;
+    private RecyclerView listViewTimes;
 
     private final List<Movie> movieList = new ArrayList<>();
     private final List<String> cinemaList = Arrays.asList("CINEMA_1", "CINEMA_2", "CINEMA_3");
     private final List<DateTime> showTimes = new ArrayList<>();
 
     private ArrayAdapter<String> movieAdapter, cinemaAdapter;
-    private ArrayAdapter<String> timesAdapter;
-
     private String selectedMovieId = null;
     private String selectedCinemaId = null;
 
@@ -67,15 +69,32 @@ public class AddScheduleActivity extends AppCompatActivity {
         btnAddSchedule = findViewById(R.id.btnAddSchedule);
         listViewTimes = findViewById(R.id.listViewTimes);
 
+        listViewTimes.setLayoutManager(new LinearLayoutManager(this));
+        listViewTimes.setAdapter(new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+            @NonNull
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                TextView textView = new TextView(parent.getContext());
+                textView.setPadding(20, 20, 20, 20);
+                return new RecyclerView.ViewHolder(textView) {};
+            }
+
+            @Override
+            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+                ((TextView) holder.itemView).setText(showTimes.get(position).toString());
+            }
+
+            @Override
+            public int getItemCount() {
+                return showTimes.size();
+            }
+        });
+
         setupMovieSpinner();
         setupCinemaSpinner();
         setupDateTimePickers();
 
-        timesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
-        listViewTimes.setAdapter(timesAdapter);
-
         btnAddTimeSlot.setOnClickListener(v -> addTimeSlot());
-
         btnAddSchedule.setOnClickListener(v -> addSchedule());
     }
 
@@ -173,8 +192,7 @@ public class AddScheduleActivity extends AppCompatActivity {
                 selectedTime.getMinute()));
 
         showTimes.add(dateTime);
-        timesAdapter.add(dateTime.toString());
-        timesAdapter.notifyDataSetChanged();
+        listViewTimes.getAdapter().notifyItemInserted(showTimes.size() - 1);
     }
 
     private void addSchedule() {
@@ -193,3 +211,4 @@ public class AddScheduleActivity extends AppCompatActivity {
         });
     }
 }
+

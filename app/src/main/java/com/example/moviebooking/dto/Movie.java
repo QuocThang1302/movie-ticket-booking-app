@@ -155,25 +155,7 @@ public class Movie implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        String data =  "Movie{" +
-                ", movieId='" + movieID + '\'' +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", thumbnail='" + thumbnail + '\'' +
-                ", genre={";
-        for (String s : genres) {
-            if (s.equals(genres.get(genres.size() - 1))) {
-                data = data + "'" + s + "'";
-                break;
-            }
-            data = data + "'" + s + "'" + ", ";
-        }
-        data = data +
-                "}, duration=" + duration +
-                ", rate=" + rate +
-                ", trailerYoutube='" + trailerYoutube + '\'' +
-                '}';
-        return data;
+        return "Movie{movieId='" + movieID + "', title='" + title + "'}";
     }
 
     public Movie(String movieID, String title, String description, String imageUrl, List<String> genres, String duration, String rate, String trailerYoutube) {

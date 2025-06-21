@@ -1,68 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_light"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="24dp">
 
+        <!-- Header Section -->
         <TextView
-            android:text="Update Showtime Schedule"
-            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="✏️ Update Schedule"
+            android:textSize="28sp"
             android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/primary_dark"
+            android:gravity="center"
+            android:layout_marginBottom="32dp"
+            android:fontFamily="sans-serif-medium" />
 
-        <EditText
-            android:id="@+id/edtMovieId"
-            android:hint="Movie ID"
+        <!-- Movie & Cinema Info Card -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"/>
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:strokeWidth="0dp">
 
-        <EditText
-            android:id="@+id/edtCinemaId"
-            android:hint="Cinema ID"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🎬 Movie and Cinema Details"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_dark"
+                    android:layout_marginBottom="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🎥 Movie"
+                    android:textSize="14sp"
+                    android:textColor="@color/primary_dark"
+                    android:layout_marginBottom="4dp" />
+
+                <Spinner
+                    android:id="@+id/spinnerMovie"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🏢 Cinema"
+                    android:textSize="14sp"
+                    android:textColor="@color/primary_dark"
+                    android:layout_marginBottom="4dp" />
+
+                <Spinner
+                    android:id="@+id/spinnerCinema"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Status Section -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📊 Status"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_dark"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/status_background"
+                    android:padding="12dp"
+                    android:gravity="center_vertical">
+
+                    <CheckBox
+                        android:id="@+id/chkActive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="✅ Active Schedule"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary_dark"
+                        app:buttonTint="@color/accent" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Showtime Management Card -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"/>
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:strokeWidth="0dp">
 
-        <CheckBox
-            android:id="@+id/chkActive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Active (isActive)" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-        <TextView
-            android:text="Showtime List"
-            android:textStyle="bold"
-            android:layout_marginTop="12dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
 
-        <ListView
-            android:id="@+id/showTimeListView"
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="🕐 Showtime List"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary_dark" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnAddTime"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="➕ Add"
+                        android:textSize="12sp"
+                        app:cornerRadius="20dp"
+                        app:strokeColor="@color/accent"
+                        app:strokeWidth="2dp"
+                        android:textColor="@color/accent" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/showTimeListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scrollbars="vertical"
+                    android:background="@drawable/listview_background"
+                    android:padding="8dp"
+                    android:nestedScrollingEnabled="true" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="💡 Tip: Tap on any showtime to edit or remove it"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_marginTop="8dp"
+                    android:fontStyle="italic"
+                    android:gravity="center" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Action Buttons -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="1dp" />
-
-        <Button
-            android:id="@+id/btnAddTime"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add Showtime" />
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
 
-        <Button
-            android:id="@+id/btnSaveSchedule"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Save Changes"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@android:color/holo_blue_dark"
-            android:textColor="@android:color/white" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:text="💾 Save Changes"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp"
+                app:backgroundTint="@color/primary"
+                android:textColor="@android:color/white"
+                android:elevation="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancel"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:text="❌ Cancel"
+                android:textSize="16sp"
+                android:textColor="@color/text_secondary" />
+        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>
