@@ -4,36 +4,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/background_light">
+    android:background="@color/charcoal_black">
 
     <!-- Header Section -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="109dp"
+        android:background="@drawable/bg"
+        android:elevation="4dp"
         android:orientation="vertical"
-        android:background="@color/primary"
-        android:padding="24dp"
-        android:elevation="4dp">
+        android:padding="24dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
             android:text="🎬 Showtime Schedule"
-            android:textSize="28sp"
-            android:textStyle="bold"
             android:textColor="@android:color/white"
-            android:gravity="center"
-            android:fontFamily="sans-serif-medium" />
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Manage your cinema schedules"
-            android:textSize="14sp"
-            android:textColor="@android:color/white"
-            android:gravity="center"
             android:layout_marginTop="4dp"
-            android:alpha="0.9" />
+            android:alpha="0.9"
+            android:gravity="center"
+            android:text="Manage your cinema schedules"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <!-- Main Content Card -->
@@ -50,14 +50,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:background="@color/dark_charcoal">
 
             <!-- Instructions Section -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/instruction_background"
+                android:background="@drawable/status_background"
                 android:padding="16dp"
                 android:layout_marginBottom="16dp">
 
@@ -67,7 +68,7 @@
                     android:text="📋 Instructions"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary_dark"
+                    android:textColor="@color/blurple"
                     android:layout_marginBottom="8dp" />
 
                 <TextView
@@ -75,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:text="💡 Long press on any schedule item to delete it"
                     android:textSize="14sp"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/sub_bright_text"
                     android:lineSpacingExtra="2dp" />
 
                 <TextView
@@ -83,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:text="✏️ Tap on a schedule to view or edit details"
                     android:textSize="14sp"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/sub_bright_text"
                     android:layout_marginTop="4dp"
                     android:lineSpacingExtra="2dp" />
             </LinearLayout>
@@ -109,7 +110,7 @@
                         android:text="📅 Active Schedules"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="@color/primary_dark" />
+                        android:textColor="@color/blurple" />
 
                     <TextView
                         android:id="@+id/txtScheduleCount"

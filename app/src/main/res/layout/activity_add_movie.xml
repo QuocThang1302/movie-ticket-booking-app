@@ -10,7 +10,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:background="@drawable/bg2">
 
         <!-- Header Section -->
         <LinearLayout
@@ -27,7 +28,7 @@
                 android:text="Add New Movie"
                 android:textSize="28sp"
                 android:textStyle="bold"
-                android:textColor="#1A1A1A"
+                android:textColor="@color/bright_text"
                 android:layout_marginBottom="8dp" />
 
             <TextView
@@ -35,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:text="Fill in the movie details below"
                 android:textSize="16sp"
-                android:textColor="#6C757D" />
+                android:textColor="@color/sub_bright_text" />
 
         </LinearLayout>
 
@@ -49,49 +50,49 @@
             >
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:padding="24dp">
 
                 <!-- Movie Title -->
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     app:boxStrokeColor="#007BFF"
-                    app:hintTextColor="#007BFF"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    app:hintTextColor="#007BFF">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/titleInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Movie Title"
                         android:drawablePadding="12dp"
+                        android:hint="Movie Title"
                         android:textSize="16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Movie Description -->
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     app:boxStrokeColor="#007BFF"
-                    app:hintTextColor="#007BFF"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    app:hintTextColor="#007BFF">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/descriptionInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Movie Description"
                         android:drawablePadding="12dp"
-                        android:minLines="3"
+                        android:gravity="top"
+                        android:hint="Movie Description"
                         android:maxLines="5"
-                        android:textSize="16sp"
-                        android:gravity="top" />
+                        android:minLines="3"
+                        android:textSize="16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,26 +100,26 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal">
 
                     <!-- Duration -->
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
                         app:boxStrokeColor="#007BFF"
-                        app:hintTextColor="#007BFF"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                        app:hintTextColor="#007BFF">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/durationInput"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Duration (min)"
-
                             android:drawablePadding="12dp"
+
+                            android:hint="Duration (min)"
                             android:inputType="number"
                             android:textSize="16sp" />
 
@@ -126,20 +127,20 @@
 
                     <!-- Rating -->
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginStart="8dp"
+                        android:layout_weight="1"
                         app:boxStrokeColor="#007BFF"
-                        app:hintTextColor="#007BFF"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                        app:hintTextColor="#007BFF">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/rateInput"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Rating (1-5)"
                             android:drawablePadding="12dp"
+                            android:hint="Rating (1-5)"
                             android:inputType="numberDecimal"
                             android:textSize="16sp" />
 
@@ -149,19 +150,19 @@
 
                 <!-- Release Year -->
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     app:boxStrokeColor="#007BFF"
-                    app:hintTextColor="#007BFF"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    app:hintTextColor="#007BFF">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/yearInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Release Year"
                         android:drawablePadding="12dp"
+                        android:hint="Release Year"
                         android:inputType="number"
                         android:textSize="16sp" />
 
@@ -169,38 +170,38 @@
 
                 <!-- Genre -->
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     app:boxStrokeColor="#007BFF"
-                    app:hintTextColor="#007BFF"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    app:hintTextColor="#007BFF">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/genresInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Genres (Action, Drama, Comedy...)"
                         android:drawablePadding="12dp"
+                        android:hint="Genres (Action, Drama, Comedy...)"
                         android:textSize="16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Trailer Link -->
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     app:boxStrokeColor="#007BFF"
-                    app:hintTextColor="#007BFF"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    app:hintTextColor="#007BFF">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/trailerInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="YouTube Trailer Link"
                         android:drawablePadding="12dp"
+                        android:hint="YouTube Trailer Link"
                         android:inputType="textUri"
                         android:textSize="16sp" />
 
@@ -208,19 +209,19 @@
 
                 <!-- Thumbnail Link -->
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="24dp"
                     app:boxStrokeColor="#007BFF"
-                    app:hintTextColor="#007BFF"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    app:hintTextColor="#007BFF">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/thumbnailInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Thumbnail Image URL"
                         android:drawablePadding="12dp"
+                        android:hint="Thumbnail Image URL"
                         android:inputType="textUri"
                         android:textSize="16sp" />
 
@@ -231,15 +232,15 @@
                     android:id="@+id/btnAddMovie"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
+                    android:backgroundTint="#007BFF"
+                    android:elevation="4dp"
                     android:text="Add Movie"
+                    android:textColor="#FFFFFF"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="#FFFFFF"
-                    android:backgroundTint="#007BFF"
                     app:cornerRadius="12dp"
                     app:iconGravity="textStart"
                     app:iconPadding="12dp"
-                    android:elevation="4dp"
                     app:rippleColor="#FFFFFF" />
 
             </LinearLayout>

@@ -27,7 +27,8 @@
             android:exported="false" />
         <activity
             android:name=".MovieManager.MovieListActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/ListThemeDark"/>
         <activity
             android:name=".MovieListActivity"
             android:exported="false" />
@@ -36,7 +37,8 @@
             android:exported="false" />
         <activity
             android:name=".ManageSchedule.ScheduleListActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/ListThemeDark"/>
         <activity
             android:name=".ManageSchedule.AddScheduleActivity"
             android:exported="false" />
