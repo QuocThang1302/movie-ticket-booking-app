@@ -25,5 +25,13 @@
     <color name="accent">#FF4081</color>
     <color name="background_light">#F5F5F5</color>
     <color name="text_secondary">#757575</color>
-
+    <color name="charcoal_black">#202024</color>
+    <color name="dark_charcoal">#121214</color>
+    <color name="lessdark_charcoal">#1a1a1e</color>
+    <color name="light_charcoal">#27272c</color>
+    <color name="blurple">#5865f2</color>
+    <color name="dark_text">#212121</color>
+    <color name="bright_text">#F5F5F5</color>
+    <color name="sub_dark_text">#424242</color>
+    <color name="sub_bright_text">#CCCCCC</color>
 </resources>

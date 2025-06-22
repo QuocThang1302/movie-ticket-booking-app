@@ -5,5 +5,13 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <style name="ListThemeBright" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:textColorPrimary">#212121</item>
+    </style>
+
+    <style name="ListThemeDark" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:textColorPrimary">#F5F5F5</item>
+    </style>
+
     <style name="Theme.Moviebooking" parent="Base.Theme.Moviebooking" />
 </resources>

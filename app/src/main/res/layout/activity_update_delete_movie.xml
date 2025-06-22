@@ -10,7 +10,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:background="@drawable/bg2">
 
         <!-- Header Section -->
         <LinearLayout
@@ -26,7 +27,7 @@
                 android:text="Edit Movie Details"
                 android:textSize="28sp"
                 android:textStyle="bold"
-                android:textColor="#1A1A1A"
+                android:textColor="@color/bright_text"
                 android:layout_marginBottom="8dp" />
 
             <TextView
@@ -34,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:text="Update movie information or manage visibility"
                 android:textSize="16sp"
-                android:textColor="#6C757D" />
+                android:textColor="@color/sub_bright_text" />
 
         </LinearLayout>
 
