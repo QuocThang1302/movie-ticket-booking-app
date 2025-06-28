@@ -20,7 +20,6 @@ public class CinesGPTActivity extends AppCompatActivity {
     Button btnSend;
     TextView tvResponse;
 
-    // Duy trì hội thoại giữa người dùng và AI
     StringBuilder conversationHistory = new StringBuilder();
 
     OkHttpClient client = new OkHttpClient.Builder()
@@ -57,12 +56,12 @@ public class CinesGPTActivity extends AppCompatActivity {
             String fullPrompt = conversationHistory.toString() + "User: " + prompt + "\nAI:";
 
             JSONObject json = new JSONObject();
-            json.put("model", "llama3"); // đảm bảo model này đã được pull: ollama pull llama3
+            json.put("model", "llama3");
             json.put("prompt", fullPrompt);
-            json.put("stream", false);  // để response trả về đầy đủ
+            json.put("stream", false);
 
             String jsonString = json.toString();
-            Log.d("RequestJSON", jsonString); // debug log
+            Log.d("RequestJSON", jsonString);
 
             RequestBody body = RequestBody.create(
                     jsonString, MediaType.parse("application/json")
@@ -92,11 +91,9 @@ public class CinesGPTActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(responseText);
                             String aiReply = jsonObject.optString("response", "(no response)").trim();
 
-                            // Lưu vào lịch sử hội thoại
                             conversationHistory.append("User: ").append(prompt).append("\n");
                             conversationHistory.append("AI: ").append(aiReply).append("\n");
 
-                            // Giới hạn chiều dài nếu quá dài
                             if (conversationHistory.length() > 3000) {
                                 conversationHistory = new StringBuilder(conversationHistory.substring(conversationHistory.length() - 2000));
                             }
