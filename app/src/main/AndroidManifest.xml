@@ -5,12 +5,14 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
 
     <application
         android:allowBackup="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/cinema"
@@ -21,6 +23,9 @@
         tools:targetApi="31">
         <activity
             android:name=".MovieManager.UpdateDeleteMovieActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CinesGPTActivity"
             android:exported="false" />
         <activity
             android:name=".MovieManager.AddMovieActivity"

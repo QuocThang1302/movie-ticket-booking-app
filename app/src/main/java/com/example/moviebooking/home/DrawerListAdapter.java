@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.moviebooking.CinesGPTActivity;
 import com.example.moviebooking.FilmReviewActivity;
 import com.example.moviebooking.ManageSchedule.AddScheduleActivity;
 import com.example.moviebooking.ManageSchedule.ScheduleListActivity;
@@ -163,7 +164,19 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
                 viewHolder.textViewItem.setOnClickListener(v -> showContactDialog());
             }
-            else if (position == 6) {
+            else if (position == 6)
+            {
+                viewHolder.textViewItem.setText("CinesGPT");
+                viewHolder.imageViewItem.setImageResource(R.drawable.icon_cinesgpt);
+                viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, CinesGPTActivity.class);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+            else if (position == 7) {
                 viewHolder.textViewItem.setText("Logout");
                 viewHolder.imageViewItem.setImageResource(R.drawable.icon_logout);
                 viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +188,7 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     }
                 });
             }
-            else if (position == 7)
+            else if (position == 8)
             {
                 viewHolder.textViewItem.setText("Add schedule");
                 viewHolder.imageViewItem.setImageResource(R.drawable.icon_add);
@@ -187,7 +200,7 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     }
                 });
             }
-            else if (position == 8)
+            else if (position == 9)
             {
                 viewHolder.textViewItem.setText("Update and delete Schedule");
                 viewHolder.imageViewItem.setImageResource(R.drawable.icon_update);
@@ -199,7 +212,7 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     }
                 });
             }
-            else if (position == 9)
+            else if (position == 10)
             {
                 viewHolder.textViewItem.setText("Movie Management");
                 viewHolder.imageViewItem.setImageResource(R.drawable.icon_management);
