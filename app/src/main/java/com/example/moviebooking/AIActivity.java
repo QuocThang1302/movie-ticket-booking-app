@@ -37,7 +37,7 @@ public class AIActivity extends AppCompatActivity {
     private String currentUserContext = "";
 
     // 🔥 GROQ API - COMPLETELY FREE
-    private static final String GROQ_API_KEY = "Thế vô đây nha Hào";
+    private static final String GROQ_API_KEY = "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";
     private static final String TAG = "AIActivity";
 
     @Override
@@ -61,7 +61,7 @@ public class AIActivity extends AppCompatActivity {
 
         // Show initial welcome message với thông tin user
         String welcomeMessage = "🤖 Hello " + (currentUser != null ? currentUser.getName() : "Guest") + "!\n\n" +
-                "🎬 Movie Booking AI Assistant ready!\n\n" +
+                "🎬 Movie Booking CinesGPT is ready!\n\n" +
                 "I can help you with:\n" +
                 "• Movie information & recommendations\n" +
                 "• Your ticket bookings & schedules\n" +
@@ -506,7 +506,7 @@ public class AIActivity extends AppCompatActivity {
 
         if (isUser) {
             // User message - blue, right aligned
-            drawable.setColor(0xFF2196F3);
+            drawable.setColor(0xFF8358B2);
             messageView.setTextColor(0xFFFFFFFF);
             params.gravity = Gravity.END;
             params.leftMargin = dpToPx(50);
