@@ -37,7 +37,7 @@ public class AIActivity extends AppCompatActivity {
     private String currentUserContext = "";
 
     // 🔥 GROQ API - COMPLETELY FREE
-    private static final String GROQ_API_KEY = "đổi key ở đây nha ấy đứa";
+    private static final String GROQ_API_KEY = "đổi key ở đây nha mấy đứa";
     private static final String TAG = "AIActivity";
 
     @Override
