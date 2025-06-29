@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.moviebooking.AIActivity;
 import com.example.moviebooking.CinesGPTActivity;
 import com.example.moviebooking.FilmReviewActivity;
 import com.example.moviebooking.ManageSchedule.AddScheduleActivity;
@@ -171,7 +172,8 @@ public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 viewHolder.textViewItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(context, CinesGPTActivity.class);
+                        Intent intent = new Intent(context, AIActivity.class);
+                        intent.putExtra("userinfoIntent", userInfo);
                         context.startActivity(intent);
                     }
                 });

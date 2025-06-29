@@ -111,6 +111,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+        <activity android:name=".AIActivity" android:exported="false" />
+
     </application>
 
 </manifest>
