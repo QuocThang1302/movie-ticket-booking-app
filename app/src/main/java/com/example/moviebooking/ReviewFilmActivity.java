@@ -211,6 +211,7 @@ public class ReviewFilmActivity extends AppCompatActivity implements FireBaseMan
         tvCommentsCount.setText("(" + count + ")");
     }
 
+    /*
     @Override
     public void onCommentsLoaded(List<Comment> comments) {
         Log.d(TAG, "Comments loaded successfully. Count: " + (comments != null ? comments.size() : 0));
@@ -224,6 +225,46 @@ public class ReviewFilmActivity extends AppCompatActivity implements FireBaseMan
         } else {
             commentsList.clear();
             commentsAdapter.updateComments(commentsList);
+            updateCommentsCount(0);
+            showNoComments();
+        }
+    }
+
+     */
+    @Override
+    public void onCommentsLoaded(List<Comment> comments) {
+        Log.d(TAG, "Comments loaded successfully. Count: " + (comments != null ? comments.size() : 0));
+
+        // Kiểm tra null cho commentsAdapter trước khi sử dụng
+        if (commentsAdapter == null) {
+            Log.e(TAG, "CommentsAdapter is null, reinitializing...");
+            setupRecyclerView(); // Khởi tạo lại adapter nếu null
+        }
+
+        // Kiểm tra null cho commentsList
+        if (commentsList == null) {
+            commentsList = new ArrayList<>();
+        }
+
+        if (comments != null && !comments.isEmpty()) {
+            commentsList.clear();
+            commentsList.addAll(comments);
+
+            // Kiểm tra lại adapter trước khi update
+            if (commentsAdapter != null) {
+                commentsAdapter.updateComments(commentsList);
+            }
+
+            updateCommentsCount(comments.size());
+            showComments();
+        } else {
+            commentsList.clear();
+
+            // Kiểm tra lại adapter trước khi update
+            if (commentsAdapter != null) {
+                commentsAdapter.updateComments(commentsList);
+            }
+
             updateCommentsCount(0);
             showNoComments();
         }
