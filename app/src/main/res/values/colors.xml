@@ -34,4 +34,5 @@
     <color name="bright_text">#F5F5F5</color>
     <color name="sub_dark_text">#424242</color>
     <color name="sub_bright_text">#CCCCCC</color>
+    <color name="hot_pink">#FF4D8B</color>
 </resources>
