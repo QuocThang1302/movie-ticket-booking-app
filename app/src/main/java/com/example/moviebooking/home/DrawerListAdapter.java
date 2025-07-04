@@ -12,14 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.moviebooking.AIActivity;
-import com.example.moviebooking.CinesGPTActivity;
 import com.example.moviebooking.FilmReviewActivity;
 import com.example.moviebooking.ManageSchedule.AddScheduleActivity;
 import com.example.moviebooking.ManageSchedule.ScheduleListActivity;
@@ -33,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import com.example.moviebooking.Trailer.ReviewActivity;
-import com.example.moviebooking.home.OnLogoutClickListener;
 
 public class DrawerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<String> drawerItems;

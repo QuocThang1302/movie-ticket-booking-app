@@ -2,17 +2,13 @@ package com.example.moviebooking.MovieManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.moviebooking.R;
+import com.example.moviebooking.MovieManager.MovieCustomAdapter;
 import com.example.moviebooking.data.FireBaseManager;
 import com.example.moviebooking.dto.Movie;
 
@@ -21,7 +17,7 @@ import java.util.List;
 
 public class MovieListActivity extends AppCompatActivity {
     private ListView listView;
-    private ArrayAdapter<Movie> adapter;
+    private MovieCustomAdapter adapter;
     private List<Movie> movieList = new ArrayList<>();
     private FireBaseManager fireBaseManager;
 
@@ -30,12 +26,23 @@ public class MovieListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
 
+        initViews();
+        setupAdapter();
+        loadMovieData();
+        setupClickListeners();
+    }
+
+    private void initViews() {
         listView = findViewById(R.id.movieListView);
         fireBaseManager = FireBaseManager.getInstance();
+    }
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, movieList);
+    private void setupAdapter() {
+        adapter = new MovieCustomAdapter(this, movieList);
         listView.setAdapter(adapter);
+    }
 
+    private void loadMovieData() {
         fireBaseManager.fetchAllMoviesData(new FireBaseManager.OnMoviesDataLoadedListener() {
             @Override
             public void onMoviesDataLoaded(List<Movie> allMovieList) {
@@ -46,10 +53,14 @@ public class MovieListActivity extends AppCompatActivity {
 
             @Override
             public void onMoviesDataError(String errorMessage) {
-                Toast.makeText(MovieListActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MovieListActivity.this,
+                        "Error loading movies: " + errorMessage,
+                        Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    private void setupClickListeners() {
         listView.setOnItemClickListener((parent, view, position, id) -> {
             Movie selectedMovie = movieList.get(position);
             Intent intent = new Intent(MovieListActivity.this, UpdateDeleteMovieActivity.class);
@@ -60,5 +71,12 @@ public class MovieListActivity extends AppCompatActivity {
         findViewById(R.id.btnAddMovie).setOnClickListener(v -> {
             startActivity(new Intent(MovieListActivity.this, AddMovieActivity.class));
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh data when returning to this activity
+        loadMovieData();
     }
 }

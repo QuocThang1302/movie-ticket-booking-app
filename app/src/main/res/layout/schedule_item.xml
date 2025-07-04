@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header with Schedule ID and Status -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/tvScheduleId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ID: SCH001"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Active"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:background="@drawable/status_background"
+                android:padding="6dp"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+        <!-- Movie and Cinema Info -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/tvMovieId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Movie: MOV001"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:id="@+id/tvCinemaId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cinema: CIN001"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical" />
+
+        </LinearLayout>
+
+        <!-- Show Times -->
+        <TextView
+            android:id="@+id/tvShowTimes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show Times: Monday 25/DEC/2023 2:30 PM\nTuesday 26/DEC/2023 4:00 PM"
+            android:textSize="13sp"
+            android:textColor="@android:color/darker_gray"
+            android:drawablePadding="8dp"
+            android:gravity="top"
+            android:maxLines="4"
+            android:ellipsize="end" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

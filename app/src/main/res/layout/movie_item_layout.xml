@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:strokeColor="@color/blurple"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@color/dark_charcoal">
+
+        <!-- Movie Thumbnail -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="80dp"
+            android:layout_height="120dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp">
+
+            <ImageView
+                android:id="@+id/imgMovieThumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Movie Info -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp"
+            android:layout_gravity="center_vertical">
+
+            <!-- Movie Title -->
+            <TextView
+                android:id="@+id/txtMovieTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Movie Title"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end" />
+
+            <!-- Movie Genre -->
+            <TextView
+                android:id="@+id/txtMovieGenre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Action, Drama"
+                android:textColor="@color/blurple"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <!-- Movie Duration and Rating -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <!-- Duration -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="⏱️"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txtMovieDuration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2h 30min"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp"
+                        android:layout_marginStart="4dp" />
+                </LinearLayout>
+
+                <!-- Rating -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="⭐"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txtMovieRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8.5"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp"
+                        android:layout_marginStart="4dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Movie Year -->
+            <TextView
+                android:id="@+id/txtMovieYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2024"
+                android:textColor="#B0B0B0"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/year_background"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp" />
+        </LinearLayout>
+
+        <!-- Arrow Icon -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_forward"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            app:tint="@color/blurple" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -2,16 +2,11 @@ package com.example.moviebooking.ManageSchedule;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.moviebooking.R;
 import com.example.moviebooking.data.FireBaseManager;
@@ -22,7 +17,7 @@ import java.util.List;
 
 public class ScheduleListActivity extends AppCompatActivity {
     private ListView listView;
-    private ArrayAdapter<Schedule> adapter;
+    private ScheduleAdapter adapter;
     private List<Schedule> scheduleList = new ArrayList<>();
 
     @Override
@@ -31,7 +26,9 @@ public class ScheduleListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_schedule_list);
 
         listView = findViewById(R.id.scheduleListView);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, scheduleList);
+
+        // Sử dụng custom adapter thay vì ArrayAdapter
+        adapter = new ScheduleAdapter(this, scheduleList);
         listView.setAdapter(adapter);
 
         loadSchedules();
@@ -47,11 +44,13 @@ public class ScheduleListActivity extends AppCompatActivity {
             Schedule selected = scheduleList.get(position);
             new AlertDialog.Builder(this)
                     .setTitle("Remove movie schedule")
-                    .setMessage("Are you sure?")
+                    .setMessage("Are you sure you want to delete this schedule?")
                     .setPositiveButton("Remove", (dialog, which) -> {
                         FireBaseManager.deleteSchedule(this, selected.getScheduleId(), (success, msg, data) -> {
                             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-                            if (success) loadSchedules();
+                            if (success) {
+                                loadSchedules();
+                            }
                         });
                     })
                     .setNegativeButton("Cancel", null)
@@ -71,8 +70,15 @@ public class ScheduleListActivity extends AppCompatActivity {
 
             @Override
             public void onSchedulesDataError(String error) {
-                Toast.makeText(ScheduleListActivity.this, error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ScheduleListActivity.this, "Error loading schedules: " + error, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh data when returning to this activity
+        loadSchedules();
     }
 }

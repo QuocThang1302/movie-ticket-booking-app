@@ -3,8 +3,10 @@ package com.example.moviebooking.booking;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -41,6 +44,7 @@ import java.util.Map;
 
 public class BookingStatusActivity extends AppCompatActivity {
     private static final int REQUEST_WRITE_STORAGE = 1;
+    private boolean shouldSaveAfterPermission = false;
     private String movieTitle, cinema, date, time, snackOrderId;
     private ArrayList<String> selectedCombos;
     private int snackPrice, snackCount;
@@ -171,11 +175,86 @@ public class BookingStatusActivity extends AppCompatActivity {
         });
 
         findViewById(com.example.moviebooking.R.id.btn_save_to_gallery).setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                checkWriteStoragePermission();
-            }
-            SaveViewAsImage.saveViewAsImage(this, findViewById(com.example.moviebooking.R.id.card_view));
+            saveTicketToGallery();
         });
+    }
+
+    private void saveTicketToGallery() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // Android 10+ không cần WRITE_EXTERNAL_STORAGE permission
+            performSaveImage();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Android 6-9 cần permission
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                performSaveImage();
+            } else {
+                shouldSaveAfterPermission = true;
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_WRITE_STORAGE);
+            }
+        } else {
+            // Android 5 và thấp hơn
+            performSaveImage();
+        }
+    }
+
+    private void performSaveImage() {
+        try {
+            View cardView = findViewById(com.example.moviebooking.R.id.card_view);
+            if (cardView != null) {
+                SaveViewAsImage.saveViewAsImage(this, cardView);
+
+                // Hiển thị thông báo thành công (tùy chọn)
+                // Toast.makeText(this, "Ticket saved to gallery!", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.e("BookingStatus", "Card view not found");
+                // Toast.makeText(this, "Error: Unable to save ticket", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Log.e("BookingStatus", "Error saving image: " + e.getMessage());
+            // Toast.makeText(this, "Error saving image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_WRITE_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission được cấp
+                if (shouldSaveAfterPermission) {
+                    shouldSaveAfterPermission = false;
+                    performSaveImage();
+                }
+            } else {
+                // Permission bị từ chối
+                shouldSaveAfterPermission = false;
+
+                // Hiển thị thông báo cho user (tùy chọn)
+                // Toast.makeText(this, "Storage permission is required to save ticket", Toast.LENGTH_LONG).show();
+
+                // Hoặc hiển thị dialog giải thích tại sao cần permission
+                showPermissionExplanationDialog();
+            }
+        }
+    }
+
+    private void showPermissionExplanationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Storage Permission Required")
+                .setMessage("This app needs storage permission to save your ticket to the gallery. Would you like to grant permission in settings?")
+                .setPositiveButton("Settings", (dialog, which) -> {
+                    // Mở settings để user cấp permission thủ công
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -188,17 +267,7 @@ public class BookingStatusActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_WRITE_STORAGE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted
-            } else {
-                // Permission denied
-            }
-        }
-    }
+
 
     private void createTicketsCard(BookedTicketList bookedTicketList, Movie movie) {
         List<Ticket> ticketList = bookedTicketList.getBookedTicketList();
